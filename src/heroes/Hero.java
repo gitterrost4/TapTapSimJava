@@ -118,6 +118,20 @@ public interface Hero {
   public void increaseCritRate(BigDecimal amount);
   
   /**
+   * return the crit rate of the hero
+   * 
+   * @return
+   */
+  public BigDecimal getCritDamage();
+
+  /**
+   * Increase the crit rate of a hero by an amount
+   * 
+   * @param amount
+   */
+  public void increaseCritDamage(BigDecimal amount);
+  
+  /**
    * return the dodge chance of the hero
    * 
    * @return
@@ -200,6 +214,21 @@ public interface Hero {
    * @param amount
    */
   public void increaseDefense(Integer amount);
+  
+  /**
+   * return the true damage of the hero
+   * 
+   * @return
+   */
+  public BigDecimal getTrueDamage();
+  
+  /**
+   * increase the true damage of the hero by an amount
+   * 
+   * @param amount
+   */
+  public void increaseTrueDamage(BigDecimal amount);
+  
 
 }
 

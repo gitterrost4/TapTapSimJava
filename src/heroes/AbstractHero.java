@@ -1,9 +1,6 @@
 package heroes;
 
 import java.math.BigDecimal;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 import loadout.Loadout;
 
@@ -97,6 +94,10 @@ public abstract class AbstractHero implements Hero {
 
   private BigDecimal defenseBreak;
 
+  private BigDecimal trueDamage;
+
+  private BigDecimal critDamage;
+
   public AbstractHero(Integer level, HeroClass heroClass, Faction faction, Integer maxHP, Integer attack, Integer speed, Integer defense, Loadout loadout) {
     super();
     this.level=level;
@@ -109,10 +110,12 @@ public abstract class AbstractHero implements Hero {
 
     this.currentEnergy=50;
     this.critRate=new BigDecimal(0);
+    this.critDamage=new BigDecimal(0);
     this.defenseBreak=new BigDecimal(0);
     this.skillDamage=new BigDecimal(1);
     this.attackModifier=new BigDecimal(1);
     this.maxHPModifier=new BigDecimal(1);
+    this.trueDamage=new BigDecimal(1);
     loadout.apply(this);
     this.currentHP=getMaxHP();
   }
@@ -207,7 +210,6 @@ public abstract class AbstractHero implements Hero {
     return faction;
   }
 
-
   @Override
   public BigDecimal getCritRate() {
     return critRate;
@@ -216,6 +218,16 @@ public abstract class AbstractHero implements Hero {
   @Override
   public void increaseCritRate(BigDecimal amount) {
     this.critRate = this.critRate.add(amount);
+  }
+
+  @Override
+  public BigDecimal getCritDamage() {
+    return critDamage;
+  }
+  
+  @Override
+  public void increaseCritDamage(BigDecimal amount) {
+    this.critDamage = this.critDamage.add(amount);
   }
 
   @Override
@@ -268,29 +280,14 @@ public abstract class AbstractHero implements Hero {
     this.defense+=amount;
   }
 
-  /**
-   * Tries to interpolate an integer stat from known data points. if the level
-   * is between two known levels, it interpolates it linearly. Otherwise it
-   * takes the highest or lowest bound
-   * 
-   * @param knownStats
-   * @param level
-   * @return
-   */
-  protected static Integer interpolateStatsLinearly(Map<Integer,Integer> knownStats,int level) {
-    return Optional.ofNullable(knownStats.get(level)).orElseGet(() -> {
-      Set<Integer> knownLevels=knownStats.keySet();
-      // find the highest lower bound
-      Optional<Integer> lowerLevel=knownLevels.stream().filter(l -> l < level).sorted((a,b) -> b.compareTo(a))
-        .findFirst();
-      // find the lowest upper bound
-      Optional<Integer> higherLevel=knownLevels.stream().filter(l -> l > level).sorted().findFirst();
-      // interpolate linearly inbetween
-      return lowerLevel
-        .map(l -> higherLevel.map(h -> ((knownStats.get(h) - knownStats.get(l)) * level) / (h - l))
-          .orElseGet(() -> knownStats.get(l)))
-        .orElseGet(() -> higherLevel.map(knownStats::get).orElse(0));
-    });
+  @Override
+  public BigDecimal getTrueDamage() {
+    return trueDamage;
+  }
+
+  @Override
+  public void increaseTrueDamage(BigDecimal amount) {
+    this.trueDamage=this.trueDamage.add(amount);
   }
 
 }

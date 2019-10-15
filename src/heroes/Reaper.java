@@ -10,10 +10,10 @@ import util.Utilities;
 /**
  * TODO documentation
  */
-public class Mulan extends AbstractHero {
+public class Reaper extends AbstractHero {
 
-  private static final Faction FACTION=Faction.ALLIANCE;
-  private static final HeroClass HERO_CLASS=HeroClass.WANDERER;
+  private static final Faction FACTION=Faction.UNDEAD;
+  private static final HeroClass HERO_CLASS=HeroClass.MAGE;
   
   private static final Map<Integer,Integer> baseHP=new HashMap<>();
   private static final Map<Integer,Integer> baseAttack=new HashMap<>();
@@ -38,7 +38,7 @@ public class Mulan extends AbstractHero {
     baseSpeed.put(250,1248);
   }
 
-  public Mulan(HeroParameters parameters) {
+  public Reaper(HeroParameters parameters) {
     super(parameters.level, HERO_CLASS,FACTION,
       Utilities.interpolateStatsLinearly(baseHP,parameters.level),
       Utilities.interpolateStatsLinearly(baseAttack,parameters.level),
