@@ -1,6 +1,6 @@
 // $Id $
 // (C) cantamen/Paul Kramer 2019
-package battle;
+package player;
 
 /** 
  * TODO documentation

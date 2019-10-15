@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import heroes.Hero;
+import player.Player;
 
 /**
  * describes a full team of heroes
