@@ -7,8 +7,6 @@ import java.util.function.Function;
 /** 
  * TODO documentation
  *
- * @author (C) cantamen/Paul Kramer 2019
- * @version $Id $
  */
 public enum RuneType {
   ACCURACY(rarity->new AccuracyRune(rarity));

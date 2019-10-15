@@ -9,8 +9,6 @@ import heroes.Hero;
 /** 
  * implementation of the accuracy rune
  *
- * @author (C) cantamen/Paul Kramer 2019
- * @version $Id $
  */
 public class AccuracyRune extends AbstractRune {
   private final Integer hitRate;
