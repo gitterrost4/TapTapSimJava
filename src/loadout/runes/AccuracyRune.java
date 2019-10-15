@@ -11,18 +11,18 @@ import heroes.Hero;
  *
  */
 public class AccuracyRune extends AbstractRune {
-  private final Integer hitRate;
+  private final BigDecimal hitRate;
   private final Integer attackBonus;
   private final BigDecimal attackModifier;
   public AccuracyRune(RuneRarity rarity) {
     switch(rarity) {
     case RED2:
-      hitRate=19;
+      hitRate=new BigDecimal(0.19);
       attackBonus=620;
       attackModifier=new BigDecimal(1.09);
       break;
     default:
-      hitRate=0;
+      hitRate=new BigDecimal(0);
       attackBonus=0;
       attackModifier=new BigDecimal(1);
       break;

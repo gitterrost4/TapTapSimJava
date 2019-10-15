@@ -39,14 +39,6 @@ public interface Hero {
   public Integer getAttack();
   
   /**
-   * get the dodge stat of a hero
-   * 0.2 means a 20% chance of dodging
-   * 
-   * @return
-   */
-  public BigDecimal getDodge();
-  
-  /**
    * get the armor stat of a hero
    * 
    * @return
@@ -91,11 +83,110 @@ public interface Hero {
   public void addMaxHPModifier(BigDecimal modifier);
   
   /**
-   * Increase the hit rate stat
+   * return the faction of the hero
+   * 
+   * @return
+   */
+  public Faction getFaction();
+
+  /**
+   * return the class of the hero
+   * 
+   * @return
+   */
+  public HeroClass getHeroClass();
+
+  /**
+   * return the level of the hero
+   * 
+   * @return
+   */
+  public Integer getLevel();
+  
+  /**
+   * return the crit rate of the hero
+   * 
+   * @return
+   */
+  public BigDecimal getCritRate();
+
+  /**
+   * Increase the crit rate of a hero by an amount
    * 
    * @param amount
    */
-  public void increaseHitRate(int amount);
+  public void increaseCritRate(BigDecimal amount);
+  
+  /**
+   * return the dodge chance of the hero
+   * 
+   * @return
+   */
+  public BigDecimal getDodgeRate();
+  
+  /**
+   * increase the dodge chance of a hero by an amount
+   * 
+   * @param amount
+   */
+  public void increaseDodgeChance(BigDecimal amount);
+
+  /**
+   * return the skill damage of the hero
+   * 
+   * @return
+   */
+  public BigDecimal getSkillDamage();
+  
+  /**
+   * increase the skill damage of a hero by an amount
+   * 
+   * @param amount
+   */
+  public void increaseSkillDamage(BigDecimal amount);
+
+  /**
+   * return the defense break of the hero
+   * 
+   * @return
+   */
+  public BigDecimal getDefenseBreak();
+  
+  /**
+   * increase the defense break of a hero by an amount
+   * 
+   * @param amount
+   */
+  public void increaseDefenseBreak(BigDecimal amount);
+
+  /**
+   * return the hit rate of the hero
+   * 
+   * @return
+   */
+  public BigDecimal getHitRate();
+  
+  /**
+   * increase the hit rate of a hero by an amount
+   * 
+   * @param amount
+   */
+  public void increaseHitRate(BigDecimal amount);
+
+  /**
+   * return the hit rate of the hero
+   * 
+   * @return
+   */
+  public Integer getSpeed();
+  
+  /**
+   * increase the hit rate of a hero by an amount
+   * 
+   * @param amount
+   */
+  public void increaseSpeed(Integer amount);
+
 }
 
 

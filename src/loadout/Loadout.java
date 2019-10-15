@@ -8,6 +8,7 @@ import heroes.Hero;
 import loadout.equipment.AbstractEquipment;
 import loadout.equipment.Accessory;
 import loadout.equipment.Armor;
+import loadout.equipment.EquipmentRarity;
 import loadout.equipment.Helmet;
 import loadout.equipment.Weapon;
 import loadout.runes.AbstractRune;
@@ -24,13 +25,34 @@ public class Loadout {
   private final Helmet helmet;
   private final AbstractRune rune;
 
-  public Loadout(Weapon weapon, Armor armor, Accessory accessory, Helmet helmet, RuneRarity runeRarity, RuneType runeType) {
+  /**
+   * create a loadout specifying each single part of the equipment
+   * 
+   * @param weapon
+   * @param armor
+   * @param accessory
+   * @param helmet
+   * @param runeRarity
+   * @param runeType
+   */
+  public Loadout(EquipmentRarity weapon, EquipmentRarity armor, EquipmentRarity accessory, EquipmentRarity helmet, RuneRarity runeRarity, RuneType runeType) {
     super();
-    this.weapon=weapon;
-    this.armor=armor;
-    this.accessory=accessory;
-    this.helmet=helmet;
+    this.weapon=new Weapon(weapon);
+    this.armor=new Armor(armor);
+    this.accessory=new Accessory(accessory);
+    this.helmet=new Helmet(helmet);
     this.rune=runeType.create(runeRarity);
+  }
+  
+  /**
+   * create a loadout that has all equipment at the same rarity
+   * 
+   * @param equipmentRarity
+   * @param runeRarity
+   * @param runeType
+   */
+  public Loadout(EquipmentRarity equipmentRarity, RuneRarity runeRarity, RuneType runeType) {
+    this(equipmentRarity,equipmentRarity,equipmentRarity,equipmentRarity,runeRarity,runeType);
   }
 
   public void apply(Hero hero) {
