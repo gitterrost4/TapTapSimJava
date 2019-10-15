@@ -258,6 +258,16 @@ public abstract class AbstractHero implements Hero {
     this.speed+=amount;
   }
 
+  @Override
+  public Integer getDefense() {
+    return defense;
+  }
+
+  @Override
+  public void increaseDefense(Integer amount) {
+    this.defense+=amount;
+  }
+
   /**
    * Tries to interpolate an integer stat from known data points. if the level
    * is between two known levels, it interpolates it linearly. Otherwise it

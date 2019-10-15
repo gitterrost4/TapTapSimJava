@@ -186,6 +186,20 @@ public interface Hero {
    * @param amount
    */
   public void increaseSpeed(Integer amount);
+  
+  /**
+   * return the defense of the hero
+   * 
+   * @return
+   */
+  public Integer getDefense();
+  
+  /**
+   * increase the defense of the hero by an amount
+   * 
+   * @param amount
+   */
+  public void increaseDefense(Integer amount);
 
 }
 
