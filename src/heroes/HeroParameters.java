@@ -10,11 +10,13 @@ import loadout.Loadout;
  */
 public class HeroParameters {
   public final Integer level;
+  public final Integer star;
   public final Loadout loadout;
   
-  public HeroParameters(Integer level, Loadout loadout) {
+  public HeroParameters(Integer level, Integer star, Loadout loadout) {
     super();
     this.level=level;
+    this.star=star;
     this.loadout=loadout;
   }
   

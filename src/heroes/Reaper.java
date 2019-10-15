@@ -5,47 +5,35 @@ package heroes;
 import java.util.HashMap;
 import java.util.Map;
 
-import util.Utilities;
-
 /**
- * TODO documentation
+ * Reaper
  */
 public class Reaper extends AbstractHero {
 
   private static final Faction FACTION=Faction.UNDEAD;
   private static final HeroClass HERO_CLASS=HeroClass.MAGE;
   
-  private static final Map<Integer,Integer> baseHP=new HashMap<>();
-  private static final Map<Integer,Integer> baseAttack=new HashMap<>();
-  private static final Map<Integer,Integer> baseArmor=new HashMap<>();
-  private static final Map<Integer,Integer> baseSpeed=new HashMap<>();
+  private static final Map<Integer,BaseStats> baseStats = new HashMap<>();
 
   static {
-    baseHP.put(100,5203);
-    baseHP.put(140,15691);
-    baseHP.put(250,95967);
-
-    baseAttack.put(100,893);
-    baseAttack.put(140,1977);
-    baseAttack.put(250,6351);
-
-    baseArmor.put(100,11);
-    baseArmor.put(140,12);
-    baseArmor.put(250,12);
-
-    baseSpeed.put(140,874);
-    baseSpeed.put(100,668);
-    baseSpeed.put(250,1248);
+    baseStats.put(5, new BaseStats(207,43,7,217));
+    baseStats.put(6, new BaseStats(393,63,8,244));
+    baseStats.put(7, new BaseStats(629,67,8,262));
+    baseStats.put(8, new BaseStats(727,76,8,262));
+    baseStats.put(9, new BaseStats(971,79,8,262));
+    baseStats.put(10, new BaseStats(1345,110,8,262));
   }
 
   public Reaper(HeroParameters parameters) {
-    super(parameters.level, HERO_CLASS,FACTION,
-      Utilities.interpolateStatsLinearly(baseHP,parameters.level),
-      Utilities.interpolateStatsLinearly(baseAttack,parameters.level),
-      Utilities.interpolateStatsLinearly(baseArmor,parameters.level),
-      Utilities.interpolateStatsLinearly(baseSpeed,parameters.level),
-      parameters.loadout);
+    super(parameters, baseStats, HERO_CLASS,FACTION);
   }
+
+  @Override
+  public String toString() {
+    return "Reaper ["+super.toString()+"]";
+  }
+  
+  
 }
 
 // end of file

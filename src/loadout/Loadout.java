@@ -54,6 +54,19 @@ public class Loadout {
   public Loadout(EquipmentRarity equipmentRarity, RuneRarity runeRarity, RuneType runeType) {
     this(equipmentRarity,equipmentRarity,equipmentRarity,equipmentRarity,runeRarity,runeType);
   }
+  
+  /**
+   * initialize a maximized loadout with a specific rune
+   * @param runeType
+   * @return
+   */
+  public static Loadout max(RuneType runeType) {
+    return new Loadout(EquipmentRarity.ORANGE4, RuneRarity.RED2, runeType);
+  }
+  
+  public static Loadout empty() {
+    return new Loadout(EquipmentRarity.NONE, RuneRarity.NONE, RuneType.NONE);
+  }
 
   public void apply(Hero hero) {
     // apply the armor bonuses first

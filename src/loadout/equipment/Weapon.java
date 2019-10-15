@@ -13,6 +13,9 @@ public class Weapon extends AbstractEquipment{
   public Weapon(EquipmentRarity rarity) {
     super(rarity);
     switch(rarity) {
+    case NONE:
+      atkIncrease=0;
+      break;
     case GREEN2:
       atkIncrease=11;
       break;

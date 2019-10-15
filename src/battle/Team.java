@@ -23,7 +23,7 @@ public class Team {
     this.player=player;
     this.heroes=Stream.of(first,second,third,fourth,fifth,sixth).collect(Collectors.toList());
     //apply player based buffs (guild tech, pets)
-    heroes.stream().forEach(h->this.player.getGuildTech().apply(h));
+    heroes.stream().forEach(h->this.player.apply(h));
   }
 }
 

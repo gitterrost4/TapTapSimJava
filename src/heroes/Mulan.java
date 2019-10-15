@@ -5,8 +5,6 @@ package heroes;
 import java.util.HashMap;
 import java.util.Map;
 
-import util.Utilities;
-
 /**
  * TODO documentation
  */
@@ -15,36 +13,19 @@ public class Mulan extends AbstractHero {
   private static final Faction FACTION=Faction.ALLIANCE;
   private static final HeroClass HERO_CLASS=HeroClass.WANDERER;
   
-  private static final Map<Integer,Integer> baseHP=new HashMap<>();
-  private static final Map<Integer,Integer> baseAttack=new HashMap<>();
-  private static final Map<Integer,Integer> baseArmor=new HashMap<>();
-  private static final Map<Integer,Integer> baseSpeed=new HashMap<>();
+  private static final Map<Integer,BaseStats> baseStats = new HashMap<>();
 
   static {
-    baseHP.put(100,5203);
-    baseHP.put(140,15691);
-    baseHP.put(250,95967);
-
-    baseAttack.put(100,893);
-    baseAttack.put(140,1977);
-    baseAttack.put(250,6351);
-
-    baseArmor.put(100,11);
-    baseArmor.put(140,12);
-    baseArmor.put(250,12);
-
-    baseSpeed.put(140,874);
-    baseSpeed.put(100,668);
-    baseSpeed.put(250,1248);
+    baseStats.put(5, new BaseStats(217,41,11,235));
+    baseStats.put(6, new BaseStats(407,59,12,254));
+    baseStats.put(7, new BaseStats(636,66,12,272));
+    baseStats.put(8, new BaseStats(751,71,12,272));
+    baseStats.put(9, new BaseStats(1037,75,12,261));
+    baseStats.put(10, new BaseStats(1432,109,7,261));
   }
 
   public Mulan(HeroParameters parameters) {
-    super(parameters.level, HERO_CLASS,FACTION,
-      Utilities.interpolateStatsLinearly(baseHP,parameters.level),
-      Utilities.interpolateStatsLinearly(baseAttack,parameters.level),
-      Utilities.interpolateStatsLinearly(baseArmor,parameters.level),
-      Utilities.interpolateStatsLinearly(baseSpeed,parameters.level),
-      parameters.loadout);
+    super(parameters, baseStats, HERO_CLASS,FACTION);
   }
 }
 

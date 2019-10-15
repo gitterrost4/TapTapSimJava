@@ -1,3 +1,7 @@
+import heroes.HeroParameters;
+import heroes.Reaper;
+import loadout.Loadout;
+
 // $Id $
 // (C) cantamen/Paul Kramer 2019
 
@@ -10,7 +14,8 @@
 public class MainClass {
 
   public static void main(String[] args) {
-    System.err.println("Hello World");
+    Reaper reaper = new Reaper(new HeroParameters(140, 6, Loadout.empty()));
+    System.err.println(reaper.toString());
     // TODO Auto-generated method stub
 
   }

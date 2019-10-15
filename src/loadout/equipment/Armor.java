@@ -13,6 +13,9 @@ public class Armor extends AbstractEquipment {
   public Armor(EquipmentRarity rarity) {
     super(rarity);
     switch(rarity) {
+    case NONE:
+      hpIncrease=0;
+      break;
     case GREEN2:
       hpIncrease=44;
       break;

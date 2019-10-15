@@ -13,6 +13,9 @@ public class Accessory extends AbstractEquipment{
   public Accessory(EquipmentRarity rarity) {
     super(rarity);
     switch(rarity) {
+    case NONE:
+      atkIncrease=0;
+      break;
     case GREEN2:
       atkIncrease=8;
       break;

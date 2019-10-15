@@ -10,6 +10,7 @@ import heroes.Hero;
  *
  */
 public enum EquipmentRarity {
+  NONE(hero->{},hero->{},hero->{}),
   GREEN2(hero->{},hero->{},hero->{}),
   BLUE1(hero->{},hero->{},hero->{}),
   BLUE2(hero->{},hero->{},hero->{}),

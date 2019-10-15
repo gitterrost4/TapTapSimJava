@@ -13,6 +13,9 @@ public class Helmet extends AbstractEquipment {
   public Helmet(EquipmentRarity rarity) {
     super(rarity);
     switch(rarity) {
+    case NONE:
+      hpIncrease=0;
+      break;
     case GREEN2:
       hpIncrease=30;
       break;
