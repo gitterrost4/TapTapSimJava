@@ -17,14 +17,14 @@ public class AccuracyRune extends AbstractRune {
   public AccuracyRune(RuneRarity rarity) {
     switch(rarity) {
     case RED2:
-      hitRate=new BigDecimal(0.19);
+      hitRate=new BigDecimal("0.19");
       attackBonus=620;
-      attackModifier=new BigDecimal(1.09);
+      attackModifier=new BigDecimal("0.09");
       break;
     default:
-      hitRate=new BigDecimal(0);
+      hitRate=new BigDecimal("0");
       attackBonus=0;
-      attackModifier=new BigDecimal(1);
+      attackModifier=new BigDecimal("0");
       break;
     
     }

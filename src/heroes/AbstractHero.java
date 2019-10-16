@@ -321,8 +321,7 @@ public abstract class AbstractHero implements Hero {
   private Integer armor;
 
   /**
-   * hit rate of the hero. TODO clarify if this is int and how this works from
-   * Ashar's simulator
+   * hit rate of the hero. 
    */
   private BigDecimal hitRate;
 
@@ -352,6 +351,10 @@ public abstract class AbstractHero implements Hero {
 
   private BigDecimal critDamage;
 
+  private BigDecimal controlResist;
+
+  private BigDecimal silenceResistance;
+
   public AbstractHero(HeroParameters parameters, Map<Integer,BaseStats> baseStats, HeroClass heroClass, Faction faction) {
     super();
     this.level=parameters.level;
@@ -359,8 +362,11 @@ public abstract class AbstractHero implements Hero {
     this.faction=faction;
     computeStats(parameters, baseStats);
     this.currentEnergy=50;
+    this.hitRate=new BigDecimal(0);
+    this.dodge=new BigDecimal(0);
     this.critRate=new BigDecimal(0);
     this.critDamage=new BigDecimal(0);
+    this.controlResist=new BigDecimal(0);
     this.defenseBreak=new BigDecimal(0);
     this.skillDamage=new BigDecimal(1);
     this.attackModifier=new BigDecimal(1);
@@ -373,8 +379,8 @@ public abstract class AbstractHero implements Hero {
   private void computeStats(HeroParameters parameters, Map<Integer,BaseStats> baseStats) {
     BaseStats base = baseStats.get(parameters.star);
     HeroTier tier = HeroTier.getTierForLevel(parameters.level);
-    this.maxHP=new BigDecimal(base.maxHP*(1+(parameters.level-1)*0.1)).multiply(tier.maxHPModifier).intValue();
-    this.attack=new BigDecimal(base.attack*(1+(parameters.level-1)*0.1)).multiply(tier.attackModifier).intValue();
+    this.maxHP=new BigDecimal(base.maxHP).multiply(new BigDecimal(1).add(new BigDecimal(parameters.level-1).multiply(new BigDecimal("0.1")))).multiply(tier.maxHPModifier).intValue();
+    this.attack=new BigDecimal(base.attack).multiply(new BigDecimal(1).add(new BigDecimal(parameters.level-1).multiply(new BigDecimal("0.1")))).multiply(tier.attackModifier).intValue();
     this.speed=base.speed+speedModifierPerLevel.get(parameters.level)+tier.speedIncrease;
     this.armor=base.armor;
   }
@@ -421,6 +427,7 @@ public abstract class AbstractHero implements Hero {
 
   @Override
   public void increaseAttack(int amount) {
+    System.err.println("increase attack by "+amount);
     this.attack+=amount;
   }
 
@@ -431,12 +438,13 @@ public abstract class AbstractHero implements Hero {
 
   @Override
   public void addAttackModifier(BigDecimal modifier) {
-    this.attackModifier=this.attackModifier.multiply(modifier);
+    System.err.println("multiply attack by "+modifier);
+    this.attackModifier=this.attackModifier.multiply(new BigDecimal(1).add(modifier));
   }
 
   @Override
   public void addMaxHPModifier(BigDecimal modifier) {
-    this.maxHPModifier=this.maxHPModifier.multiply(modifier);
+    this.maxHPModifier=this.maxHPModifier.multiply(new BigDecimal(1).add(modifier));
   }
 
   /**
@@ -490,7 +498,7 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public BigDecimal getDodgeRate() {
+  public BigDecimal getDodgeChance() {
     return dodge;
   }
 
@@ -550,15 +558,40 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
+  public BigDecimal getControlResist() {
+    return controlResist;
+  }
+
+  @Override
+  public void increaseControlResist(BigDecimal amount) {
+    this.controlResist = this.controlResist.add(amount);
+  }
+
+  @Override
+  public BigDecimal getSilenceResistance() {
+    return silenceResistance;
+  }
+
+  @Override
+  public void increaseSilenceResistance(BigDecimal amount) {
+    this.silenceResistance = this.silenceResistance.add(amount);
+  }
+
+  @Override
+  public void increaseEnergy(Integer amount) {
+    this.currentEnergy+=amount;
+  }
+
+  @Override
   public String toString() {
     return "AbstractHero [level=" + level + ", heroClass=" + heroClass + ", faction=" + faction + ", maxHP=" + maxHP
         + ", maxHPModifier=" + maxHPModifier + ", currentHP=" + currentHP + ", currentEnergy=" + currentEnergy
         + ", attack=" + attack + ", attackModifier=" + attackModifier + ", dodge=" + dodge + ", armor=" + armor
         + ", hitRate=" + hitRate + ", critRate=" + critRate + ", skillDamage=" + skillDamage + ", speed=" + speed
         + ", defense=" + defense + ", defenseBreak=" + defenseBreak + ", trueDamage=" + trueDamage + ", critDamage="
-        + critDamage + "]";
+        + critDamage + ", controlResist=" + controlResist + ", getMaxHP()=" + getMaxHP() + ", getAttack()="
+        + getAttack() + "]";
   }
-
   
 }
 

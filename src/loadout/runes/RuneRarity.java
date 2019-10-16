@@ -8,6 +8,7 @@ package loadout.runes;
  */
 public enum RuneRarity {
   NONE,
+  ORANGE2,
   RED2;
 }
 

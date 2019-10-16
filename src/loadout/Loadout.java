@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import heroes.Hero;
+import loadout.artifact.AbstractArtifact;
+import loadout.artifact.ArtifactType;
 import loadout.equipment.AbstractEquipment;
 import loadout.equipment.Accessory;
 import loadout.equipment.Armor;
@@ -24,6 +26,7 @@ public class Loadout {
   private final Accessory accessory;
   private final Helmet helmet;
   private final AbstractRune rune;
+  private final AbstractArtifact artifact;
 
   /**
    * create a loadout specifying each single part of the equipment
@@ -35,13 +38,14 @@ public class Loadout {
    * @param runeRarity
    * @param runeType
    */
-  public Loadout(EquipmentRarity weapon, EquipmentRarity armor, EquipmentRarity accessory, EquipmentRarity helmet, RuneRarity runeRarity, RuneType runeType) {
+  public Loadout(EquipmentRarity weapon, EquipmentRarity armor, EquipmentRarity accessory, EquipmentRarity helmet, RuneRarity runeRarity, RuneType runeType, ArtifactType artifact) {
     super();
     this.weapon=new Weapon(weapon);
     this.armor=new Armor(armor);
     this.accessory=new Accessory(accessory);
     this.helmet=new Helmet(helmet);
     this.rune=runeType.create(runeRarity);
+    this.artifact=artifact.create();
   }
   
   /**
@@ -51,8 +55,8 @@ public class Loadout {
    * @param runeRarity
    * @param runeType
    */
-  public Loadout(EquipmentRarity equipmentRarity, RuneRarity runeRarity, RuneType runeType) {
-    this(equipmentRarity,equipmentRarity,equipmentRarity,equipmentRarity,runeRarity,runeType);
+  public Loadout(EquipmentRarity equipmentRarity, RuneRarity runeRarity, RuneType runeType, ArtifactType artifact) {
+    this(equipmentRarity,equipmentRarity,equipmentRarity,equipmentRarity,runeRarity,runeType,artifact);
   }
   
   /**
@@ -60,12 +64,12 @@ public class Loadout {
    * @param runeType
    * @return
    */
-  public static Loadout max(RuneType runeType) {
-    return new Loadout(EquipmentRarity.ORANGE4, RuneRarity.RED2, runeType);
+  public static Loadout max(RuneType runeType,ArtifactType artifact) {
+    return new Loadout(EquipmentRarity.ORANGE4, RuneRarity.RED2, runeType,artifact);
   }
   
   public static Loadout empty() {
-    return new Loadout(EquipmentRarity.NONE, RuneRarity.NONE, RuneType.NONE);
+    return new Loadout(EquipmentRarity.NONE, RuneRarity.NONE, RuneType.NONE,ArtifactType.NONE);
   }
 
   public void apply(Hero hero) {
@@ -83,6 +87,9 @@ public class Loadout {
     
     // apply rune bonus
     rune.apply(hero);
+    
+    // apply artifact bonus
+    artifact.apply(hero);
   }
 }
 

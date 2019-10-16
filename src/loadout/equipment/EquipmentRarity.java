@@ -1,7 +1,6 @@
 package loadout.equipment;
 
 import java.math.BigDecimal;
-import java.util.function.Consumer;
 
 import heroes.Hero;
 
@@ -10,30 +9,30 @@ import heroes.Hero;
  *
  */
 public enum EquipmentRarity {
-  NONE(hero->{},hero->{},hero->{}),
-  GREEN2(hero->{},hero->{},hero->{}),
-  BLUE1(hero->{},hero->{},hero->{}),
-  BLUE2(hero->{},hero->{},hero->{}),
-  YELLOW1(hero->{},hero->{},hero->{}),
-  YELLOW2(hero->{},hero->{},hero->{}),
-  YELLOW3(hero->hero.addMaxHPModifier(new BigDecimal(1.025)),hero->hero.addAttackModifier(new BigDecimal(1.0305)),hero->hero.addMaxHPModifier(new BigDecimal(1.005))),
-  PURPLE1(hero->hero.addMaxHPModifier(new BigDecimal(1.045)),hero->hero.addAttackModifier(new BigDecimal(1.051)),hero->hero.addMaxHPModifier(new BigDecimal(1.015))),
-  PURPLE2(hero->hero.addMaxHPModifier(new BigDecimal(1.055)),hero->hero.addAttackModifier(new BigDecimal(1.0715)),hero->hero.addMaxHPModifier(new BigDecimal(1.035))),
-  PURPLE3(hero->hero.addMaxHPModifier(new BigDecimal(1.075)),hero->hero.addAttackModifier(new BigDecimal(1.092)),hero->hero.addMaxHPModifier(new BigDecimal(1.035))),
-  PURPLE4(hero->hero.addMaxHPModifier(new BigDecimal(1.085)),hero->hero.addAttackModifier(new BigDecimal(1.1125)),hero->hero.addMaxHPModifier(new BigDecimal(1.045))),
-  ORANGE1(hero->hero.addMaxHPModifier(new BigDecimal(1.105)),hero->hero.addAttackModifier(new BigDecimal(1.133)),hero->hero.addMaxHPModifier(new BigDecimal(1.045))),
-  ORANGE2(hero->hero.addMaxHPModifier(new BigDecimal(1.115)),hero->hero.addAttackModifier(new BigDecimal(1.1535)),hero->hero.addMaxHPModifier(new BigDecimal(1.055))),
-  ORANGE3(hero->hero.addMaxHPModifier(new BigDecimal(1.125)),hero->hero.addAttackModifier(new BigDecimal(1.174)),hero->hero.addMaxHPModifier(new BigDecimal(1.065))),
-  ORANGE4(hero->hero.addMaxHPModifier(new BigDecimal(1.145)),hero->hero.addAttackModifier(new BigDecimal(1.1945)),hero->hero.addMaxHPModifier(new BigDecimal(1.065))),
+  NONE(new BigDecimal("0"),new BigDecimal("0"),new BigDecimal("0")),
+  GREEN2(new BigDecimal("0"),new BigDecimal("0"),new BigDecimal("0")),
+  BLUE1(new BigDecimal("0"),new BigDecimal("0"),new BigDecimal("0")),
+  BLUE2(new BigDecimal("0"),new BigDecimal("0"),new BigDecimal("0")),
+  YELLOW1(new BigDecimal("0"),new BigDecimal("0"),new BigDecimal("0")),
+  YELLOW2(new BigDecimal("0"),new BigDecimal("0"),new BigDecimal("0")),
+  YELLOW3(new BigDecimal("0.025"),new BigDecimal("0.0305"),new BigDecimal("0.005")),
+  PURPLE1(new BigDecimal("0.045"),new BigDecimal("0.051"),new BigDecimal("0.015")),
+  PURPLE2(new BigDecimal("0.055"),new BigDecimal("0.0715"),new BigDecimal("0.035")),
+  PURPLE3(new BigDecimal("0.075"),new BigDecimal("0.092"),new BigDecimal("0.035")),
+  PURPLE4(new BigDecimal("0.085"),new BigDecimal("0.1125"),new BigDecimal("0.045")),
+  ORANGE1(new BigDecimal("0.105"),new BigDecimal("0.133"),new BigDecimal("0.045")),
+  ORANGE2(new BigDecimal("0.115"),new BigDecimal("0.1535"),new BigDecimal("0.055")),
+  ORANGE3(new BigDecimal("0.125"),new BigDecimal("0.174"),new BigDecimal("0.065")),
+  ORANGE4(new BigDecimal("0.145"),new BigDecimal("0.1945"),new BigDecimal("0.065")),
   ;
-  private final Consumer<Hero> twoSetBonus;
-  private final Consumer<Hero> threeSetBonus;
-  private final Consumer<Hero> fourSetBonus;
+  private final BigDecimal twoSetHPBonus;
+  private final BigDecimal threeSetAttackBonus;
+  private final BigDecimal fourSetHPBonus;
   
-  private EquipmentRarity(Consumer<Hero> twoSetBonus, Consumer<Hero> threeSetBonus, Consumer<Hero> fourSetBonus) {
-    this.twoSetBonus=twoSetBonus;
-    this.threeSetBonus=threeSetBonus;
-    this.fourSetBonus=fourSetBonus;
+  private EquipmentRarity(BigDecimal twoSetBonus, BigDecimal threeSetBonus, BigDecimal fourSetBonus) {
+    this.twoSetHPBonus=twoSetBonus;
+    this.threeSetAttackBonus=threeSetBonus;
+    this.fourSetHPBonus=fourSetBonus;
   }
   
   /**
@@ -43,15 +42,20 @@ public enum EquipmentRarity {
    * @param numberOfPieces
    */
   public void applyBonus(Hero hero,long numberOfPieces) {
+    System.err.println("handling set bonus "+numberOfPieces);
+    BigDecimal maxHPModifier = new BigDecimal(0);
+    BigDecimal attackModifier = new BigDecimal(0);
     if(numberOfPieces>=2) {
-      twoSetBonus.accept(hero);
+      maxHPModifier = maxHPModifier.add(twoSetHPBonus);
     }
     if(numberOfPieces>=3) {
-      threeSetBonus.accept(hero);
+      attackModifier = attackModifier.add(threeSetAttackBonus);
     }
     if(numberOfPieces>=4) {
-      fourSetBonus.accept(hero);
+      maxHPModifier = maxHPModifier.add(fourSetHPBonus);
     }
+    hero.addMaxHPModifier(maxHPModifier);
+    hero.addAttackModifier(attackModifier);
   }
 }
 

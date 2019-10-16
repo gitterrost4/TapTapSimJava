@@ -10,7 +10,9 @@ import java.util.function.Function;
  */
 public enum RuneType {
   NONE(rarity->new EmptyRune(rarity)),
-  ACCURACY(rarity->new AccuracyRune(rarity));
+  VITALITY(rarity->new VitalityRune(rarity)),
+  ACCURACY(rarity->new AccuracyRune(rarity))
+  ;
 
   private Function<RuneRarity,AbstractRune> creator;
   private RuneType(Function<RuneRarity,AbstractRune> creator) {

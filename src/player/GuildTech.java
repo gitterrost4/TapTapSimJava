@@ -72,11 +72,11 @@ public class GuildTech {
     }
   
     private void apply(Hero hero) {
-      hero.addMaxHPModifier(new BigDecimal(1).add(new BigDecimal(0.005).multiply(new BigDecimal(levelHP))));
-      hero.addAttackModifier(new BigDecimal(1).add(new BigDecimal(0.005).multiply(new BigDecimal(levelAttack))));
-      hero.increaseCritRate(new BigDecimal(0.005).multiply(new BigDecimal(levelCritRate)));
-      hero.increaseDodgeChance(new BigDecimal(0.005).multiply(new BigDecimal(levelDodge)));
-      hero.increaseSkillDamage(new BigDecimal(0.01).multiply(new BigDecimal(levelSkillDamage)));
+      hero.addMaxHPModifier(new BigDecimal("0.005").multiply(new BigDecimal(levelHP)));
+      hero.addAttackModifier(new BigDecimal("0.005").multiply(new BigDecimal(levelAttack)));
+      hero.increaseCritRate(new BigDecimal("0.005").multiply(new BigDecimal(levelCritRate)));
+      hero.increaseDodgeChance(new BigDecimal("0.005").multiply(new BigDecimal(levelDodge)));
+      hero.increaseSkillDamage(new BigDecimal("0.01").multiply(new BigDecimal(levelSkillDamage)));
     }
   
   }
@@ -102,11 +102,11 @@ public class GuildTech {
     }
   
     private void apply(Hero hero) {
-      hero.addMaxHPModifier(new BigDecimal(1).add(new BigDecimal(0.005).multiply(new BigDecimal(levelHP))));
-      hero.addAttackModifier(new BigDecimal(1).add(new BigDecimal(0.005).multiply(new BigDecimal(levelAttack))));
-      hero.increaseCritRate(new BigDecimal(0.005).multiply(new BigDecimal(levelCritRate)));
-      hero.increaseDefenseBreak(new BigDecimal(0.15).multiply(new BigDecimal(levelDefenseBreak)));
-      hero.increaseSkillDamage(new BigDecimal(0.01).multiply(new BigDecimal(levelSkillDamage)));
+      hero.addMaxHPModifier(new BigDecimal("0.005").multiply(new BigDecimal(levelHP)));
+      hero.addAttackModifier(new BigDecimal("0.005").multiply(new BigDecimal(levelAttack)));
+      hero.increaseCritRate(new BigDecimal("0.005").multiply(new BigDecimal(levelCritRate)));
+      hero.increaseDefenseBreak(new BigDecimal("0.15").multiply(new BigDecimal(levelDefenseBreak)));
+      hero.increaseSkillDamage(new BigDecimal("0.01").multiply(new BigDecimal(levelSkillDamage)));
     }
   
   }
@@ -132,11 +132,11 @@ public class GuildTech {
     }
   
     private void apply(Hero hero) {
-      hero.addMaxHPModifier(new BigDecimal(1).add(new BigDecimal(0.005).multiply(new BigDecimal(levelHP))));
-      hero.addAttackModifier(new BigDecimal(1).add(new BigDecimal(0.005).multiply(new BigDecimal(levelAttack))));
-      hero.increaseHitRate(new BigDecimal(0.005).multiply(new BigDecimal(levelHitRate)));
-      hero.increaseDodgeChance(new BigDecimal(0.005).multiply(new BigDecimal(levelDodge)));
-      hero.increaseSkillDamage(new BigDecimal(0.01).multiply(new BigDecimal(levelSkillDamage)));
+      hero.addMaxHPModifier(new BigDecimal("0.005").multiply(new BigDecimal(levelHP)));
+      hero.addAttackModifier(new BigDecimal("0.005").multiply(new BigDecimal(levelAttack)));
+      hero.increaseHitRate(new BigDecimal("0.005").multiply(new BigDecimal(levelHitRate)));
+      hero.increaseDodgeChance(new BigDecimal("0.005").multiply(new BigDecimal(levelDodge)));
+      hero.increaseSkillDamage(new BigDecimal("0.01").multiply(new BigDecimal(levelSkillDamage)));
     }
   
   }
@@ -162,10 +162,10 @@ public class GuildTech {
     }
   
     private void apply(Hero hero) {
-      hero.addMaxHPModifier(new BigDecimal(1).add(new BigDecimal(0.005).multiply(new BigDecimal(levelHP))));
-      hero.increaseCritRate(new BigDecimal(0.005).multiply(new BigDecimal(levelCritRate)));
-      hero.increaseDodgeChance(new BigDecimal(0.005).multiply(new BigDecimal(levelDodge)));
-      hero.increaseSkillDamage(new BigDecimal(0.01).multiply(new BigDecimal(levelSkillDamage)));
+      hero.addMaxHPModifier(new BigDecimal("0.005").multiply(new BigDecimal(levelHP)));
+      hero.increaseCritRate(new BigDecimal("0.005").multiply(new BigDecimal(levelCritRate)));
+      hero.increaseDodgeChance(new BigDecimal("0.005").multiply(new BigDecimal(levelDodge)));
+      hero.increaseSkillDamage(new BigDecimal("0.01").multiply(new BigDecimal(levelSkillDamage)));
       hero.increaseSpeed(2*levelSpeed);
    }
   
@@ -192,11 +192,11 @@ public class GuildTech {
     }
     
     private void apply(Hero hero) {
-      hero.addMaxHPModifier(new BigDecimal(1).add(new BigDecimal(0.005).multiply(new BigDecimal(levelHP))));
-      hero.addAttackModifier(new BigDecimal(1).add(new BigDecimal(0.005).multiply(new BigDecimal(levelAttack))));
-      hero.increaseCritRate(new BigDecimal(0.005).multiply(new BigDecimal(levelCritRate)));
-      hero.increaseHitRate(new BigDecimal(0.005).multiply(new BigDecimal(levelHitRate)));
-      hero.increaseSkillDamage(new BigDecimal(0.01).multiply(new BigDecimal(levelSkillDamage)));
+      hero.addMaxHPModifier(new BigDecimal("0.005").multiply(new BigDecimal(levelHP)));
+      hero.addAttackModifier(new BigDecimal("0.005").multiply(new BigDecimal(levelAttack)));
+      hero.increaseCritRate(new BigDecimal("0.005").multiply(new BigDecimal(levelCritRate)));
+      hero.increaseHitRate(new BigDecimal("0.005").multiply(new BigDecimal(levelHitRate)));
+      hero.increaseSkillDamage(new BigDecimal("0.01").multiply(new BigDecimal(levelSkillDamage)));
     }
   
   }

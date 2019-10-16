@@ -136,7 +136,7 @@ public interface Hero {
    * 
    * @return
    */
-  public BigDecimal getDodgeRate();
+  public BigDecimal getDodgeChance();
   
   /**
    * increase the dodge chance of a hero by an amount
@@ -228,6 +228,41 @@ public interface Hero {
    * @param amount
    */
   public void increaseTrueDamage(BigDecimal amount);
+
+  /**
+   * get the control resist of the hero
+   * 
+   * @return
+   */
+  public BigDecimal getControlResist();
+  
+  /**
+   * increase the control resist of the hero by an amount
+   * 
+   * @param amount
+   */
+  public void increaseControlResist(BigDecimal amount);
+
+  /**
+   * get the silence resistance
+   * 
+   * @return
+   */
+  public BigDecimal getSilenceResistance();
+  
+  /**
+   * increase the silence resist of the hero by an amount
+   * 
+   * @param amount
+   */
+  public void increaseSilenceResistance(BigDecimal amount);
+
+  /**
+   * increase the energy of the hero by an amount
+   * 
+   * @param amount
+   */
+  public void increaseEnergy(Integer amount);
   
 
 }
