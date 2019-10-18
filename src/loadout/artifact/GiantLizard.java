@@ -1,13 +1,16 @@
 package loadout.artifact;
 
+import java.math.BigDecimal;
+
 import heroes.Hero;
 
 public class GiantLizard extends AbstractArtifact {
 
   @Override
   public void apply(Hero hero) {
-    // TODO Auto-generated method stub
-
+    hero.addAttackModifier(new BigDecimal("0.105"));
+    hero.increaseCritRate(new BigDecimal("0.105"));
+    hero.increaseCritDamage(new BigDecimal("0.262"));
   }
 
 }

@@ -1,13 +1,19 @@
 package loadout.artifact;
 
+import java.math.BigDecimal;
+
+import heroes.Faction;
 import heroes.Hero;
 
 public class SnowDance extends AbstractArtifact {
 
   @Override
   public void apply(Hero hero) {
-    // TODO Auto-generated method stub
-
+    hero.increaseWarriorDamageModifier(new BigDecimal("0.44"));
+    hero.increaseAttack(335);
+    if (hero.getFaction().equals(Faction.ELF)) {
+      hero.increaseCritRate(new BigDecimal("0.094"));
+    }
   }
 
 }

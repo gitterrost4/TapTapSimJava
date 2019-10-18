@@ -4,66 +4,68 @@ package heroes;
 
 import java.math.BigDecimal;
 
-/** 
+/**
  * Interface for the basic hero functions
  *
  */
 public interface Hero {
-  
+
   /**
    * Let the hero take damage
    * 
    * @param amount the amount of damage that the hero should take
    */
   public void damage(Integer amount);
-  
+
   /**
    * get the current hp of a hero
    * 
    * @return
    */
   public Integer getCurrentHP();
-  
+
   /**
    * get the maximum amount of HP of a Hero
    * 
    * @return
    */
   public Integer getMaxHP();
-  
+
   /**
    * get the attack stat of a hero
    * 
    * @return
    */
   public Integer getAttack();
-  
+
   /**
    * get the armor stat of a hero
    * 
    * @return
    */
   public Integer getArmor();
-  
+
   /**
    * get the current Energy (0-100) of a hero
    * 
    * @return
    */
   public Integer getCurrentEnergy();
-  
+
   /**
-   * Increase the attack of a hero. 
+   * Increase the attack of a hero.
    * 
-   * @param amount amount to increase. Pass a negative number to decrease the attack
+   * @param amount amount to increase. Pass a negative number to decrease the
+   *               attack
    * @return
    */
   public void increaseAttack(int amount);
 
   /**
-   * Increase the maxHP of a hero. 
+   * Increase the maxHP of a hero.
    * 
-   * @param amount amount to increase. Pass a negative number to decrease the maxHP
+   * @param amount amount to increase. Pass a negative number to decrease the
+   *               maxHP
    * @return
    */
   public void increaseMaxHP(int amount);
@@ -74,14 +76,14 @@ public interface Hero {
    * @param modifier
    */
   public void addAttackModifier(BigDecimal modifier);
-  
+
   /**
    * Add a multiplicator for the hp
    * 
    * @param modifier
    */
   public void addMaxHPModifier(BigDecimal modifier);
-  
+
   /**
    * return the faction of the hero
    * 
@@ -102,7 +104,7 @@ public interface Hero {
    * @return
    */
   public Integer getLevel();
-  
+
   /**
    * return the crit rate of the hero
    * 
@@ -116,7 +118,7 @@ public interface Hero {
    * @param amount
    */
   public void increaseCritRate(BigDecimal amount);
-  
+
   /**
    * return the crit rate of the hero
    * 
@@ -130,14 +132,14 @@ public interface Hero {
    * @param amount
    */
   public void increaseCritDamage(BigDecimal amount);
-  
+
   /**
    * return the dodge chance of the hero
    * 
    * @return
    */
   public BigDecimal getDodgeChance();
-  
+
   /**
    * increase the dodge chance of a hero by an amount
    * 
@@ -151,7 +153,7 @@ public interface Hero {
    * @return
    */
   public BigDecimal getSkillDamage();
-  
+
   /**
    * increase the skill damage of a hero by an amount
    * 
@@ -165,7 +167,7 @@ public interface Hero {
    * @return
    */
   public BigDecimal getDefenseBreak();
-  
+
   /**
    * increase the defense break of a hero by an amount
    * 
@@ -179,7 +181,7 @@ public interface Hero {
    * @return
    */
   public BigDecimal getHitRate();
-  
+
   /**
    * increase the hit rate of a hero by an amount
    * 
@@ -193,35 +195,35 @@ public interface Hero {
    * @return
    */
   public Integer getSpeed();
-  
+
   /**
    * increase the hit rate of a hero by an amount
    * 
    * @param amount
    */
   public void increaseSpeed(Integer amount);
-  
+
   /**
    * return the defense of the hero
    * 
    * @return
    */
   public Integer getDefense();
-  
+
   /**
    * increase the defense of the hero by an amount
    * 
    * @param amount
    */
   public void increaseDefense(Integer amount);
-  
+
   /**
    * return the true damage of the hero
    * 
    * @return
    */
   public BigDecimal getTrueDamage();
-  
+
   /**
    * increase the true damage of the hero by an amount
    * 
@@ -235,7 +237,7 @@ public interface Hero {
    * @return
    */
   public BigDecimal getControlResist();
-  
+
   /**
    * increase the control resist of the hero by an amount
    * 
@@ -249,7 +251,7 @@ public interface Hero {
    * @return
    */
   public BigDecimal getSilenceResistance();
-  
+
   /**
    * increase the silence resist of the hero by an amount
    * 
@@ -263,9 +265,90 @@ public interface Hero {
    * @param amount
    */
   public void increaseEnergy(Integer amount);
-  
 
+  /**
+   * add ExDMGToAssassin to the hero
+   * 
+   * @param bigDecimal
+   */
+  public void increaseAssassinDamageModifier(BigDecimal bigDecimal);
+
+  /**
+   * get the ExDMGToAssassin stat
+   * 
+   * @return
+   */
+  public BigDecimal getAssassinDamageModifier();
+
+  /**
+   * add ExDMGToWarrior to the hero
+   * 
+   * @param bigDecimal
+   */
+  public void increaseWarriorDamageModifier(BigDecimal bigDecimal);
+
+  /**
+   * get the ExDMGToWarrior stat
+   * 
+   * @return
+   */
+  public BigDecimal getWarriorDamageModifier();
+
+  /**
+   * add ExDMGToWanderer to the hero
+   * 
+   * @param bigDecimal
+   */
+  public void increaseWandererDamageModifier(BigDecimal bigDecimal);
+
+  /**
+   * get the ExDMGToWanderer stat
+   * 
+   * @return
+   */
+  public BigDecimal getWandererDamageModifier();
+
+  /**
+   * add ExDMGToMage to the hero
+   * 
+   * @param bigDecimal
+   */
+  public void increaseMageDamageModifier(BigDecimal bigDecimal);
+
+  /**
+   * get the ExDMGToMage stat
+   * 
+   * @return
+   */
+  public BigDecimal getMageDamageModifier();
+
+  /**
+   * add ExDMGToCleric to the hero
+   * 
+   * @param bigDecimal
+   */
+  public void increaseClericDamageModifier(BigDecimal bigDecimal);
+
+  /**
+   * get the ExDMGToCleric stat
+   * 
+   * @return
+   */
+  public BigDecimal getClericDamageModifier();
+
+  /**
+   * get the DamageReduce stat for the hero
+   * 
+   * @return
+   */
+  public BigDecimal getDamageReduce();
+
+  /**
+   * increase the damage reduce stat for the hero
+   * 
+   * @param bigDecimal
+   */
+  public void increaseDamageReduce(BigDecimal bigDecimal);
 }
-
 
 // end of file
