@@ -4,12 +4,11 @@ package loadout.runes;
 
 import loadout.HeroModifier;
 
-/** 
- * TODO documentation
+/**
+ * An abstract representation of a rune
  *
  */
 public abstract class AbstractRune implements HeroModifier {
 }
-
 
 // end of file

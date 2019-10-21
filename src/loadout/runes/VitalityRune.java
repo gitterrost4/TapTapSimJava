@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 import heroes.Hero;
 
-/** 
+/**
  * implementation of the accuracy rune
  *
  */
@@ -14,19 +14,21 @@ public class VitalityRune extends AbstractRune {
   private final BigDecimal maxHPModifier;
   private final Integer maxHPBonus;
   private final BigDecimal attackModifier;
+
   public VitalityRune(RuneRarity rarity) {
-    switch(rarity) {
+    switch (rarity) {
     case ORANGE2:
-      maxHPModifier=new BigDecimal("0.17");
-      maxHPBonus=1436;
-      attackModifier=new BigDecimal("0.027");
+      // TODO: Other cases
+      maxHPModifier = new BigDecimal("0.17");
+      maxHPBonus = 1436;
+      attackModifier = new BigDecimal("0.027");
       break;
     default:
-      maxHPModifier=new BigDecimal("0");
-      maxHPBonus=0;
-      attackModifier=new BigDecimal("0");
+      maxHPModifier = new BigDecimal("0");
+      maxHPBonus = 0;
+      attackModifier = new BigDecimal("0");
       break;
-    
+
     }
   }
 
@@ -39,6 +41,5 @@ public class VitalityRune extends AbstractRune {
   }
 
 }
-
 
 // end of file

@@ -1,5 +1,3 @@
-// $Id $
-// (C) cantamen/Paul Kramer 2019
 package loadout.runes;
 
 import java.math.BigDecimal;
@@ -7,88 +5,81 @@ import java.math.BigDecimal;
 import heroes.Hero;
 
 /**
- * implementation of the accuracy rune
+ * representation of the break rune
+ * 
+ * @author gitterrost4
  *
  */
-public class AccuracyRune extends AbstractRune {
-  private final BigDecimal hitRate;
+public class BreakRune extends AbstractRune {
+
+  private final BigDecimal defenseBreakBonus;
   private final Integer attackBonus;
   private final BigDecimal attackModifier;
 
-  public AccuracyRune(RuneRarity rarity) {
+  public BreakRune(RuneRarity rarity) {
     switch (rarity) {
-    case GREEN1:
-      hitRate = new BigDecimal("0.02");
-      attackBonus = 13;
-      attackModifier = new BigDecimal("0");
-      break;
-    case GREEN2:
-      hitRate = new BigDecimal("0.031");
-      attackBonus = 18;
-      attackModifier = new BigDecimal("0");
-      break;
     case GOLD1:
-      hitRate = new BigDecimal("0.051");
+      defenseBreakBonus = new BigDecimal("2");
       attackBonus = 32;
       attackModifier = new BigDecimal("0");
       break;
     case GOLD2:
-      hitRate = new BigDecimal("0.062");
+      defenseBreakBonus = new BigDecimal("3");
       attackBonus = 40;
       attackModifier = new BigDecimal("0");
       break;
     case GOLD3:
-      hitRate = new BigDecimal("0.072");
+      defenseBreakBonus = new BigDecimal("4");
       attackBonus = 48;
       attackModifier = new BigDecimal("0");
       break;
     case PURPLE1:
-      hitRate = new BigDecimal("0.094");
+      defenseBreakBonus = new BigDecimal("5");
       attackBonus = 59;
       attackModifier = new BigDecimal("0");
       break;
     case PURPLE2:
-      hitRate = new BigDecimal("0.105");
+      defenseBreakBonus = new BigDecimal("6");
       attackBonus = 69;
       attackModifier = new BigDecimal("0");
       break;
     case PURPLE3:
-      hitRate = new BigDecimal("0.116");
+      defenseBreakBonus = new BigDecimal("7");
       attackBonus = 80;
       attackModifier = new BigDecimal("0");
       break;
     case ORANGE1:
-      hitRate = new BigDecimal("0.137");
+      defenseBreakBonus = new BigDecimal("8");
       attackBonus = 95;
       attackModifier = new BigDecimal("0");
       break;
     case ORANGE2:
-      hitRate = new BigDecimal("0.148");
+      defenseBreakBonus = new BigDecimal("10");
       attackBonus = 111;
       attackModifier = new BigDecimal("0");
       break;
     case ORANGE3:
-      hitRate = new BigDecimal("0.16");
+      defenseBreakBonus = new BigDecimal("11");
       attackBonus = 128;
-      attackModifier = new BigDecimal("0.032");
+      attackModifier = new BigDecimal("0");
       break;
     case ORANGE4:
-      hitRate = new BigDecimal("0.171");
+      defenseBreakBonus = new BigDecimal("12");
       attackBonus = 145;
-      attackModifier = new BigDecimal("0.054");
+      attackModifier = new BigDecimal("0");
       break;
     case RED1:
-      hitRate = new BigDecimal("0.194");
+      defenseBreakBonus = new BigDecimal("13");
       attackBonus = 167;
       attackModifier = new BigDecimal("0.075");
       break;
     case RED2:
-      hitRate = new BigDecimal("0.205");
+      defenseBreakBonus = new BigDecimal("14");
       attackBonus = 168;
       attackModifier = new BigDecimal("0.097");
       break;
     default:
-      hitRate = new BigDecimal("0");
+      defenseBreakBonus = new BigDecimal("0");
       attackBonus = 0;
       attackModifier = new BigDecimal("0");
       break;
@@ -100,9 +91,6 @@ public class AccuracyRune extends AbstractRune {
   public void apply(Hero hero) {
     hero.addAttackModifier(attackModifier);
     hero.increaseAttack(attackBonus);
-    hero.increaseHitRate(hitRate);
+    hero.increaseDefenseBreak(defenseBreakBonus);
   }
-
 }
-
-// end of file

@@ -271,7 +271,7 @@ public interface Hero {
    * 
    * @param bigDecimal
    */
-  public void increaseAssassinDamageModifier(BigDecimal bigDecimal);
+  public void increaseAssassinDamageModifier(BigDecimal amount);
 
   /**
    * get the ExDMGToAssassin stat
@@ -285,7 +285,7 @@ public interface Hero {
    * 
    * @param bigDecimal
    */
-  public void increaseWarriorDamageModifier(BigDecimal bigDecimal);
+  public void increaseWarriorDamageModifier(BigDecimal amount);
 
   /**
    * get the ExDMGToWarrior stat
@@ -299,7 +299,7 @@ public interface Hero {
    * 
    * @param bigDecimal
    */
-  public void increaseWandererDamageModifier(BigDecimal bigDecimal);
+  public void increaseWandererDamageModifier(BigDecimal amount);
 
   /**
    * get the ExDMGToWanderer stat
@@ -313,7 +313,7 @@ public interface Hero {
    * 
    * @param bigDecimal
    */
-  public void increaseMageDamageModifier(BigDecimal bigDecimal);
+  public void increaseMageDamageModifier(BigDecimal amount);
 
   /**
    * get the ExDMGToMage stat
@@ -327,7 +327,7 @@ public interface Hero {
    * 
    * @param bigDecimal
    */
-  public void increaseClericDamageModifier(BigDecimal bigDecimal);
+  public void increaseClericDamageModifier(BigDecimal amount);
 
   /**
    * get the ExDMGToCleric stat
@@ -348,7 +348,7 @@ public interface Hero {
    * 
    * @param bigDecimal
    */
-  public void increaseDamageReduce(BigDecimal bigDecimal);
+  public void increaseDamageReduce(BigDecimal amount);
 }
 
 // end of file

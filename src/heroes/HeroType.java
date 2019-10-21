@@ -5,9 +5,10 @@ package heroes;
 import java.util.function.Function;
 
 /** 
- * TODO documentation
- *
- */
+ * enumeration of all heroes in the game
+ * TODO:create all heroes
+ **/
+
 public enum HeroType {
   MULAN(params->new Mulan(params));
 
@@ -21,6 +22,5 @@ public enum HeroType {
     return creator.apply(parameters);
   }
 }
-
 
 // end of file

@@ -4,13 +4,12 @@ package loadout.artifact;
 
 import loadout.HeroModifier;
 
-/** 
- * TODO documentation
+/**
+ * An abstract representatino of artifacts
  *
  */
 public abstract class AbstractArtifact implements HeroModifier {
-  
-}
 
+}
 
 // end of file

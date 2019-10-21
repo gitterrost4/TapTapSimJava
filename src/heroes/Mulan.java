@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO documentation
+ * representation of Mulan
+ * TODO: Not done yet
  */
 public class Mulan extends AbstractHero {
 

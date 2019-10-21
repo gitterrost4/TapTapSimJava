@@ -25,7 +25,7 @@ import player.Player;
 // (C) cantamen/Paul Kramer 2019
 
 /**
- * TODO documentation
+ * Just a dummy main class for now
  *
  * @author (C) cantamen/Paul Kramer 2019
  * @version $Id $
@@ -45,20 +45,11 @@ public class MainClass {
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.ORANGE2, RuneType.VITALITY, ArtifactType.EYEOFHEAVEN)));
     Reaper reaper6 = new Reaper(new HeroParameters(244, 10,
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.ORANGE2, RuneType.VITALITY, ArtifactType.EYEOFHEAVEN)));
-    Player player = new Player(
-        new GuildTech(
-            new WarriorTech(80, 60, 59, 50, 40), 
-            new AssassinTech(42, 24, 10, 11, 3),
-            new WandererTech(80, 60, 60, 50, 35), 
-            new ClericTech(81, 60, 60, 50, 40),
-            new MageTech(100, 60, 60, 50, 40)),
-        new Familiars(
-            new Edison(152, 23, 1, 1, 0), 
-            new Vinci(120, 3, 1, 1, 0), 
-            new Raphael(200, 118, 20, 20, 20),
+    Player player = new Player(new GuildTech(new WarriorTech(80, 60, 59, 50, 40), new AssassinTech(42, 24, 10, 11, 3),
+        new WandererTech(80, 60, 60, 50, 35), new ClericTech(81, 60, 60, 50, 40), new MageTech(100, 60, 60, 50, 40)),
+        new Familiars(new Edison(152, 23, 1, 1, 0), new Vinci(120, 3, 1, 1, 0), new Raphael(200, 118, 20, 20, 20),
             FamiliarType.RAPHAEL));
-    new Team(reaper, reaper2, reaper3, reaper4, reaper5, reaper6,
-        player);
+    new Team(reaper, reaper2, reaper3, reaper4, reaper5, reaper6, player);
     reaper.addMaxHPModifier(new BigDecimal("0.3"));
     reaper.addAttackModifier(new BigDecimal("0.3"));
     System.err.println(reaper.toString());

@@ -2,64 +2,64 @@ package loadout.equipment;
 
 import heroes.Hero;
 
-/** 
- * TODO documentation
+/**
+ * Representation of the helmet equipment slot
  *
  */
 public class Helmet extends AbstractEquipment {
-  
+
   private final Integer hpIncrease;
-  
+
   public Helmet(EquipmentRarity rarity) {
     super(rarity);
-    switch(rarity) {
+    switch (rarity) {
     case NONE:
-      hpIncrease=0;
+      hpIncrease = 0;
       break;
     case GREEN2:
-      hpIncrease=30;
+      hpIncrease = 30;
       break;
     case BLUE1:
-      hpIncrease=58;
+      hpIncrease = 58;
       break;
     case BLUE2:
-      hpIncrease=75;
+      hpIncrease = 75;
       break;
     case YELLOW1:
-      hpIncrease=165;
+      hpIncrease = 165;
       break;
     case YELLOW2:
-      hpIncrease=213;
+      hpIncrease = 213;
       break;
     case YELLOW3:
-      hpIncrease=261;
+      hpIncrease = 261;
       break;
     case PURPLE1:
-      hpIncrease=446;
+      hpIncrease = 446;
       break;
     case PURPLE2:
-      hpIncrease=551;
+      hpIncrease = 551;
       break;
     case PURPLE3:
-      hpIncrease=634;
+      hpIncrease = 634;
       break;
     case PURPLE4:
-      hpIncrease=729;
+      hpIncrease = 729;
       break;
     case ORANGE1:
-      hpIncrease=1074;
+      hpIncrease = 1074;
       break;
     case ORANGE2:
-      hpIncrease=1309;
+      hpIncrease = 1309;
       break;
     case ORANGE3:
-      hpIncrease=1545;
+      hpIncrease = 1545;
       break;
     case ORANGE4:
-      hpIncrease=1780;
+      hpIncrease = 1780;
       break;
     default:
-      hpIncrease=0;
+      hpIncrease = 0;
       break;
     }
   }
@@ -68,8 +68,7 @@ public class Helmet extends AbstractEquipment {
   public void apply(Hero hero) {
     hero.increaseMaxHP(hpIncrease);
   }
-  
-}
 
+}
 
 // end of file
