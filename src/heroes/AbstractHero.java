@@ -369,10 +369,10 @@ public abstract class AbstractHero implements Hero {
   private BigDecimal mageDamageModifier;
 
   private BigDecimal damageReduce;
-  
+
   private TemporaryEffectCollection activeEffects = new TemporaryEffectCollection(this);
 
-  protected final List<Consumer<BattleSetting>> onDeathAction=new ArrayList<>();
+  protected final List<Consumer<BattleSetting>> onDeathAction = new ArrayList<>();
 
   protected Integer star;
 
@@ -674,12 +674,12 @@ public abstract class AbstractHero implements Hero {
   public void increaseDamageReduce(BigDecimal amount) {
     this.damageReduce = this.damageReduce.add(amount);
   }
-  
+
   @Override
   public void addOnDeathAction(Consumer<BattleSetting> action) {
     onDeathAction.add(action);
   }
-  
+
   @Override
   public void addTemporaryEffect(TemporaryEffect effect) {
     activeEffects.addEffect(effect);
@@ -688,6 +688,17 @@ public abstract class AbstractHero implements Hero {
   @Override
   public void basicAttack(BattleSetting setting) {
     setting.getOpposingTeam(this).getHeroes().get(0).damage(this, new BigDecimal("1"));
+  }
+
+  @Override
+  public boolean isDead() {
+    return currentHP <= 0;
+  }
+
+  @Override
+  public void doAttack() {
+    // TODO Auto-generated method stub
+
   }
 
   @Override

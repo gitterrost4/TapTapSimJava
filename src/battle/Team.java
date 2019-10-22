@@ -22,13 +22,14 @@ public class Team {
   private final Player player;
 
   public Team(Hero first, Hero second, Hero third, Hero fourth, Hero fifth, Hero sixth, Player player) {
-    this.player=player;
-    this.heroes=Stream.of(first,second,third,fourth,fifth,sixth).map(Optional::ofNullable).collect(Collectors.toList());
-    getHeroes().stream().filter(hero->hero!=null).forEach(hero->{
-      //apply player based buffs (guild tech, pets)
+    this.player = player;
+    this.heroes = Stream.of(first, second, third, fourth, fifth, sixth).map(Optional::ofNullable)
+        .collect(Collectors.toList());
+    getHeroes().stream().filter(hero -> hero != null).forEach(hero -> {
+      // apply player based buffs (guild tech, pets)
       this.player.apply(hero);
-      //apply aura
-      AuraFinder.getAura(getHeroes()).ifPresent(aura->aura.apply(hero));
+      // apply aura
+      AuraFinder.getAura(getHeroes()).ifPresent(aura -> aura.apply(hero));
     });
   }
 
@@ -38,18 +39,25 @@ public class Team {
   public List<Hero> getHeroes() {
     return heroes.stream().filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
   }
-  
+
   /**
    * Get the hero in the specified position. Empty if none is present
    * 
    * @param pos
    * @return
    */
-  public Optional<Hero> getHeroInPosition(int pos){
-    if(pos<0||pos>=heroes.size()) {
+  public Optional<Hero> getHeroInPosition(int pos) {
+    if (pos < 0 || pos >= heroes.size()) {
       return Optional.empty();
     }
     return heroes.get(pos);
+  }
+
+  /**
+   * @return true if the whole team is dead
+   */
+  public boolean isDead() {
+    return getHeroes().stream().allMatch(Hero::isDead);
   }
 }
 

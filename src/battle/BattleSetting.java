@@ -2,6 +2,10 @@
 // (C) cantamen/Paul Kramer 2019
 package battle;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import heroes.Hero;
 
 /**
@@ -13,10 +17,10 @@ public class BattleSetting {
 
   public BattleSetting(Team attacker, Team defender) {
     super();
-    this.attacker=attacker;
-    this.defender=defender;
-    attacker.getHeroes().stream().forEach(h->h.initTeam(this));
-    defender.getHeroes().stream().forEach(h->h.initTeam(this));
+    this.attacker = attacker;
+    this.defender = defender;
+    attacker.getHeroes().stream().forEach(h -> h.initTeam(this));
+    defender.getHeroes().stream().forEach(h -> h.initTeam(this));
   }
 
   public Team getAttacker() {
@@ -26,9 +30,14 @@ public class BattleSetting {
   public Team getDefender() {
     return defender;
   }
-  
+
+  public List<Hero> getSpeedSortedHeroList() {
+    return Stream.concat(attacker.getHeroes().stream(), defender.getHeroes().stream())
+        .sorted((h1, h2) -> h2.getSpeed().compareTo(h1.getSpeed())).collect(Collectors.toList());
+  }
+
   public Team getOwnTeam(Hero h) {
-    if(attacker.getHeroes().stream().filter(hero->hero==h).findAny().isPresent()) {
+    if (attacker.getHeroes().stream().filter(hero -> hero == h).findAny().isPresent()) {
       return attacker;
     } else {
       return defender;
@@ -36,7 +45,7 @@ public class BattleSetting {
   }
 
   public Team getOpposingTeam(Hero h) {
-    if(attacker.getHeroes().stream().filter(hero->hero==h).findAny().isPresent()) {
+    if (attacker.getHeroes().stream().filter(hero -> hero == h).findAny().isPresent()) {
       return defender;
     } else {
       return attacker;
