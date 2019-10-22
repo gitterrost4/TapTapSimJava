@@ -17,11 +17,35 @@ public class VitalityRune extends AbstractRune {
 
   public VitalityRune(RuneRarity rarity) {
     switch (rarity) {
+    case ORANGE1:
+      maxHPBonus=1271;
+      maxHPModifier = new BigDecimal("0.148");
+      attackModifier = new BigDecimal("0.021");
+      break;
     case ORANGE2:
-      // TODO: Other cases
-      maxHPModifier = new BigDecimal("0.17");
       maxHPBonus = 1436;
+      maxHPModifier = new BigDecimal("0.17");
       attackModifier = new BigDecimal("0.027");
+      break;
+    case ORANGE3:
+      maxHPBonus=1630;
+      maxHPModifier = new BigDecimal("0.192");
+      attackModifier = new BigDecimal("0.032");
+      break;
+    case ORANGE4:
+      maxHPBonus=1851;
+      maxHPModifier = new BigDecimal("0.214");
+      attackModifier = new BigDecimal("0.037");
+      break;
+    case RED1:
+      maxHPBonus=2102;
+      maxHPModifier = new BigDecimal("0.247");
+      attackModifier = new BigDecimal("0.054");
+      break;
+    case RED2:
+      maxHPBonus=2419;
+      maxHPModifier = new BigDecimal("0.27");
+      attackModifier = new BigDecimal("0.065");
       break;
     default:
       maxHPModifier = new BigDecimal("0");
@@ -34,7 +58,6 @@ public class VitalityRune extends AbstractRune {
 
   @Override
   public void apply(Hero hero) {
-    System.err.println("handling rune");
     hero.addAttackModifier(attackModifier);
     hero.addMaxHPModifier(maxHPModifier);
     hero.increaseMaxHP(maxHPBonus);

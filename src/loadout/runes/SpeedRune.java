@@ -1,5 +1,7 @@
 package loadout.runes;
 
+import java.math.BigDecimal;
+
 import heroes.Hero;
 
 /**
@@ -10,47 +12,29 @@ import heroes.Hero;
  */
 public class SpeedRune extends AbstractRune {
 
+  private Integer speedBonus;
+  private BigDecimal maxHPModifier;
+
   public SpeedRune(RuneRarity rarity) {
     switch (rarity) {
-    case BLUE1:
-      break;
-    case BLUE2:
-      break;
-    case GREEN1:
-      break;
-    case GREEN2:
-      break;
-    case GOLD1:
-      break;
-    case GOLD2:
-      break;
-    case GOLD3:
-      break;
-    case PURPLE1:
-      break;
-    case PURPLE2:
-      break;
-    case PURPLE3:
-      break;
-    case ORANGE1:
-      break;
-    case ORANGE2:
-      break;
-    case ORANGE3:
-      break;
-    case ORANGE4:
-      break;
     case RED1:
+      speedBonus = 55;
+      maxHPModifier = new BigDecimal("0.14");
       break;
     case RED2:
+      speedBonus = 70;
+      maxHPModifier = new BigDecimal("0.157");
       break;
     default:
+      speedBonus = 0;
+      maxHPModifier = new BigDecimal("0");
       break;
-
     }
   }
 
   @Override
   public void apply(Hero hero) {
+    hero.increaseSpeed(speedBonus);
+    hero.addMaxHPModifier(maxHPModifier);
   }
 }
