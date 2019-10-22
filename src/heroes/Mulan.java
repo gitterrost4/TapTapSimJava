@@ -5,6 +5,8 @@ package heroes;
 import java.util.HashMap;
 import java.util.Map;
 
+import battle.BattleSetting;
+
 /**
  * representation of Mulan
  * TODO: Not done yet
@@ -28,6 +30,19 @@ public class Mulan extends AbstractHero {
   public Mulan(HeroParameters parameters) {
     super(parameters, baseStats, HERO_CLASS,FACTION);
   }
+
+  @Override
+  public void initTeam(BattleSetting setting) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void skillAttack(BattleSetting setting) {
+    // TODO Auto-generated method stub
+    
+  }
+  
 }
 
 // end of file

@@ -3,6 +3,10 @@
 package heroes;
 
 import java.math.BigDecimal;
+import java.util.function.Consumer;
+
+import battle.BattleSetting;
+import effects.TemporaryEffect;
 
 /**
  * Interface for the basic hero functions
@@ -12,10 +16,10 @@ public interface Hero {
 
   /**
    * Let the hero take damage
-   * 
-   * @param amount the amount of damage that the hero should take
+   * @param source source of the damage whose stats are used for calculation
+   * @param modifier the amount of damage that the hero should take
    */
-  public void damage(Integer amount);
+  public void damage(Hero source, BigDecimal modifier);
 
   /**
    * get the current hp of a hero
@@ -349,6 +353,21 @@ public interface Hero {
    * @param bigDecimal
    */
   public void increaseDamageReduce(BigDecimal amount);
+  
+  /**
+   * add an onDeath Effect to the hero
+   * 
+   * @param effect
+   */
+  public void addOnDeathAction(Consumer<BattleSetting> effect);
+  
+  public void initTeam(BattleSetting setting);
+
+  public void addTemporaryEffect(TemporaryEffect effect);
+
+  public void basicAttack(BattleSetting setting);
+  
+  public void skillAttack(BattleSetting setting);
 }
 
 // end of file

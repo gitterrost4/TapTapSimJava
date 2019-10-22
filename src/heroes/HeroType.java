@@ -10,6 +10,7 @@ import java.util.function.Function;
  **/
 
 public enum HeroType {
+  REAPER(params->new Reaper(params)),
   MULAN(params->new Mulan(params));
 
   private final Function<HeroParameters,AbstractHero> creator;

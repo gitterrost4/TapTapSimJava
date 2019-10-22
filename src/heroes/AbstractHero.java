@@ -1,8 +1,15 @@
 package heroes;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+
+import battle.BattleSetting;
+import effects.TemporaryEffect;
+import effects.TemporaryEffectCollection;
 
 /**
  * Abstract implementation of a hero that contains basic stuff such as stats,
@@ -362,6 +369,12 @@ public abstract class AbstractHero implements Hero {
   private BigDecimal mageDamageModifier;
 
   private BigDecimal damageReduce;
+  
+  private TemporaryEffectCollection activeEffects = new TemporaryEffectCollection(this);
+
+  protected final List<Consumer<BattleSetting>> onDeathAction=new ArrayList<>();
+
+  protected Integer star;
 
   public AbstractHero(HeroParameters parameters, Map<Integer, BaseStats> baseStats, HeroClass heroClass,
       Faction faction) {
@@ -369,6 +382,7 @@ public abstract class AbstractHero implements Hero {
     this.level = parameters.level;
     this.heroClass = heroClass;
     this.faction = faction;
+    this.star = parameters.star;
     computeStats(parameters, baseStats);
     this.currentEnergy = 50;
     this.hitRate = new BigDecimal(0);
@@ -415,8 +429,8 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void damage(Integer amount) {
-    this.currentHP = Math.max(0, this.currentHP - amount);
+  public void damage(Hero source, BigDecimal modifier) {
+    this.currentHP = Math.max(0, this.currentHP - modifier.multiply(new BigDecimal(source.getAttack())).intValue());
   }
 
   @Override
@@ -659,6 +673,21 @@ public abstract class AbstractHero implements Hero {
   @Override
   public void increaseDamageReduce(BigDecimal amount) {
     this.damageReduce = this.damageReduce.add(amount);
+  }
+  
+  @Override
+  public void addOnDeathAction(Consumer<BattleSetting> action) {
+    onDeathAction.add(action);
+  }
+  
+  @Override
+  public void addTemporaryEffect(TemporaryEffect effect) {
+    activeEffects.addEffect(effect);
+  }
+
+  @Override
+  public void basicAttack(BattleSetting setting) {
+    setting.getOpposingTeam(this).getHeroes().get(0).damage(this, new BigDecimal("1"));
   }
 
   @Override

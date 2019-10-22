@@ -2,8 +2,13 @@
 // (C) cantamen/Paul Kramer 2019
 package heroes;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+
+import battle.BattleSetting;
+import effects.Silence;
+import effects.TemporaryEffect;
 
 /**
  * Reaper
@@ -12,28 +17,87 @@ public class Reaper extends AbstractHero {
 
   private static final Faction FACTION=Faction.UNDEAD;
   private static final HeroClass HERO_CLASS=HeroClass.MAGE;
-  
-  private static final Map<Integer,BaseStats> baseStats = new HashMap<>();
+  private static final Map<Integer,BaseStats> baseStats=new HashMap<>();
 
   static {
-    baseStats.put(5, new BaseStats(207,43,7,217));
-    baseStats.put(6, new BaseStats(393,63,8,244));
-    baseStats.put(7, new BaseStats(629,67,8,262));
-    baseStats.put(8, new BaseStats(727,76,8,262));
-    baseStats.put(9, new BaseStats(971,79,8,262));
-    baseStats.put(10, new BaseStats(1345,110,8,262));
+    baseStats.put(5,new BaseStats(207,43,7,217));
+    baseStats.put(6,new BaseStats(393,63,8,244));
+    baseStats.put(7,new BaseStats(629,67,8,262));
+    baseStats.put(8,new BaseStats(727,76,8,262));
+    baseStats.put(9,new BaseStats(971,79,8,262));
+    baseStats.put(10,new BaseStats(1345,110,8,262));
   }
 
   public Reaper(HeroParameters parameters) {
-    super(parameters, baseStats, HERO_CLASS,FACTION);
+    super(parameters,baseStats,HERO_CLASS,FACTION);
+    applySkill3();
+    applySkill4();
+  }
+
+  @Override
+  public void initTeam(BattleSetting setting) {
+    applySkill2(setting);
   }
 
   @Override
   public String toString() {
-    return "Reaper ["+super.toString()+"]";
+    return "Reaper [" + super.toString() + "]";
   }
-  
-  
+
+  private void applySkill2(BattleSetting setting) {
+    switch (star) {
+    case 10:
+      setting.getOwnTeam(this).getHeroes().stream().forEach(h -> h.addOnDeathAction(unused -> {
+        this.increaseDefenseBreak(new BigDecimal("0.084"));
+        this.addAttackModifier(new BigDecimal("0.21"));
+      }));
+      break;
+    default:
+      break;
+    }
+  }
+
+  private void applySkill3() {
+    switch (star) {
+    case 10:
+      this.increaseDefenseBreak(new BigDecimal("9.6"));
+      this.addAttackModifier(new BigDecimal("0.3"));
+      this.addMaxHPModifier(new BigDecimal("0.3"));
+      break;
+    default:
+      break;
+    }
+  }
+
+  private void applySkill4() {
+    switch (star) {
+    case 10:
+      onDeathAction.add(teams -> teams.getOwnTeam(this).getHeroes().stream()
+        .forEach(h -> h.damage(this,new BigDecimal("1.07"))));
+      break;
+    default:
+      break;
+    }
+  }
+
+  @Override
+  public void skillAttack(BattleSetting setting) {
+    switch (star) {
+    case 10:    
+      setting.getOpposingTeam(this).getHeroes().forEach(h -> {
+        h.damage(this,new BigDecimal("1.8"));
+        if (h.getHeroClass().equals(HeroClass.WARRIOR)) {
+          h.addTemporaryEffect(new Silence(2));
+        }
+      });
+      
+      //increase own attack by 20% for 2 rounds
+      this.addTemporaryEffect(new TemporaryEffect(h->h.addAttackModifier(new BigDecimal(1.2)),h->{},h->h.addAttackModifier(new BigDecimal("1").divide(new BigDecimal("1.2"))),2));
+    default:
+      break;
+    }
+  }
+
 }
 
 // end of file

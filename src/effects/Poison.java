@@ -1,30 +1,19 @@
 package effects;
 
+import java.math.BigDecimal;
+
 import heroes.Hero;
 
 /** 
  * Poison effect
  *
  */
-public class Poison extends AbstractEffect {
+public class Poison extends TemporaryEffect {
   
-  /**
-   * strength of the poison
-   */
-  public final Integer strength;
-  public final Hero hero;
-
-  public Poison(Integer remainingRounds, Integer strength, Hero hero) {
-    super(remainingRounds);
-    this.strength=strength;
-    this.hero=hero;
+  public Poison(Integer remainingRounds, Hero source, BigDecimal strength) {
+    super(h->h.damage(source, strength), h->h.damage(source, strength), h->{}, remainingRounds);
   }
 
-  @Override
-  public void apply() {
-    hero.damage(strength);
-  }
-  
 }
 
 

@@ -1,6 +1,7 @@
 import java.math.BigDecimal;
 
 import battle.Team;
+import heroes.AbstractHero;
 import heroes.HeroParameters;
 import heroes.Reaper;
 import loadout.Loadout;
@@ -33,17 +34,17 @@ import player.Player;
 public class MainClass {
 
   public static void main(String[] args) {
-    Reaper reaper = new Reaper(new HeroParameters(244, 10,
+    AbstractHero reaper = new Reaper(new HeroParameters(244, 10,
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.ORANGE2, RuneType.VITALITY, ArtifactType.STARSHARDS)));
-    Reaper reaper2 = new Reaper(new HeroParameters(244, 10,
+    AbstractHero reaper2 = new Reaper(new HeroParameters(244, 10,
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.ORANGE2, RuneType.VITALITY, ArtifactType.EYEOFHEAVEN)));
-    Reaper reaper3 = new Reaper(new HeroParameters(244, 10,
+    AbstractHero reaper3 = new Reaper(new HeroParameters(244, 10,
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.ORANGE2, RuneType.VITALITY, ArtifactType.EYEOFHEAVEN)));
-    Reaper reaper4 = new Reaper(new HeroParameters(244, 10,
+    AbstractHero reaper4 = new Reaper(new HeroParameters(244, 10,
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.ORANGE2, RuneType.VITALITY, ArtifactType.EYEOFHEAVEN)));
-    Reaper reaper5 = new Reaper(new HeroParameters(244, 10,
+    AbstractHero reaper5 = new Reaper(new HeroParameters(244, 10,
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.ORANGE2, RuneType.VITALITY, ArtifactType.EYEOFHEAVEN)));
-    Reaper reaper6 = new Reaper(new HeroParameters(244, 10,
+    AbstractHero reaper6 = new Reaper(new HeroParameters(244, 10,
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.ORANGE2, RuneType.VITALITY, ArtifactType.EYEOFHEAVEN)));
     Player player = new Player(new GuildTech(new WarriorTech(80, 60, 59, 50, 40), new AssassinTech(42, 24, 10, 11, 3),
         new WandererTech(80, 60, 60, 50, 35), new ClericTech(81, 60, 60, 50, 40), new MageTech(100, 60, 60, 50, 40)),
