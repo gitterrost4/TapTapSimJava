@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import heroes.Hero;
 
 /**
- * TODO: Documentation
+ * implementation of the evasion rune
  * 
  * @author gitterrost4
  *

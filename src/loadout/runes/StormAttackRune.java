@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import heroes.Hero;
 
 /**
- * TODO: Documentation
+ * implementation of the storm attack rune
  * 
  * @author gitterrost4
  *

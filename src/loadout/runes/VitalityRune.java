@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import heroes.Hero;
 
 /**
- * implementation of the accuracy rune
+ * implementation of the vitality rune
  *
  */
 public class VitalityRune extends AbstractRune {

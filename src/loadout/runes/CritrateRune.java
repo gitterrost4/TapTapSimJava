@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import heroes.Hero;
 
 /**
- * TODO: Documentation
+ * Implementation of the critrate rune
  * 
  * @author gitterrost4
  *
