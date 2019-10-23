@@ -51,6 +51,9 @@ public class Reaper extends AbstractHero {
     switch (star) {
     case 10:
       setting.getOwnTeam(this).getHeroes(true).stream().forEach(h -> h.addOnDeathAction(unused -> {
+        if (this.isDead()) {
+          return null;
+        }
         Log log = new Log();
         log.addMessage("Increasing attack and Defense Break of " + this.getFullName());
         log.addItem(this.increaseDefenseBreak(new BigDecimal("0.084")));
