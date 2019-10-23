@@ -42,12 +42,12 @@ public class Team {
    * @return the heroes
    */
   public List<Hero> getHeroes() {
-    return heroes.stream().filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
+    return getHeroes(false, false);
   }
 
-  public List<Hero> getHeroes(Boolean onlyAlive) {
-    return heroes.stream().filter(Optional::isPresent).map(Optional::get).filter(h -> !onlyAlive || !h.isDead())
-        .collect(Collectors.toList());
+  public List<Hero> getHeroes(Boolean skipDead, Boolean skipDying) {
+    return heroes.stream().filter(Optional::isPresent).map(Optional::get)
+        .filter(h -> (!skipDead || !h.isDead()) && (!skipDying || !h.isDying())).collect(Collectors.toList());
   }
 
   /**

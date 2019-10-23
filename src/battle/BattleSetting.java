@@ -69,6 +69,16 @@ public class BattleSetting {
     return log;
   }
 
+  public Log checkHeroesDied() {
+    Log log = new Log();
+    attacker.getHeroes(true, false).stream().filter(h -> h.getCurrentHP() <= 0).forEach(h -> log.addItem(h.die(this)));
+    defender.getHeroes(true, false).stream().filter(h -> h.getCurrentHP() <= 0).forEach(h -> log.addItem(h.die(this)));
+    if (!log.isEmpty()) {
+      log.merge(checkHeroesDied());
+    }
+    return log;
+  }
+
 }
 
 // end of file

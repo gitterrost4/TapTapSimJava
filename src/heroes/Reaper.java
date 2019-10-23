@@ -50,8 +50,8 @@ public class Reaper extends AbstractHero {
   private void applySkill2(BattleSetting setting) {
     switch (star) {
     case 10:
-      setting.getOwnTeam(this).getHeroes(true).stream().forEach(h -> h.addOnDeathAction(unused -> {
-        if (this.isDead()) {
+      setting.getOwnTeam(this).getHeroes(true, true).stream().forEach(h -> h.addOnDeathAction(unused -> {
+        if (this.isDead() || this.isDying()) {
           return null;
         }
         Log log = new Log();
@@ -83,7 +83,7 @@ public class Reaper extends AbstractHero {
     case 10:
       onDeathAction.add(setting -> {
         Log log = new Log();
-        setting.getOpposingTeam(this).getHeroes(true).stream()
+        setting.getOpposingTeam(this).getHeroes(true, true).stream()
             .forEach(h -> log.addItem(h.damage(setting, this, new BigDecimal("1.07"))));
         return log;
       });
@@ -99,7 +99,7 @@ public class Reaper extends AbstractHero {
     switch (star) {
     case 10:
       log.addItem(logMessage("attacking all opposing heroes for 180% of attack"));
-      setting.getOpposingTeam(this).getHeroes(true).forEach(h -> {
+      setting.getOpposingTeam(this).getHeroes(true, true).forEach(h -> {
         log.addItem(h.damage(setting, this, new BigDecimal("1.8")));
         if (h.getHeroClass().equals(HeroClass.WARRIOR)) {
           log.addItem(h.addTemporaryEffect(new Silence(2)));

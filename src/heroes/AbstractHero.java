@@ -389,6 +389,8 @@ public abstract class AbstractHero implements Hero {
 
   protected Integer star;
 
+  private boolean isDead = false;
+
   public AbstractHero(HeroParameters parameters, Map<Integer, BaseStats> baseStats, HeroClass heroClass,
       Faction faction, HeroType heroType) {
     super();
@@ -452,11 +454,16 @@ public abstract class AbstractHero implements Hero {
     int damage = modifier.multiply(new BigDecimal(source.getAttack())).intValue();
     this.currentHP = Math.max(0, this.currentHP - damage);
     log.addItem(logMessage("Taking " + damage + " Damage; Now currentHP=" + this.currentHP));
-    if (this.currentHP <= 0) {
-      log.addItem(logMessage("Hero died. Triggering possible onDeath effects."));
-      onDeathAction.stream().map(action -> Optional.ofNullable(action.apply(setting))).filter(Optional::isPresent)
-          .map(Optional::get).forEach(log::addItem);
-    }
+    return log;
+  }
+
+  @Override
+  public LogItem die(BattleSetting setting) {
+    Log log = new Log();
+    log.addItem(logMessage("Hero died. Triggering possible onDeath effects."));
+    isDead = true;
+    onDeathAction.stream().map(action -> Optional.ofNullable(action.apply(setting))).filter(Optional::isPresent)
+        .map(Optional::get).forEach(log::addItem);
     return log;
   }
 
@@ -803,16 +810,24 @@ public abstract class AbstractHero implements Hero {
 
   @Override
   public boolean isDead() {
+    return isDead;
+  }
+
+  @Override
+  public boolean isDying() {
     return currentHP <= 0;
   }
 
   @Override
   public LogItem doAttack(BattleSetting setting) {
+    Log log = new Log();
     if (getCurrentEnergy() < 100) {
-      return basicAttack(setting);
+      log.addItem(basicAttack(setting));
     } else {
-      return doSkillAttack(setting);
+      log.addItem(doSkillAttack(setting));
     }
+    log.addItem(setting.checkHeroesDied());
+    return log;
   }
 
   private LogItem doSkillAttack(BattleSetting setting) {

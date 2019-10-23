@@ -375,6 +375,8 @@ public interface Hero {
 
   public boolean isDead();
 
+  public boolean isDying();
+
   public String getName();
 
   public String getFullName();
@@ -398,6 +400,8 @@ public interface Hero {
   LogMessage logMessage(String message);
 
   LogItem getInformation();
+
+  public LogItem die(BattleSetting setting);
 }
 
 // end of file

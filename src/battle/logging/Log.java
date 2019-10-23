@@ -22,8 +22,18 @@ public class Log implements LogItem {
     return items;
   }
 
+  public Log merge(Log other) {
+    this.items.addAll(other.getItems());
+    return this;
+  }
+
+  @Override
   public String prettyPrint() {
     return prettyPrint(0);
+  }
+
+  public boolean isEmpty() {
+    return items.isEmpty();
   }
 
   @Override
