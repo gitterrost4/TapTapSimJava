@@ -6,6 +6,10 @@ import heroes.Hero;
 
 public class GiantLizard extends AbstractArtifact {
 
+  public GiantLizard() {
+    super(ArtifactType.GIANTLIZARD);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.addAttackModifier(new BigDecimal("0.105"));

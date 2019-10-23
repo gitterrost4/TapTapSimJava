@@ -4,12 +4,13 @@ package loadout.runes;
 
 import heroes.Hero;
 
-/** 
+/**
  * implementation of the accuracy rune
  *
  */
 public class EmptyRune extends AbstractRune {
   public EmptyRune(RuneRarity rarity) {
+    super(RuneType.NONE, rarity);
   }
 
   @Override
@@ -17,6 +18,5 @@ public class EmptyRune extends AbstractRune {
   }
 
 }
-
 
 // end of file

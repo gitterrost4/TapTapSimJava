@@ -3,9 +3,11 @@
 package heroes;
 
 import java.math.BigDecimal;
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 import battle.BattleSetting;
+import battle.logging.LogItem;
+import battle.logging.LogMessage;
 import effects.TemporaryEffect;
 
 /**
@@ -19,8 +21,9 @@ public interface Hero {
    * 
    * @param source   source of the damage whose stats are used for calculation
    * @param modifier the amount of damage that the hero should take
+   * @return
    */
-  public void damage(Hero source, BigDecimal modifier);
+  public LogItem damage(BattleSetting setting, Hero source, BigDecimal modifier);
 
   /**
    * get the current hp of a hero
@@ -64,7 +67,7 @@ public interface Hero {
    *               attack
    * @return
    */
-  public void increaseAttack(int amount);
+  public LogItem increaseAttack(int amount);
 
   /**
    * Increase the maxHP of a hero.
@@ -73,21 +76,21 @@ public interface Hero {
    *               maxHP
    * @return
    */
-  public void increaseMaxHP(int amount);
+  public LogItem increaseMaxHP(int amount);
 
   /**
    * Add a multiplicator for the attack
    * 
    * @param modifier
    */
-  public void addAttackModifier(BigDecimal modifier);
+  public LogItem addAttackModifier(BigDecimal modifier);
 
   /**
    * Add a multiplicator for the hp
    * 
    * @param modifier
    */
-  public void addMaxHPModifier(BigDecimal modifier);
+  public LogItem addMaxHPModifier(BigDecimal modifier);
 
   /**
    * return the faction of the hero
@@ -122,7 +125,7 @@ public interface Hero {
    * 
    * @param amount
    */
-  public void increaseCritRate(BigDecimal amount);
+  public LogItem increaseCritRate(BigDecimal amount);
 
   /**
    * return the crit rate of the hero
@@ -136,7 +139,7 @@ public interface Hero {
    * 
    * @param amount
    */
-  public void increaseCritDamage(BigDecimal amount);
+  public LogItem increaseCritDamage(BigDecimal amount);
 
   /**
    * return the dodge chance of the hero
@@ -150,7 +153,7 @@ public interface Hero {
    * 
    * @param amount
    */
-  public void increaseDodgeChance(BigDecimal amount);
+  public LogItem increaseDodgeChance(BigDecimal amount);
 
   /**
    * return the skill damage of the hero
@@ -164,7 +167,7 @@ public interface Hero {
    * 
    * @param amount
    */
-  public void increaseSkillDamage(BigDecimal amount);
+  public LogItem increaseSkillDamage(BigDecimal amount);
 
   /**
    * return the defense break of the hero
@@ -178,7 +181,7 @@ public interface Hero {
    * 
    * @param amount
    */
-  public void increaseDefenseBreak(BigDecimal amount);
+  public LogItem increaseDefenseBreak(BigDecimal amount);
 
   /**
    * return the hit rate of the hero
@@ -192,7 +195,7 @@ public interface Hero {
    * 
    * @param amount
    */
-  public void increaseHitRate(BigDecimal amount);
+  public LogItem increaseHitRate(BigDecimal amount);
 
   /**
    * return the hit rate of the hero
@@ -206,7 +209,7 @@ public interface Hero {
    * 
    * @param amount
    */
-  public void increaseSpeed(Integer amount);
+  public LogItem increaseSpeed(Integer amount);
 
   /**
    * return the defense of the hero
@@ -220,7 +223,7 @@ public interface Hero {
    * 
    * @param amount
    */
-  public void increaseDefense(Integer amount);
+  public LogItem increaseDefense(Integer amount);
 
   /**
    * return the true damage of the hero
@@ -234,7 +237,7 @@ public interface Hero {
    * 
    * @param amount
    */
-  public void increaseTrueDamage(BigDecimal amount);
+  public LogItem increaseTrueDamage(BigDecimal amount);
 
   /**
    * get the control resist of the hero
@@ -248,7 +251,7 @@ public interface Hero {
    * 
    * @param amount
    */
-  public void increaseControlResist(BigDecimal amount);
+  public LogItem increaseControlResist(BigDecimal amount);
 
   /**
    * get the silence resistance
@@ -262,21 +265,21 @@ public interface Hero {
    * 
    * @param amount
    */
-  public void increaseSilenceResistance(BigDecimal amount);
+  public LogItem increaseSilenceResistance(BigDecimal amount);
 
   /**
    * increase the energy of the hero by an amount
    * 
    * @param amount
    */
-  public void increaseEnergy(Integer amount);
+  public LogItem increaseEnergy(Integer amount);
 
   /**
    * add ExDMGToAssassin to the hero
    * 
    * @param bigDecimal
    */
-  public void increaseAssassinDamageModifier(BigDecimal amount);
+  public LogItem increaseAssassinDamageModifier(BigDecimal amount);
 
   /**
    * get the ExDMGToAssassin stat
@@ -290,7 +293,7 @@ public interface Hero {
    * 
    * @param bigDecimal
    */
-  public void increaseWarriorDamageModifier(BigDecimal amount);
+  public LogItem increaseWarriorDamageModifier(BigDecimal amount);
 
   /**
    * get the ExDMGToWarrior stat
@@ -304,7 +307,7 @@ public interface Hero {
    * 
    * @param bigDecimal
    */
-  public void increaseWandererDamageModifier(BigDecimal amount);
+  public LogItem increaseWandererDamageModifier(BigDecimal amount);
 
   /**
    * get the ExDMGToWanderer stat
@@ -318,7 +321,7 @@ public interface Hero {
    * 
    * @param bigDecimal
    */
-  public void increaseMageDamageModifier(BigDecimal amount);
+  public LogItem increaseMageDamageModifier(BigDecimal amount);
 
   /**
    * get the ExDMGToMage stat
@@ -332,7 +335,7 @@ public interface Hero {
    * 
    * @param bigDecimal
    */
-  public void increaseClericDamageModifier(BigDecimal amount);
+  public LogItem increaseClericDamageModifier(BigDecimal amount);
 
   /**
    * get the ExDMGToCleric stat
@@ -353,24 +356,30 @@ public interface Hero {
    * 
    * @param bigDecimal
    */
-  public void increaseDamageReduce(BigDecimal amount);
+  public LogItem increaseDamageReduce(BigDecimal amount);
 
   /**
    * add an onDeath Effect to the hero
    * 
-   * @param effect
+   * @param action
    */
-  public void addOnDeathAction(Consumer<BattleSetting> effect);
+  public void addOnDeathAction(Function<BattleSetting, LogItem> action);
 
   public void initTeam(BattleSetting setting);
 
-  public void addTemporaryEffect(TemporaryEffect effect);
+  public LogItem addTemporaryEffect(TemporaryEffect effect);
 
-  public void basicAttack(BattleSetting setting);
+  public LogItem basicAttack(BattleSetting setting);
 
-  public void skillAttack(BattleSetting setting);
+  public LogItem skillAttack(BattleSetting setting);
 
   public boolean isDead();
+
+  public String getName();
+
+  public String getFullName();
+
+  public void setPosition(Integer pos);
 
   /**
    * execute an attack. The implementing class decides for itself what type of
@@ -378,7 +387,17 @@ public interface Hero {
    * 
    * @param setting the current battle setting to act upon
    */
-  public void doAttack(BattleSetting setting);
+  public LogItem doAttack(BattleSetting setting);
+
+  public void setAttacker();
+
+  public void setDefender();
+
+  public LogItem zeroEnergy();
+
+  LogMessage logMessage(String message);
+
+  LogItem getInformation();
 }
 
 // end of file

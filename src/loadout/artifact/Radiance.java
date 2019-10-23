@@ -6,6 +6,10 @@ import heroes.Hero;
 
 public class Radiance extends AbstractArtifact {
 
+  public Radiance() {
+    super(ArtifactType.RADIANCE);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.increaseWandererDamageModifier(new BigDecimal("0.29"));

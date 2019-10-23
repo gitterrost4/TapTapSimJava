@@ -17,6 +17,7 @@ public class StormAttackRune extends AbstractRune {
   private BigDecimal hitRateBonus;
 
   public StormAttackRune(RuneRarity rarity) {
+    super(RuneType.STORMATTACK, rarity);
     switch (rarity) {
     case ORANGE1:
       attackBonus = 169;

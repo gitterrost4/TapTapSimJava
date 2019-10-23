@@ -7,6 +7,10 @@ import heroes.Hero;
 
 public class SoulTorrent extends AbstractArtifact {
 
+  public SoulTorrent() {
+    super(ArtifactType.SOULTORRENT);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.addAttackModifier(new BigDecimal("0.126"));

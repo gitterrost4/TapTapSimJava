@@ -16,6 +16,7 @@ public class AccuracyRune extends AbstractRune {
   private final BigDecimal attackModifier;
 
   public AccuracyRune(RuneRarity rarity) {
+    super(RuneType.ACCURACY, rarity);
     switch (rarity) {
     case GREEN1:
       hitRate = new BigDecimal("0.02");

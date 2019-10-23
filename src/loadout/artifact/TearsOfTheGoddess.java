@@ -6,6 +6,10 @@ import heroes.Hero;
 
 public class TearsOfTheGoddess extends AbstractArtifact {
 
+  public TearsOfTheGoddess() {
+    super(ArtifactType.TEARSOFTHEGODDESS);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.addAttackModifier(new BigDecimal("0.105"));

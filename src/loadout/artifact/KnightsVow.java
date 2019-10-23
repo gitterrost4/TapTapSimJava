@@ -7,6 +7,10 @@ import heroes.Hero;
 
 public class KnightsVow extends AbstractArtifact {
 
+  public KnightsVow() {
+    super(ArtifactType.KNIGHTSVOW);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.increaseClericDamageModifier(new BigDecimal("0.44"));

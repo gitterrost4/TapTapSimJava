@@ -7,6 +7,10 @@ import heroes.Hero;
 
 public class BloodMedal extends AbstractArtifact {
 
+  public BloodMedal() {
+    super(ArtifactType.BLOODMEDAL);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.addAttackModifier(new BigDecimal("0.126"));

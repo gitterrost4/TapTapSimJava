@@ -6,6 +6,10 @@ import heroes.Hero;
 
 public class ScorchingSun extends AbstractArtifact {
 
+  public ScorchingSun() {
+    super(ArtifactType.SCORCHINGSUN);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.increaseDamageReduce(new BigDecimal("0.126"));

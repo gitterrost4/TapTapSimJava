@@ -6,6 +6,10 @@ import heroes.Hero;
 
 public class ForestPsalm extends AbstractArtifact {
 
+  public ForestPsalm() {
+    super(ArtifactType.FORESTPSALM);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.increaseClericDamageModifier(new BigDecimal("0.205"));

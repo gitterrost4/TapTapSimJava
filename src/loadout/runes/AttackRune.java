@@ -16,6 +16,7 @@ public class AttackRune extends AbstractRune {
   private BigDecimal attackModifier;
 
   public AttackRune(RuneRarity rarity) {
+    super(RuneType.ATTACK, rarity);
     switch (rarity) {
     case BLUE1:
       attackBonus = 14;

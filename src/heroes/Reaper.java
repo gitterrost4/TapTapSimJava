@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import battle.BattleSetting;
+import battle.logging.Log;
+import battle.logging.LogItem;
 import effects.Silence;
 import effects.TemporaryEffect;
 
@@ -15,21 +17,22 @@ import effects.TemporaryEffect;
  */
 public class Reaper extends AbstractHero {
 
-  private static final Faction FACTION=Faction.UNDEAD;
-  private static final HeroClass HERO_CLASS=HeroClass.MAGE;
-  private static final Map<Integer,BaseStats> baseStats=new HashMap<>();
+  private static final Faction FACTION = Faction.UNDEAD;
+  private static final HeroClass HERO_CLASS = HeroClass.MAGE;
+  private static final HeroType HERO_TYPE = HeroType.REAPER;
+  private static final Map<Integer, BaseStats> baseStats = new HashMap<>();
 
   static {
-    baseStats.put(5,new BaseStats(207,43,7,217));
-    baseStats.put(6,new BaseStats(393,63,8,244));
-    baseStats.put(7,new BaseStats(629,67,8,262));
-    baseStats.put(8,new BaseStats(727,76,8,262));
-    baseStats.put(9,new BaseStats(971,79,8,262));
-    baseStats.put(10,new BaseStats(1345,110,8,262));
+    baseStats.put(5, new BaseStats(207, 43, 7, 217));
+    baseStats.put(6, new BaseStats(393, 63, 8, 244));
+    baseStats.put(7, new BaseStats(629, 67, 8, 262));
+    baseStats.put(8, new BaseStats(727, 76, 8, 262));
+    baseStats.put(9, new BaseStats(971, 79, 8, 262));
+    baseStats.put(10, new BaseStats(1345, 110, 8, 262));
   }
 
   public Reaper(HeroParameters parameters) {
-    super(parameters,baseStats,HERO_CLASS,FACTION);
+    super(parameters, baseStats, HERO_CLASS, FACTION, HERO_TYPE);
     applySkill3();
     applySkill4();
   }
@@ -47,9 +50,12 @@ public class Reaper extends AbstractHero {
   private void applySkill2(BattleSetting setting) {
     switch (star) {
     case 10:
-      setting.getOwnTeam(this).getHeroes().stream().forEach(h -> h.addOnDeathAction(unused -> {
-        this.increaseDefenseBreak(new BigDecimal("0.084"));
-        this.addAttackModifier(new BigDecimal("0.21"));
+      setting.getOwnTeam(this).getHeroes(true).stream().forEach(h -> h.addOnDeathAction(unused -> {
+        Log log = new Log();
+        log.addMessage("Increasing attack and Defense Break of " + this.getFullName());
+        log.addItem(this.increaseDefenseBreak(new BigDecimal("0.084")));
+        log.addItem(this.addAttackModifier(new BigDecimal("0.21")));
+        return log;
       }));
       break;
     default:
@@ -72,8 +78,12 @@ public class Reaper extends AbstractHero {
   private void applySkill4() {
     switch (star) {
     case 10:
-      onDeathAction.add(teams -> teams.getOwnTeam(this).getHeroes().stream()
-        .forEach(h -> h.damage(this,new BigDecimal("1.07"))));
+      onDeathAction.add(setting -> {
+        Log log = new Log();
+        setting.getOpposingTeam(this).getHeroes(true).stream()
+            .forEach(h -> log.addItem(h.damage(setting, this, new BigDecimal("1.07"))));
+        return log;
+      });
       break;
     default:
       break;
@@ -81,21 +91,28 @@ public class Reaper extends AbstractHero {
   }
 
   @Override
-  public void skillAttack(BattleSetting setting) {
+  public LogItem skillAttack(BattleSetting setting) {
+    Log log = new Log();
     switch (star) {
-    case 10:    
-      setting.getOpposingTeam(this).getHeroes().forEach(h -> {
-        h.damage(this,new BigDecimal("1.8"));
+    case 10:
+      log.addItem(logMessage("attacking all opposing heroes for 180% of attack"));
+      setting.getOpposingTeam(this).getHeroes(true).forEach(h -> {
+        log.addItem(h.damage(setting, this, new BigDecimal("1.8")));
         if (h.getHeroClass().equals(HeroClass.WARRIOR)) {
-          h.addTemporaryEffect(new Silence(2));
+          log.addItem(h.addTemporaryEffect(new Silence(2)));
         }
       });
-      
-      //increase own attack by 20% for 2 rounds
-      this.addTemporaryEffect(new TemporaryEffect(h->h.addAttackModifier(new BigDecimal(1.2)),h->{},h->h.addAttackModifier(new BigDecimal("1").divide(new BigDecimal("1.2"))),2));
+
+      // increase own attack by 20% for 2 rounds
+      log.addItem(this.addTemporaryEffect(new TemporaryEffect(h -> h.addAttackModifier(new BigDecimal("1.2")),
+          h -> null, h -> h.addAttackModifier(new BigDecimal("1").divide(new BigDecimal("1.2"))),
+          "increase own attack by 20%", 2)));
+      break;
     default:
+      log.addItem(logMessage("not doing anything. Probably something went wrong"));
       break;
     }
+    return log;
   }
 
 }

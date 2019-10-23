@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import battle.logging.Log;
+import battle.logging.LogItem;
 import heroes.Hero;
 
 /**
@@ -19,24 +21,29 @@ public class TemporaryEffectCollection {
 
   public TemporaryEffectCollection(Hero hero) {
     super();
-    this.hero=hero;
+    this.hero = hero;
   }
 
-  List<TemporaryEffect> effects=new ArrayList<>();
+  List<TemporaryEffect> effects = new ArrayList<>();
 
-  public void addEffect(TemporaryEffect effect) {
+  public LogItem addEffect(TemporaryEffect effect) {
+    Log log = new Log();
     effects.add(effect);
-    effect.apply(hero);
+    effect.apply(hero).ifPresent(log::addItem);
+    return log;
   }
 
-  public void trigger() {
+  public LogItem trigger() {
+    Log log = new Log();
     effects.stream().forEach(effect -> {
-      effect.trigger(hero);
+      effect.trigger(hero).ifPresent(log::addItem);
       if (effect.isOver()) {
-        effect.end(hero);
+        log.addItem(hero.logMessage("Ending effect " + effect));
+        effect.end(hero).ifPresent(log::addItem);
       }
     });
-    effects=effects.stream().filter(effect -> !effect.isOver()).collect(Collectors.toList());
+    effects = effects.stream().filter(effect -> !effect.isOver()).collect(Collectors.toList());
+    return log;
   }
 
   public boolean containsSilence() {

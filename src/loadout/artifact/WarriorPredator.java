@@ -6,6 +6,10 @@ import heroes.Hero;
 
 public class WarriorPredator extends AbstractArtifact {
 
+  public WarriorPredator() {
+    super(ArtifactType.WARRIORPREDATOR);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.increaseWarriorDamageModifier(new BigDecimal("0.101"));

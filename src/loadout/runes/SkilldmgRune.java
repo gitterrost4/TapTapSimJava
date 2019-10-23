@@ -16,6 +16,7 @@ public class SkilldmgRune extends AbstractRune {
   private BigDecimal hitRateBonus;
 
   public SkilldmgRune(RuneRarity rarity) {
+    super(RuneType.SKILLDMG, rarity);
     switch (rarity) {
     case PURPLE1:
       skillDamageBonus = new BigDecimal("0.104");

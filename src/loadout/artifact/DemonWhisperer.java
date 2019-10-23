@@ -6,6 +6,10 @@ import heroes.Hero;
 
 public class DemonWhisperer extends AbstractArtifact {
 
+  public DemonWhisperer() {
+    super(ArtifactType.DEMONWHISPERER);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.addAttackModifier(new BigDecimal("0.09"));

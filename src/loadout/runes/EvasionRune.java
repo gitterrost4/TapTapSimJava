@@ -14,7 +14,9 @@ public class EvasionRune extends AbstractRune {
   private final BigDecimal dodgeRateBonus;
   private final Integer maxHPBonus;
   private final BigDecimal maxHPModifier;
+
   public EvasionRune(RuneRarity rarity) {
+    super(RuneType.EVASION, rarity);
     switch (rarity) {
     case GOLD1:
       dodgeRateBonus = new BigDecimal("0.036");

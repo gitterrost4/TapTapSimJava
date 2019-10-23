@@ -16,6 +16,7 @@ public class SpeedRune extends AbstractRune {
   private BigDecimal maxHPModifier;
 
   public SpeedRune(RuneRarity rarity) {
+    super(RuneType.SPEED, rarity);
     switch (rarity) {
     case RED1:
       speedBonus = 55;

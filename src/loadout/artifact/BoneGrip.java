@@ -6,6 +6,10 @@ import heroes.Hero;
 
 public class BoneGrip extends AbstractArtifact {
 
+  public BoneGrip() {
+    super(ArtifactType.BONEGRIP);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.addMaxHPModifier(new BigDecimal("0.157"));

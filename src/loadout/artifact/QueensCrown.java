@@ -7,6 +7,10 @@ import heroes.Hero;
 
 public class QueensCrown extends AbstractArtifact {
 
+  public QueensCrown() {
+    super(ArtifactType.QUEENSCROWN);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.addMaxHPModifier(new BigDecimal("0.105"));

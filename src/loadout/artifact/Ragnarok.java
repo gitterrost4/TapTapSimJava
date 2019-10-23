@@ -5,6 +5,10 @@ import java.math.BigDecimal;
 import heroes.Hero;
 
 public class Ragnarok extends AbstractArtifact {
+  public Ragnarok() {
+    super(ArtifactType.RAGNAROK);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.increaseTrueDamage(new BigDecimal("0.2"));

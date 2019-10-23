@@ -17,6 +17,7 @@ public class BreakRune extends AbstractRune {
   private final BigDecimal attackModifier;
 
   public BreakRune(RuneRarity rarity) {
+    super(RuneType.BREAK, rarity);
     switch (rarity) {
     case GOLD1:
       defenseBreakBonus = new BigDecimal("2");

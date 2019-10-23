@@ -7,6 +7,10 @@ import heroes.Hero;
 
 public class SirenHeart extends AbstractArtifact {
 
+  public SirenHeart() {
+    super(ArtifactType.SIRENHEART);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.addMaxHPModifier(new BigDecimal("0.105"));

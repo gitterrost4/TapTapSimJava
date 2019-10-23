@@ -5,9 +5,13 @@ package battle;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import battle.aura.AuraFinder;
+import battle.logging.Log;
+import battle.logging.LogItem;
+import battle.logging.LogMessage;
 import heroes.Hero;
 import player.Player;
 
@@ -25,6 +29,7 @@ public class Team {
     this.player = player;
     this.heroes = Stream.of(first, second, third, fourth, fifth, sixth).map(Optional::ofNullable)
         .collect(Collectors.toList());
+    IntStream.range(0, heroes.size()).forEach(i -> heroes.get(i).ifPresent(h -> h.setPosition(i)));
     getHeroes().stream().filter(hero -> hero != null).forEach(hero -> {
       // apply player based buffs (guild tech, pets)
       this.player.apply(hero);
@@ -38,6 +43,11 @@ public class Team {
    */
   public List<Hero> getHeroes() {
     return heroes.stream().filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
+  }
+
+  public List<Hero> getHeroes(Boolean onlyAlive) {
+    return heroes.stream().filter(Optional::isPresent).map(Optional::get).filter(h -> !onlyAlive || !h.isDead())
+        .collect(Collectors.toList());
   }
 
   /**
@@ -58,6 +68,15 @@ public class Team {
    */
   public boolean isDead() {
     return getHeroes().stream().allMatch(Hero::isDead);
+  }
+
+  public LogItem getInformation() {
+    Log log = new Log();
+    IntStream.range(0, 6).forEach(i -> {
+      log.addMessage(new Integer(i + 1) + ":");
+      log.addItem(heroes.get(i).map(Hero::getInformation).orElse(new LogMessage("Empty slot")));
+    });
+    return log;
   }
 }
 

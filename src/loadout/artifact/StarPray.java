@@ -7,6 +7,10 @@ import heroes.Hero;
 
 public class StarPray extends AbstractArtifact {
 
+  public StarPray() {
+    super(ArtifactType.STARPRAY);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.addAttackModifier(new BigDecimal("0.126"));

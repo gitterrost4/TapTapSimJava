@@ -5,11 +5,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.Optional;
+import java.util.function.Function;
 
 import battle.BattleSetting;
+import battle.logging.Log;
+import battle.logging.LogItem;
+import battle.logging.LogMessage;
 import effects.TemporaryEffect;
 import effects.TemporaryEffectCollection;
+import loadout.Loadout;
 
 /**
  * Abstract implementation of a hero that contains basic stuff such as stats,
@@ -281,10 +286,18 @@ public abstract class AbstractHero implements Hero {
    */
   private final HeroClass heroClass;
 
+  private final HeroType heroType;
+
   /**
    * the faction of the hero
    */
   private final Faction faction;
+
+  private final Loadout loadout;
+
+  private Optional<Integer> position = Optional.empty();
+
+  private Optional<Boolean> isAttacker = Optional.empty();
 
   /**
    * the maximum amount of HP this hero can have
@@ -372,17 +385,19 @@ public abstract class AbstractHero implements Hero {
 
   private TemporaryEffectCollection activeEffects = new TemporaryEffectCollection(this);
 
-  protected final List<Consumer<BattleSetting>> onDeathAction = new ArrayList<>();
+  protected final List<Function<BattleSetting, LogItem>> onDeathAction = new ArrayList<>();
 
   protected Integer star;
 
   public AbstractHero(HeroParameters parameters, Map<Integer, BaseStats> baseStats, HeroClass heroClass,
-      Faction faction) {
+      Faction faction, HeroType heroType) {
     super();
     this.level = parameters.level;
+    this.heroType = heroType;
     this.heroClass = heroClass;
     this.faction = faction;
     this.star = parameters.star;
+    this.loadout = parameters.loadout;
     computeStats(parameters, baseStats);
     this.currentEnergy = 50;
     this.hitRate = new BigDecimal(0);
@@ -395,14 +410,14 @@ public abstract class AbstractHero implements Hero {
     this.attackModifier = new BigDecimal(1);
     this.maxHPModifier = new BigDecimal(1);
     this.trueDamage = new BigDecimal(1);
-    parameters.loadout.apply(this);
-    this.currentHP = getMaxHP();
     this.assassinDamageModifier = new BigDecimal(0);
     this.wandererDamageModifier = new BigDecimal(0);
     this.clericDamageModifier = new BigDecimal(0);
     this.mageDamageModifier = new BigDecimal(0);
     this.warriorDamageModifier = new BigDecimal(0);
     this.damageReduce = new BigDecimal(0);
+    parameters.loadout.apply(this);
+    this.currentHP = getMaxHP();
   }
 
   private void computeStats(HeroParameters parameters, Map<Integer, BaseStats> baseStats) {
@@ -424,13 +439,25 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseSkillDamage(BigDecimal amount) {
+  public LogItem increaseSkillDamage(BigDecimal amount) {
+    Log log = new Log();
     this.skillDamage = this.skillDamage.add(amount);
+    log.addItem(logMessage("Increasing SkillDamage by " + amount + "; now SkillDamage=" + this.skillDamage));
+    return log;
   }
 
   @Override
-  public void damage(Hero source, BigDecimal modifier) {
-    this.currentHP = Math.max(0, this.currentHP - modifier.multiply(new BigDecimal(source.getAttack())).intValue());
+  public LogItem damage(BattleSetting setting, Hero source, BigDecimal modifier) {
+    Log log = new Log();
+    int damage = modifier.multiply(new BigDecimal(source.getAttack())).intValue();
+    this.currentHP = Math.max(0, this.currentHP - damage);
+    log.addItem(logMessage("Taking " + damage + " Damage; Now currentHP=" + this.currentHP));
+    if (this.currentHP <= 0) {
+      log.addItem(logMessage("Hero died. Triggering possible onDeath effects."));
+      onDeathAction.stream().map(action -> Optional.ofNullable(action.apply(setting))).filter(Optional::isPresent)
+          .map(Optional::get).forEach(log::addItem);
+    }
+    return log;
   }
 
   @Override
@@ -459,25 +486,37 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseAttack(int amount) {
-    System.err.println("increase attack by " + amount);
+  public LogItem increaseAttack(int amount) {
+    Log log = new Log();
     this.attack += amount;
+    log.addItem(logMessage("Increasing attack by " + amount + " (times modifier); Now attack=" + this.getAttack()));
+    return log;
   }
 
   @Override
-  public void increaseMaxHP(int amount) {
+  public LogItem increaseMaxHP(int amount) {
+    Log log = new Log();
     this.maxHP += amount;
+    log.addItem(logMessage("Increasing maxHP by " + amount + " (times modifier); Now maxHP=" + this.getMaxHP()));
+    return log;
   }
 
   @Override
-  public void addAttackModifier(BigDecimal modifier) {
-    System.err.println("multiply attack by " + modifier);
+  public LogItem addAttackModifier(BigDecimal modifier) {
+    Log log = new Log();
     this.attackModifier = this.attackModifier.multiply(new BigDecimal(1).add(modifier));
+    log.addItem(logMessage(
+        "Increasing attack by " + modifier.multiply(new BigDecimal(100)) + "%; Now attack=" + this.getAttack()));
+    return log;
   }
 
   @Override
-  public void addMaxHPModifier(BigDecimal modifier) {
+  public LogItem addMaxHPModifier(BigDecimal modifier) {
+    Log log = new Log();
     this.maxHPModifier = this.maxHPModifier.multiply(new BigDecimal(1).add(modifier));
+    log.addItem(logMessage(
+        "Increasing maxHP by " + modifier.multiply(new BigDecimal(100)) + "%; Now maxHp=" + this.getMaxHP()));
+    return log;
   }
 
   /**
@@ -516,8 +555,12 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseCritRate(BigDecimal amount) {
+  public LogItem increaseCritRate(BigDecimal amount) {
+    Log log = new Log();
     this.critRate = this.critRate.add(amount);
+    log.addItem(logMessage(
+        "Increasing CritRate by " + amount.multiply(new BigDecimal(100)) + "%; Now critRate=" + this.getCritRate()));
+    return log;
   }
 
   @Override
@@ -526,8 +569,12 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseCritDamage(BigDecimal amount) {
+  public LogItem increaseCritDamage(BigDecimal amount) {
+    Log log = new Log();
     this.critDamage = this.critDamage.add(amount);
+    log.addItem(logMessage("Increasing CritDamage by " + amount.multiply(new BigDecimal(100)) + "%; Now critDamage="
+        + this.getCritDamage()));
+    return log;
   }
 
   @Override
@@ -536,8 +583,12 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseDodgeChance(BigDecimal amount) {
+  public LogItem increaseDodgeChance(BigDecimal amount) {
+    Log log = new Log();
     this.dodge = this.dodge.add(amount);
+    log.addItem(logMessage("Increasing DodgeChance by " + amount.multiply(new BigDecimal(100)) + "%; Now DodgeChance="
+        + this.getDodgeChance()));
+    return log;
   }
 
   @Override
@@ -546,8 +597,11 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseDefenseBreak(BigDecimal amount) {
+  public LogItem increaseDefenseBreak(BigDecimal amount) {
+    Log log = new Log();
     this.defenseBreak = this.defenseBreak.add(amount);
+    log.addItem(logMessage("Increasing DefenseBreak by " + amount + "; Now DefenseBreak=" + this.getDefenseBreak()));
+    return log;
   }
 
   @Override
@@ -556,8 +610,12 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseHitRate(BigDecimal amount) {
+  public LogItem increaseHitRate(BigDecimal amount) {
+    Log log = new Log();
     this.hitRate = this.hitRate.add(amount);
+    log.addItem(logMessage(
+        "Increasing HitRate by " + amount.multiply(new BigDecimal(100)) + "%; Now HitRate=" + this.getHitRate()));
+    return log;
   }
 
   @Override
@@ -566,8 +624,11 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseSpeed(Integer amount) {
+  public LogItem increaseSpeed(Integer amount) {
+    Log log = new Log();
     this.speed += amount;
+    log.addItem(logMessage("Increasing Speed by " + amount + "; Now Speed=" + this.getSpeed()));
+    return log;
   }
 
   @Override
@@ -576,8 +637,11 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseDefense(Integer amount) {
+  public LogItem increaseDefense(Integer amount) {
+    Log log = new Log();
     this.defense += amount;
+    log.addItem(logMessage("Increasing Defense by " + amount + "; Now Defense=" + this.getDefense()));
+    return log;
   }
 
   @Override
@@ -586,8 +650,12 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseTrueDamage(BigDecimal amount) {
+  public LogItem increaseTrueDamage(BigDecimal amount) {
+    Log log = new Log();
     this.trueDamage = this.trueDamage.add(amount);
+    log.addItem(logMessage("Increasing TrueDamage by " + amount.multiply(new BigDecimal(100)) + "%; Now TrueDamage="
+        + this.getTrueDamage()));
+    return log;
   }
 
   @Override
@@ -596,8 +664,12 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseControlResist(BigDecimal amount) {
+  public LogItem increaseControlResist(BigDecimal amount) {
+    Log log = new Log();
     this.controlResist = this.controlResist.add(amount);
+    log.addItem(logMessage("Increasing ControlResist by " + amount.multiply(new BigDecimal(100))
+        + "%; Now ControlResist=" + this.getTrueDamage()));
+    return log;
   }
 
   @Override
@@ -606,18 +678,29 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseSilenceResistance(BigDecimal amount) {
+  public LogItem increaseSilenceResistance(BigDecimal amount) {
+    Log log = new Log();
     this.silenceResistance = this.silenceResistance.add(amount);
+    log.addItem(logMessage("Increasing SilenceResist by " + amount.multiply(new BigDecimal(100))
+        + "%; Now SilenceResist=" + this.getSilenceResistance()));
+    return log;
   }
 
   @Override
-  public void increaseEnergy(Integer amount) {
+  public LogItem increaseEnergy(Integer amount) {
+    Log log = new Log();
     this.currentEnergy += amount;
+    log.addItem(logMessage("Increasing Energy by " + amount + "; Now Energy=" + this.getCurrentEnergy()));
+    return log;
   }
 
   @Override
-  public void increaseAssassinDamageModifier(BigDecimal amount) {
+  public LogItem increaseAssassinDamageModifier(BigDecimal amount) {
+    Log log = new Log();
     this.assassinDamageModifier = this.assassinDamageModifier.add(amount);
+    log.addItem(logMessage("Increasing ExDmgToAssassin by " + amount.multiply(new BigDecimal(100))
+        + "%; Now ExDmgToAssassin=" + this.getAssassinDamageModifier()));
+    return log;
   }
 
   @Override
@@ -626,8 +709,12 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseWarriorDamageModifier(BigDecimal amount) {
+  public LogItem increaseWarriorDamageModifier(BigDecimal amount) {
+    Log log = new Log();
     this.warriorDamageModifier = this.warriorDamageModifier.add(amount);
+    log.addItem(logMessage("Increasing ExDmgToWarrior by " + amount.multiply(new BigDecimal(100))
+        + "%; Now ExDmgToWarrior=" + this.getWarriorDamageModifier()));
+    return log;
   }
 
   @Override
@@ -636,8 +723,12 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseWandererDamageModifier(BigDecimal amount) {
+  public LogItem increaseWandererDamageModifier(BigDecimal amount) {
+    Log log = new Log();
     this.wandererDamageModifier = this.wandererDamageModifier.add(amount);
+    log.addItem(logMessage("Increasing ExDmgToWanderer by " + amount.multiply(new BigDecimal(100))
+        + "%; Now ExDmgToWanderer=" + this.getWandererDamageModifier()));
+    return log;
   }
 
   @Override
@@ -646,8 +737,12 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseMageDamageModifier(BigDecimal amount) {
+  public LogItem increaseMageDamageModifier(BigDecimal amount) {
+    Log log = new Log();
     this.mageDamageModifier = this.mageDamageModifier.add(amount);
+    log.addItem(logMessage("Increasing ExDmgToMage by " + amount.multiply(new BigDecimal(100)) + "%; Now ExDmgToMage="
+        + this.getMageDamageModifier()));
+    return log;
   }
 
   @Override
@@ -656,8 +751,12 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseClericDamageModifier(BigDecimal amount) {
+  public LogItem increaseClericDamageModifier(BigDecimal amount) {
+    Log log = new Log();
     this.clericDamageModifier = this.clericDamageModifier.add(amount);
+    log.addItem(logMessage("Increasing ExDmgToCleric by " + amount.multiply(new BigDecimal(100))
+        + "%; Now ExDmgToCleric=" + this.getClericDamageModifier()));
+    return log;
   }
 
   @Override
@@ -671,23 +770,35 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void increaseDamageReduce(BigDecimal amount) {
+  public LogItem increaseDamageReduce(BigDecimal amount) {
+    Log log = new Log();
     this.damageReduce = this.damageReduce.add(amount);
+    log.addItem(logMessage("Increasing DamageReduce by " + amount.multiply(new BigDecimal(100)) + "%; Now DamageReduce="
+        + this.getDamageReduce()));
+    return log;
   }
 
   @Override
-  public void addOnDeathAction(Consumer<BattleSetting> action) {
+  public void addOnDeathAction(Function<BattleSetting, LogItem> action) {
     onDeathAction.add(action);
   }
 
   @Override
-  public void addTemporaryEffect(TemporaryEffect effect) {
+  public LogItem addTemporaryEffect(TemporaryEffect effect) {
+    Log log = new Log();
+    log.addItem(logMessage("Adding temporary effect " + effect));
     activeEffects.addEffect(effect);
+    return log;
   }
 
   @Override
-  public void basicAttack(BattleSetting setting) {
-    setting.getOpposingTeam(this).getHeroes().get(0).damage(this, new BigDecimal("1"));
+  public LogItem basicAttack(BattleSetting setting) {
+    Log log = new Log();
+    Hero attackedHero = setting.getOpposingTeam(this).getHeroes().get(0);
+    log.addItem(logMessage("Basic attack at " + attackedHero.getFullName()));
+    log.addItem(attackedHero.damage(setting, this, new BigDecimal("1")));
+    log.addItem(increaseEnergy(50));
+    return log;
   }
 
   @Override
@@ -696,9 +807,68 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public void doAttack() {
-    // TODO Auto-generated method stub
+  public LogItem doAttack(BattleSetting setting) {
+    if (getCurrentEnergy() < 100) {
+      return basicAttack(setting);
+    } else {
+      return doSkillAttack(setting);
+    }
+  }
 
+  private LogItem doSkillAttack(BattleSetting setting) {
+    Log log = new Log();
+    log.addItem(logMessage("initiating active skill"));
+    log.addItem(skillAttack(setting));
+    log.addItem(zeroEnergy());
+    return log;
+  }
+
+  @Override
+  public LogMessage logMessage(String message) {
+    return new LogMessage(getFullName() + ": " + message);
+  }
+
+  @Override
+  public String getName() {
+    return heroType.getName();
+  }
+
+  @Override
+  public String getFullName() {
+    return isAttacker.map(b -> b ? "A" : "D").orElse("U") + ":"
+        + position.map(p -> new Integer(p + 1).toString()).orElse("U") + ":" + getName();
+  }
+
+  @Override
+  public void setPosition(Integer pos) {
+    this.position = Optional.ofNullable(pos);
+  }
+
+  @Override
+  public void setAttacker() {
+    isAttacker = Optional.of(true);
+  }
+
+  @Override
+  public void setDefender() {
+    isAttacker = Optional.of(false);
+  }
+
+  @Override
+  public LogItem zeroEnergy() {
+    Log log = new Log();
+    currentEnergy = 0;
+    log.addItem(logMessage("Setting currentEnergy to 0"));
+    return log;
+  }
+
+  @Override
+  public LogItem getInformation() {
+    Log log = new Log();
+    log.addMessage("Level " + level + " " + heroType.getName());
+    log.addMessage("Loadout:");
+    log.addItem(loadout.getInformation());
+    return log;
   }
 
   @Override

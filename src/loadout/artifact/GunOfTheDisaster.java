@@ -7,6 +7,10 @@ import heroes.Hero;
 
 public class GunOfTheDisaster extends AbstractArtifact {
 
+  public GunOfTheDisaster() {
+    super(ArtifactType.GUNOFTHEDISASTER);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.addMaxHPModifier(new BigDecimal("0.105"));

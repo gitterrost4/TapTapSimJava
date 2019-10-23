@@ -10,17 +10,23 @@ import java.util.function.Function;
  **/
 
 public enum HeroType {
-  REAPER(params->new Reaper(params)),
-  MULAN(params->new Mulan(params));
+  REAPER("Reaper",params->new Reaper(params)),
+  MULAN("Mulan",params->new Mulan(params));
 
   private final Function<HeroParameters,AbstractHero> creator;
+  private final String name;
 
-  private HeroType(Function<HeroParameters,AbstractHero> creator) {
+  private HeroType(String name, Function<HeroParameters,AbstractHero> creator) {
+    this.name = name;
     this.creator=creator;
   }
 
   public AbstractHero create(HeroParameters parameters) {
     return creator.apply(parameters);
+  }
+
+  public String getName() {
+    return name;
   }
 }
 

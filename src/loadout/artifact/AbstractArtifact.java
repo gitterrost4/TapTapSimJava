@@ -2,6 +2,8 @@
 // (C) cantamen/Paul Kramer 2019
 package loadout.artifact;
 
+import battle.logging.LogItem;
+import battle.logging.LogMessage;
 import loadout.HeroModifier;
 
 /**
@@ -9,6 +11,17 @@ import loadout.HeroModifier;
  *
  */
 public abstract class AbstractArtifact implements HeroModifier {
+
+  private final ArtifactType artifactType;
+
+  public AbstractArtifact(ArtifactType artifactType) {
+    super();
+    this.artifactType = artifactType;
+  }
+
+  public LogItem getInformation() {
+    return new LogMessage(artifactType.getName());
+  }
 
 }
 

@@ -7,6 +7,10 @@ import heroes.Hero;
 
 public class SnowDance extends AbstractArtifact {
 
+  public SnowDance() {
+    super(ArtifactType.SNOWDANCE);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.increaseWarriorDamageModifier(new BigDecimal("0.44"));

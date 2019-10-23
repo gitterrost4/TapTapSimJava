@@ -6,6 +6,10 @@ import heroes.Hero;
 
 public class Dragonblood extends AbstractArtifact {
 
+  public Dragonblood() {
+    super(ArtifactType.DRAGONBLOOD);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.increaseTrueDamage(new BigDecimal("0.126"));

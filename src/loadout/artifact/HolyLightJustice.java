@@ -7,6 +7,10 @@ import heroes.Hero;
 
 public class HolyLightJustice extends AbstractArtifact {
 
+  public HolyLightJustice() {
+    super(ArtifactType.HOLYLIGHTJUSTICE);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.addAttackModifier(new BigDecimal("0.126"));

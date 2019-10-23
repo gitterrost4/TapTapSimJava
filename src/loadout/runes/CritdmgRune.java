@@ -16,6 +16,7 @@ public class CritdmgRune extends AbstractRune {
   private BigDecimal critDamageBonus;
 
   public CritdmgRune(RuneRarity rarity) {
+    super(RuneType.CRITDMG, rarity);
     switch (rarity) {
     case PURPLE1:
       critDamageBonus = new BigDecimal("0.104");

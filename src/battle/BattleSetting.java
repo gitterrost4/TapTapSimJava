@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import battle.logging.Log;
+import battle.logging.LogItem;
 import heroes.Hero;
 
 /**
@@ -19,8 +21,14 @@ public class BattleSetting {
     super();
     this.attacker = attacker;
     this.defender = defender;
-    attacker.getHeroes().stream().forEach(h -> h.initTeam(this));
-    defender.getHeroes().stream().forEach(h -> h.initTeam(this));
+    attacker.getHeroes().stream().forEach(h -> {
+      h.initTeam(this);
+      h.setAttacker();
+    });
+    defender.getHeroes().stream().forEach(h -> {
+      h.initTeam(this);
+      h.setDefender();
+    });
   }
 
   public Team getAttacker() {
@@ -50,6 +58,15 @@ public class BattleSetting {
     } else {
       return attacker;
     }
+  }
+
+  public LogItem getInformation() {
+    Log log = new Log();
+    log.addMessage("Attacking Team:");
+    log.addItem(attacker.getInformation());
+    log.addMessage("Defending Team:");
+    log.addItem(defender.getInformation());
+    return log;
   }
 
 }

@@ -7,6 +7,10 @@ import heroes.Hero;
 
 public class GospelSong extends AbstractArtifact {
 
+  public GospelSong() {
+    super(ArtifactType.GOSPELSONG);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.addAttackModifier(new BigDecimal("0.126"));

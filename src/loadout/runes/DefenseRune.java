@@ -16,6 +16,7 @@ public class DefenseRune extends AbstractRune {
   private BigDecimal damageReduceBonus;
 
   public DefenseRune(RuneRarity rarity) {
+    super(RuneType.DEFENSE, rarity);
     switch (rarity) {
     case RED1:
       damageReduceBonus = new BigDecimal("0.108");

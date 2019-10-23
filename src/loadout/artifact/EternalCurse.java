@@ -7,6 +7,10 @@ import heroes.Hero;
 
 public class EternalCurse extends AbstractArtifact {
 
+  public EternalCurse() {
+    super(ArtifactType.ETERNALCURSE);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.addAttackModifier(new BigDecimal("0.126"));

@@ -9,6 +9,7 @@ public class HPRune extends AbstractRune {
   private final BigDecimal maxHPModifier;
 
   public HPRune(RuneRarity rarity) {
+    super(RuneType.HP, rarity);
     switch (rarity) {
     case BLUE1:
       maxHPBonus = 113;

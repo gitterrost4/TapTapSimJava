@@ -6,6 +6,10 @@ import heroes.Hero;
 
 public class Mirage extends AbstractArtifact {
 
+  public Mirage() {
+    super(ArtifactType.MIRAGE);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.increaseMageDamageModifier(new BigDecimal("0.29"));

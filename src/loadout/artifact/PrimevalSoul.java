@@ -7,6 +7,10 @@ import heroes.Hero;
 
 public class PrimevalSoul extends AbstractArtifact {
 
+  public PrimevalSoul() {
+    super(ArtifactType.PRIMEVALSOUL);
+  }
+
   @Override
   public void apply(Hero hero) {
     hero.increaseWarriorDamageModifier(new BigDecimal("0.44"));
