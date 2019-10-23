@@ -4,6 +4,7 @@ package heroes;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import battle.BattleSetting;
@@ -55,7 +56,7 @@ public class Reaper extends AbstractHero {
           return null;
         }
         Log log = new Log();
-        log.addMessage("Increasing attack and Defense Break of " + this.getFullName());
+        log.addItem(logMessage("Increasing attack and Defense Break of " + this.getFullName()));
         log.addItem(this.increaseDefenseBreak(new BigDecimal("0.084")));
         log.addItem(this.addAttackModifier(new BigDecimal("0.21")));
         return log;
@@ -83,8 +84,11 @@ public class Reaper extends AbstractHero {
     case 10:
       onDeathAction.add(setting -> {
         Log log = new Log();
-        setting.getOpposingTeam(this).getHeroes(true, true).stream()
-            .forEach(h -> log.addItem(h.damage(setting, this, new BigDecimal("1.07"))));
+        List<Hero> opposingHeroes = setting.getOpposingTeam(this).getHeroes(true, true);
+        if (opposingHeroes.size() > 0) {
+          log.addItem(logMessage("Dealing Damage (107% of Attack) to all enemies"));
+        }
+        opposingHeroes.stream().forEach(h -> log.addItem(h.damage(setting, this, new BigDecimal("1.07"))));
         return log;
       });
       break;
