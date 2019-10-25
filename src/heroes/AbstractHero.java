@@ -791,7 +791,7 @@ public abstract class AbstractHero implements Hero {
   public LogItem addTemporaryEffect(TemporaryEffect effect) {
     Log log=new Log();
     log.addItem(logMessage("Adding temporary effect " + effect));
-    activeEffects.addEffect(effect);
+    log.addItem(activeEffects.addEffect(effect));
     return log;
   }
 
