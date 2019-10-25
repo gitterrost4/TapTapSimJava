@@ -1,56 +1,53 @@
 // $Id $
 package loadout.runes;
 
-import java.math.BigDecimal;
-
 import heroes.Hero;
 
 /**
  * implementation of the vitality rune
- *
  */
 public class VitalityRune extends AbstractRune {
-  private final BigDecimal maxHPModifier;
+  private final double maxHPModifier;
   private final Integer maxHPBonus;
-  private final BigDecimal attackModifier;
+  private final double attackModifier;
 
   public VitalityRune(RuneRarity rarity) {
     super(RuneType.VITALITY, rarity);
     switch (rarity) {
     case ORANGE1:
       maxHPBonus = 1271;
-      maxHPModifier = new BigDecimal("0.148");
-      attackModifier = new BigDecimal("0.021");
+      maxHPModifier = 0.148;
+      attackModifier = 0.021;
       break;
     case ORANGE2:
       maxHPBonus = 1436;
-      maxHPModifier = new BigDecimal("0.17");
-      attackModifier = new BigDecimal("0.027");
+      maxHPModifier = 0.17;
+      attackModifier = 0.027;
       break;
     case ORANGE3:
       maxHPBonus = 1630;
-      maxHPModifier = new BigDecimal("0.192");
-      attackModifier = new BigDecimal("0.032");
+      maxHPModifier = 0.192;
+      attackModifier = 0.032;
       break;
     case ORANGE4:
       maxHPBonus = 1851;
-      maxHPModifier = new BigDecimal("0.214");
-      attackModifier = new BigDecimal("0.037");
+      maxHPModifier = 0.214;
+      attackModifier = 0.037;
       break;
     case RED1:
       maxHPBonus = 2102;
-      maxHPModifier = new BigDecimal("0.247");
-      attackModifier = new BigDecimal("0.054");
+      maxHPModifier = 0.247;
+      attackModifier = 0.054;
       break;
     case RED2:
       maxHPBonus = 2419;
-      maxHPModifier = new BigDecimal("0.27");
-      attackModifier = new BigDecimal("0.065");
+      maxHPModifier = 0.27;
+      attackModifier = 0.065;
       break;
     default:
-      maxHPModifier = new BigDecimal("0");
+      maxHPModifier = 0;
       maxHPBonus = 0;
-      attackModifier = new BigDecimal("0");
+      attackModifier = 0;
       break;
 
     }

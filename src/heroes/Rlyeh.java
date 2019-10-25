@@ -1,7 +1,6 @@
 // $Id $
 package heroes;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,14 +60,14 @@ public class Rlyeh extends AbstractHero {
     Hero attackedHero = setting.getOpposingTeam(this).getLowestHealthHero()
         .orElseThrow(() -> new IllegalStateException("No hero is alive anymore"));
     log.addItem(logMessage("Dealing Damage (170% of Attack) to " + attackedHero.getFullName()));
-    log.addItem(attackedHero.receiveAttack(setting, this, new BigDecimal("1.7"), true, true, h -> null));
+    log.addItem(attackedHero.receiveAttack(setting, this, 1.7, true, true, h -> null));
     Hero healedHero = setting.getOwnTeam(this).getLowestHealthHero()
         .orElseThrow(() -> new IllegalStateException("No hero is alive anymore"));
     log.addItem(logMessage("Healing (400% of Attack) to " + healedHero.getFullName()));
-    log.addItem(healedHero.heal(this.getAttack(), new BigDecimal("4")));
+    log.addItem(healedHero.heal(this.getAttack(), 4));
     log.addItem(logMessage("Increase DamageReduce by 20% for 3 rounds"));
-    log.addItem(this.addTemporaryEffect(new TemporaryEffect(h -> h.increaseDamageReduce(new BigDecimal("0.2")),
-        h -> null, h -> h.increaseDamageReduce(new BigDecimal("-0.2")), "Increase DamageReduce by 20%", 3)));
+    log.addItem(this.addTemporaryEffect(new TemporaryEffect(h -> h.increaseDamageReduce(0.2), h -> null,
+        h -> h.increaseDamageReduce(-0.2), "Increase DamageReduce by 20%", 3)));
     return log;
   }
 
@@ -77,7 +76,7 @@ public class Rlyeh extends AbstractHero {
    * star variants of the skill
    */
   private void applySkill3() {
-    this.addOnHitAction((hero, setting) -> this.addTemporaryEffect(new Heal(1, getAttack(), new BigDecimal("0.66"))));
+    this.addOnHitAction((hero, setting) -> this.addTemporaryEffect(new Heal(1, getAttack(), 0.66)));
   }
 
   /**
@@ -85,8 +84,8 @@ public class Rlyeh extends AbstractHero {
    * variants of the skill
    */
   private void applySkill4() {
-    this.addAttackModifier(new BigDecimal("0.25"));
-    this.addMaxHPModifier(new BigDecimal("0.2"));
+    this.addAttackModifier(0.25);
+    this.addMaxHPModifier(0.2);
   }
 
   @Override
@@ -97,14 +96,14 @@ public class Rlyeh extends AbstractHero {
     case 10:
       Hero attackedHero = setting.getOpposingTeam(this).getHeroes(true, true).get(0);
       log.addItem(logMessage("Basic attack at " + attackedHero.getFullName()));
-      log.addItem(attackedHero.receiveAttack(setting, this, new BigDecimal(1), false, true, h -> null));
-      if (Utilities.getRandomThrow(new BigDecimal("0.51"))) {
+      log.addItem(attackedHero.receiveAttack(setting, this, 1, false, true, h -> null));
+      if (Utilities.getRandomThrow(0.51)) {
         Hero healedHero = setting.getOwnTeam(this).getLowestHealthHero()
             .orElseThrow(() -> new IllegalStateException("No hero is alive anymore"));
         log.addItem(logMessage("Healing " + healedHero.getFullName() + " for 151% of Attack for 1 round"));
-        log.addItem(healedHero.addTemporaryEffect(new Heal(1, this.getAttack(), new BigDecimal("1.51"))));
+        log.addItem(healedHero.addTemporaryEffect(new Heal(1, this.getAttack(), 1.51)));
       }
-      log.addItem(increaseCurrentEnergy(new BigDecimal("50")));
+      log.addItem(increaseCurrentEnergy(50));
       break;
     default:
       break;

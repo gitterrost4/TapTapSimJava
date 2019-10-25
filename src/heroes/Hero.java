@@ -1,7 +1,6 @@
 // $Id $
 package heroes;
 
-import java.math.BigDecimal;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -43,7 +42,7 @@ public interface Hero {
    * @return get the currentEnergy of the hero (can go above 100 because of the
    *         internal buffer; TODO: Check if this works like this)
    */
-  public BigDecimal getCurrentEnergy();
+  public double getCurrentEnergy();
 
   /**
    * Increase the attack of a hero.
@@ -70,7 +69,7 @@ public interface Hero {
    *        the modifier to be added to the attack stat
    * @return A log item containing the logged information of this operation
    */
-  public LogItem addAttackModifier(BigDecimal modifier);
+  public LogItem addAttackModifier(double modifier);
 
   /**
    * Add a multiplicator for the hp
@@ -79,7 +78,7 @@ public interface Hero {
    *        the modifier to be added to the maxHP stat
    * @return A log item containing the logged information of this operation
    */
-  public LogItem addMaxHPModifier(BigDecimal modifier);
+  public LogItem addMaxHPModifier(double modifier);
 
   /**
    * @return the faction of the hero
@@ -99,7 +98,7 @@ public interface Hero {
   /**
    * @return the critRate stat of the hero
    */
-  public BigDecimal getCritRate();
+  public double getCritRate();
 
   /**
    * Increase the crit rate of a hero by an amount
@@ -108,12 +107,12 @@ public interface Hero {
    *        amount to increase critRate by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseCritRate(BigDecimal amount);
+  public LogItem increaseCritRate(double amount);
 
   /**
    * @return the critDamage stat of the hero
    */
-  public BigDecimal getCritDamage();
+  public double getCritDamage();
 
   /**
    * Increase the critDamage of a hero by an amount
@@ -122,12 +121,12 @@ public interface Hero {
    *        amount to increase the critDamage by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseCritDamage(BigDecimal amount);
+  public LogItem increaseCritDamage(double amount);
 
   /**
    * @return the dodge chance of the hero
    */
-  public BigDecimal getDodgeChance();
+  public double getDodgeChance();
 
   /**
    * increase the dodge chance of a hero by an amount
@@ -136,12 +135,12 @@ public interface Hero {
    *        amount to increase the dodge chance by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseDodgeChance(BigDecimal amount);
+  public LogItem increaseDodgeChance(double amount);
 
   /**
    * @return the skillDamage stat of the hero
    */
-  public BigDecimal getSkillDamage();
+  public double getSkillDamage();
 
   /**
    * increase the skillDamage stat of a hero by an amount
@@ -150,12 +149,12 @@ public interface Hero {
    *        amount to increase the skillDamage stat by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseSkillDamage(BigDecimal amount);
+  public LogItem increaseSkillDamage(double amount);
 
   /**
    * @return the defenseBreak (sometimes armorBreak) stat of the hero
    */
-  public BigDecimal getDefenseBreak();
+  public double getDefenseBreak();
 
   /**
    * increase the defenseBreak (sometimes armorBreak) stat of a hero by an amount
@@ -164,12 +163,12 @@ public interface Hero {
    *        amount to increase defenseBreak by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseDefenseBreak(BigDecimal amount);
+  public LogItem increaseDefenseBreak(double amount);
 
   /**
    * @return the hitRate stat of the hero
    */
-  public BigDecimal getHitRate();
+  public double getHitRate();
 
   /**
    * increase the hitRate stat of a hero by an amount
@@ -178,7 +177,7 @@ public interface Hero {
    *        amount to increase hitRate by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseHitRate(BigDecimal amount);
+  public LogItem increaseHitRate(double amount);
 
   /**
    * @return the speed stat of the hero
@@ -211,7 +210,7 @@ public interface Hero {
   /**
    * @return the trueDamage stat of the hero
    */
-  public BigDecimal getTrueDamage();
+  public double getTrueDamage();
 
   /**
    * increase the trueDamage stat of the hero by an amount
@@ -220,12 +219,12 @@ public interface Hero {
    *        amount to increase trueDamage by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseTrueDamage(BigDecimal amount);
+  public LogItem increaseTrueDamage(double amount);
 
   /**
    * @return the controlResist stat of the hero
    */
-  public BigDecimal getControlResist();
+  public double getControlResist();
 
   /**
    * increase the controlResist stat of the hero by an amount
@@ -234,12 +233,12 @@ public interface Hero {
    *        amount to increase controlResist by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseControlResist(BigDecimal amount);
+  public LogItem increaseControlResist(double amount);
 
   /**
    * @return the silenceResistance stat
    */
-  public BigDecimal getSilenceResistance();
+  public double getSilenceResistance();
 
   /**
    * increase the silenceResistance stat of the hero by an amount
@@ -248,7 +247,7 @@ public interface Hero {
    *        amount to increase silenceResistance by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseSilenceResistance(BigDecimal amount);
+  public LogItem increaseSilenceResistance(double amount);
 
   /**
    * increase the current energy of the hero by an amount
@@ -257,7 +256,7 @@ public interface Hero {
    *        amount to increase energy by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseCurrentEnergy(BigDecimal amount);
+  public LogItem increaseCurrentEnergy(double amount);
 
   /**
    * increase the ExDMGToAssassin stat of the hero
@@ -266,12 +265,12 @@ public interface Hero {
    *        amount to increase ExDMGToAssassin by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseAssassinDamageModifier(BigDecimal amount);
+  public LogItem increaseAssassinDamageModifier(double amount);
 
   /**
    * @return the ExDMGToAssassin stat of the hero
    */
-  public BigDecimal getAssassinDamageModifier();
+  public double getAssassinDamageModifier();
 
   /**
    * increase the ExDMGToWarrior stat of the hero
@@ -280,12 +279,12 @@ public interface Hero {
    *        amount to increase ExDMGToWarrior by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseWarriorDamageModifier(BigDecimal amount);
+  public LogItem increaseWarriorDamageModifier(double amount);
 
   /**
    * @return the ExDMGToWarrior stat of the hero
    */
-  public BigDecimal getWarriorDamageModifier();
+  public double getWarriorDamageModifier();
 
   /**
    * increase the ExDMGToWanderer stat of the hero
@@ -294,12 +293,12 @@ public interface Hero {
    *        amount to increase ExDMGToWanderer by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseWandererDamageModifier(BigDecimal amount);
+  public LogItem increaseWandererDamageModifier(double amount);
 
   /**
    * @return the ExDMGToWanderer stat of the hero
    */
-  public BigDecimal getWandererDamageModifier();
+  public double getWandererDamageModifier();
 
   /**
    * increase the ExDMGToMage stat of the hero
@@ -308,12 +307,12 @@ public interface Hero {
    *        amount to increase ExDMGToMage by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseMageDamageModifier(BigDecimal amount);
+  public LogItem increaseMageDamageModifier(double amount);
 
   /**
    * @return the ExDMGToMage stat of the hero
    */
-  public BigDecimal getMageDamageModifier();
+  public double getMageDamageModifier();
 
   /**
    * increase the ExDMGToCleric stat of the hero
@@ -322,17 +321,17 @@ public interface Hero {
    *        amount to increase ExDMGToCleric by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseClericDamageModifier(BigDecimal amount);
+  public LogItem increaseClericDamageModifier(double amount);
 
   /**
    * @return the ExDMGToCleric stat of the hero
    */
-  public BigDecimal getClericDamageModifier();
+  public double getClericDamageModifier();
 
   /**
    * @return the DamageReduce stat of the hero
    */
-  public BigDecimal getDamageReduce();
+  public double getDamageReduce();
 
   /**
    * increase the damageReduce stat for the hero
@@ -341,7 +340,7 @@ public interface Hero {
    *        amount to increase the damageReduce stat by
    * @return A log item containing the logged information of this operation
    */
-  public LogItem increaseDamageReduce(BigDecimal amount);
+  public LogItem increaseDamageReduce(double amount);
 
   /**
    * add an onDeath Effect to the hero
@@ -502,7 +501,7 @@ public interface Hero {
    *        in "(130% of Attack)". (this would lead to a modifier of 1.3)
    * @return A log item containing the logged information of this operation
    */
-  public LogItem heal(Integer baseStat, BigDecimal modifier);
+  public LogItem heal(Integer baseStat, double modifier);
 
   /**
    * add an onHit Effect to the hero
@@ -559,37 +558,37 @@ public interface Hero {
   /**
    * @return the ExDMGToBurning stat of the hero
    */
-  public BigDecimal getBurningDamageModifier();
+  public double getBurningDamageModifier();
 
   /**
    * @return the ExDMGToPoisoned stat of the hero
    */
-  public BigDecimal getPoisonedDamageModifier();
+  public double getPoisonedDamageModifier();
 
   /**
    * @return the ExDMGToPetrified stat of the hero
    */
-  public BigDecimal getPetrifiedDamageModifier();
+  public double getPetrifiedDamageModifier();
 
   /**
    * @return the ExDMGToBleeding stat of the hero
    */
-  public BigDecimal getBleedingDamageModifier();
+  public double getBleedingDamageModifier();
 
   /**
    * @return the ExDMGToFrozen stat of the hero
    */
-  public BigDecimal getFrozenDamageModifier();
+  public double getFrozenDamageModifier();
 
   /**
    * @return the ExDMGToSilenced stat of the hero
    */
-  public BigDecimal getSilencedDamageModifier();
+  public double getSilencedDamageModifier();
 
   /**
    * @return the ExDMGToStunned stat of the hero
    */
-  public BigDecimal getStunnedDamageModifier();
+  public double getStunnedDamageModifier();
 
   /**
    * Process being attacked (by any attack), calculate received damage, trigger
@@ -611,7 +610,7 @@ public interface Hero {
    *        (like apply poison or reduce attack)
    * @return A log item containing the logged information of this operation
    */
-  LogItem receiveAttack(BattleSetting setting, Hero source, BigDecimal skillStrength, boolean isActiveSkill,
+  LogItem receiveAttack(BattleSetting setting, Hero source, double skillStrength, boolean isActiveSkill,
       boolean canBeDodged, Function<Hero, LogItem> onHitAction);
 
 }

@@ -1,24 +1,19 @@
 package heroes;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class HeroTier {
-  public static final List<HeroTier> ALL = Stream.of(new HeroTier(0, new BigDecimal(1), new BigDecimal(1), 0),
-      new HeroTier(30, new BigDecimal("1.2"), new BigDecimal("1.2"), 23),
-      new HeroTier(40, new BigDecimal("1.4"), new BigDecimal("1.4"), 50),
-      new HeroTier(50, new BigDecimal("1.6"), new BigDecimal("1.6"), 80),
-      new HeroTier(60, new BigDecimal("1.8"), new BigDecimal("1.8"), 112),
-      new HeroTier(80, new BigDecimal("2.0"), new BigDecimal("2.0"), 147),
-      new HeroTier(100, new BigDecimal("2.25"), new BigDecimal("2.25"), 197)).collect(Collectors.toList());
+  public static final List<HeroTier> ALL = Stream.of(new HeroTier(0, 1, 1, 0), new HeroTier(30, 1.2, 1.2, 23),
+      new HeroTier(40, 1.4, 1.4, 50), new HeroTier(50, 1.6, 1.6, 80), new HeroTier(60, 1.8, 1.8, 112),
+      new HeroTier(80, 2.0, 2.0, 147), new HeroTier(100, 2.25, 2.25, 197)).collect(Collectors.toList());
   public final Integer minLevel;
-  public final BigDecimal maxHPModifier;
-  public final BigDecimal attackModifier;
+  public final double maxHPModifier;
+  public final double attackModifier;
   public final Integer speedIncrease;
 
-  public HeroTier(Integer minLevel, BigDecimal maxHPModifier, BigDecimal attackModifier, Integer speedIncrease) {
+  public HeroTier(Integer minLevel, double maxHPModifier, double attackModifier, Integer speedIncrease) {
     super();
     this.minLevel = minLevel;
     this.maxHPModifier = maxHPModifier;

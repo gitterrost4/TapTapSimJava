@@ -1,7 +1,5 @@
 package util;
 
-import java.math.BigDecimal;
-
 /**
  * Utilities class containing various methods that are needed throughout the
  * project
@@ -15,8 +13,8 @@ public class Utilities {
    *        chance for this toss to be true
    * @return true if the coin toss was successful
    */
-  public static boolean getRandomThrow(BigDecimal chance) {
-    return new BigDecimal(Math.random()).compareTo(chance) <= 0;
+  public static boolean getRandomThrow(double chance) {
+    return Math.random() <= chance;
   }
 
 }

@@ -1,7 +1,5 @@
 package loadout.artifact;
 
-import java.math.BigDecimal;
-
 import heroes.Hero;
 
 public class GoddessBow extends AbstractArtifact {
@@ -12,8 +10,8 @@ public class GoddessBow extends AbstractArtifact {
 
   @Override
   public void apply(Hero hero) {
-    hero.addAttackModifier(new BigDecimal("0.083"));
-    hero.increaseHitRate(new BigDecimal("0.031"));
+    hero.addAttackModifier(0.083);
+    hero.increaseHitRate(0.031);
   }
 
 }

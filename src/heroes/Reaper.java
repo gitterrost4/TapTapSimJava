@@ -1,7 +1,6 @@
 // $Id $
 package heroes;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,8 +74,8 @@ public class Reaper extends AbstractHero {
         }
         Log log = new Log();
         log.addItem(logMessage("Increasing attack and Defense Break of " + this.getFullName()));
-        log.addItem(this.increaseDefenseBreak(new BigDecimal("0.084")));
-        log.addItem(this.addAttackModifier(new BigDecimal("0.21")));
+        log.addItem(this.increaseDefenseBreak(0.084));
+        log.addItem(this.addAttackModifier(0.21));
         return log;
       }));
       break;
@@ -92,9 +91,9 @@ public class Reaper extends AbstractHero {
   private void applySkill3() {
     switch (star) {
     case 10:
-      this.increaseDefenseBreak(new BigDecimal("9.6"));
-      this.addAttackModifier(new BigDecimal("0.3"));
-      this.addMaxHPModifier(new BigDecimal("0.3"));
+      this.increaseDefenseBreak(9.6);
+      this.addAttackModifier(0.3);
+      this.addMaxHPModifier(0.3);
       break;
     default:
       break;
@@ -114,8 +113,7 @@ public class Reaper extends AbstractHero {
         if (opposingHeroes.size() > 0) {
           log.addItem(logMessage("Dealing Damage (107% of Attack) to all enemies"));
         }
-        opposingHeroes.stream()
-            .forEach(h -> log.addItem(h.receiveAttack(setting, this, new BigDecimal("1.07"), false, true, x -> null)));
+        opposingHeroes.stream().forEach(h -> log.addItem(h.receiveAttack(setting, this, 1.07, false, true, x -> null)));
         return log;
       });
       break;
@@ -131,16 +129,15 @@ public class Reaper extends AbstractHero {
     case 10:
       log.addItem(logMessage("attacking all opposing heroes for 180% of attack"));
       setting.getOpposingTeam(this).getHeroes(true, true).forEach(h -> {
-        log.addItem(h.receiveAttack(setting, this, new BigDecimal("1.8"), true, false, x -> null));
+        log.addItem(h.receiveAttack(setting, this, 1.8, true, false, x -> null));
         if (h.getHeroClass().equals(HeroClass.WARRIOR)) {
           log.addItem(h.addTemporaryEffect(new Silence(2)));
         }
       });
 
       // increase own attack by 20% for 2 rounds
-      log.addItem(this.addTemporaryEffect(new TemporaryEffect(h -> h.addAttackModifier(new BigDecimal("1.2")),
-          h -> null, h -> h.addAttackModifier(new BigDecimal("1").divide(new BigDecimal("1.2"))),
-          "increase own attack by 20%", 2)));
+      log.addItem(this.addTemporaryEffect(new TemporaryEffect(h -> h.addAttackModifier(1.2), h -> null,
+          h -> h.addAttackModifier(1 / 1.2), "increase own attack by 20%", 2)));
       break;
     default:
       log.addItem(logMessage("not doing anything. Probably something went wrong"));

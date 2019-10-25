@@ -1,7 +1,5 @@
 package loadout.artifact;
 
-import java.math.BigDecimal;
-
 import heroes.Hero;
 
 public class TearsOfTheGoddess extends AbstractArtifact {
@@ -12,9 +10,9 @@ public class TearsOfTheGoddess extends AbstractArtifact {
 
   @Override
   public void apply(Hero hero) {
-    hero.addAttackModifier(new BigDecimal("0.105"));
-    hero.addMaxHPModifier(new BigDecimal("0.084"));
-    hero.increaseCurrentEnergy(new BigDecimal("50"));
+    hero.addAttackModifier(0.105);
+    hero.addMaxHPModifier(0.084);
+    hero.increaseCurrentEnergy(50);
   }
 
 }

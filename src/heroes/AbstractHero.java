@@ -1,6 +1,5 @@
 package heroes;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -309,7 +308,7 @@ public abstract class AbstractHero implements Hero {
   /**
    * the modifier that maxHP is multiplied by
    */
-  private BigDecimal maxHPModifier;
+  private double maxHPModifier;
 
   /**
    * the current amount of HP this hero has (different to maxHP if the hero is
@@ -320,7 +319,7 @@ public abstract class AbstractHero implements Hero {
   /**
    * currentEnergy a hero has
    */
-  private BigDecimal currentEnergy;
+  private double currentEnergy;
 
   /**
    * attack stat of the hero
@@ -330,27 +329,27 @@ public abstract class AbstractHero implements Hero {
   /**
    * attack modifier that attack is multiplied by
    */
-  private BigDecimal attackModifier;
+  private double attackModifier;
 
   /**
    * dodge stat of the hero
    */
-  private BigDecimal dodge;
+  private double dodge;
 
   /**
    * hit rate of the hero.
    */
-  private BigDecimal hitRate;
+  private double hitRate;
 
   /**
    * crit rate of the hero
    */
-  private BigDecimal critRate;
+  private double critRate;
 
   /**
    * crit rate of the hero
    */
-  private BigDecimal skillDamage;
+  private double skillDamage;
 
   /**
    * speed of the hero
@@ -362,23 +361,23 @@ public abstract class AbstractHero implements Hero {
    */
   private Integer defense;
 
-  private BigDecimal defenseBreak;
+  private double defenseBreak;
 
-  private BigDecimal trueDamage;
+  private double trueDamage;
 
-  private BigDecimal critDamage;
+  private double critDamage;
 
-  private BigDecimal controlResist;
+  private double controlResist;
 
-  private BigDecimal silenceResistance;
+  private double silenceResistance;
 
-  private BigDecimal assassinDamageModifier;
-  private BigDecimal clericDamageModifier;
-  private BigDecimal warriorDamageModifier;
-  private BigDecimal wandererDamageModifier;
-  private BigDecimal mageDamageModifier;
+  private double assassinDamageModifier;
+  private double clericDamageModifier;
+  private double warriorDamageModifier;
+  private double wandererDamageModifier;
+  private double mageDamageModifier;
 
-  private BigDecimal damageReduce;
+  private double damageReduce;
 
   private TemporaryEffectCollection activeEffects = new TemporaryEffectCollection(this);
 
@@ -389,13 +388,13 @@ public abstract class AbstractHero implements Hero {
 
   private boolean isDead = false;
 
-  private BigDecimal burningDamageModifier;
-  private BigDecimal frozenDamageModifier;
-  private BigDecimal silencedDamageModifier;
-  private BigDecimal stunnedDamageModifier;
-  private BigDecimal poisonedDamageModifier;
-  private BigDecimal petrifiedDamageModifier;
-  private BigDecimal bleedingDamageModifier;
+  private double burningDamageModifier;
+  private double frozenDamageModifier;
+  private double silencedDamageModifier;
+  private double stunnedDamageModifier;
+  private double poisonedDamageModifier;
+  private double petrifiedDamageModifier;
+  private double bleedingDamageModifier;
 
   public AbstractHero(HeroParameters parameters, Map<Integer, BaseStats> baseStats, HeroClass heroClass,
       Faction faction, HeroType heroType) {
@@ -407,30 +406,30 @@ public abstract class AbstractHero implements Hero {
     this.star = parameters.star;
     this.loadout = parameters.loadout;
     computeStats(parameters, baseStats);
-    this.currentEnergy = new BigDecimal("50");
-    this.hitRate = new BigDecimal(0);
-    this.dodge = new BigDecimal(0);
-    this.critRate = new BigDecimal(0);
-    this.critDamage = new BigDecimal(0);
-    this.controlResist = new BigDecimal(0);
-    this.defenseBreak = new BigDecimal(0);
-    this.skillDamage = new BigDecimal(1);
-    this.attackModifier = new BigDecimal(1);
-    this.maxHPModifier = new BigDecimal(1);
-    this.trueDamage = new BigDecimal(1);
-    this.assassinDamageModifier = new BigDecimal(0);
-    this.wandererDamageModifier = new BigDecimal(0);
-    this.clericDamageModifier = new BigDecimal(0);
-    this.mageDamageModifier = new BigDecimal(0);
-    this.warriorDamageModifier = new BigDecimal(0);
-    this.bleedingDamageModifier = new BigDecimal(0);
-    this.frozenDamageModifier = new BigDecimal(0);
-    this.silencedDamageModifier = new BigDecimal(0);
-    this.stunnedDamageModifier = new BigDecimal(0);
-    this.poisonedDamageModifier = new BigDecimal(0);
-    this.burningDamageModifier = new BigDecimal(0);
-    this.petrifiedDamageModifier = new BigDecimal(0);
-    this.damageReduce = new BigDecimal(0);
+    this.currentEnergy = 50;
+    this.hitRate = 0;
+    this.dodge = 0;
+    this.critRate = 0;
+    this.critDamage = 0;
+    this.controlResist = 0;
+    this.defenseBreak = 0;
+    this.skillDamage = 0;
+    this.attackModifier = 1;
+    this.maxHPModifier = 1;
+    this.trueDamage = 0;
+    this.assassinDamageModifier = 0;
+    this.wandererDamageModifier = 0;
+    this.clericDamageModifier = 0;
+    this.mageDamageModifier = 0;
+    this.warriorDamageModifier = 0;
+    this.bleedingDamageModifier = 0;
+    this.frozenDamageModifier = 0;
+    this.silencedDamageModifier = 0;
+    this.stunnedDamageModifier = 0;
+    this.poisonedDamageModifier = 0;
+    this.burningDamageModifier = 0;
+    this.petrifiedDamageModifier = 0;
+    this.damageReduce = 0;
     parameters.loadout.apply(this);
     this.currentHP = getMaxHP();
   }
@@ -438,25 +437,21 @@ public abstract class AbstractHero implements Hero {
   private void computeStats(HeroParameters parameters, Map<Integer, BaseStats> baseStats) {
     BaseStats base = baseStats.get(parameters.star);
     HeroTier tier = HeroTier.getTierForLevel(parameters.level);
-    this.maxHP = new BigDecimal(base.maxHP)
-        .multiply(new BigDecimal(1).add(new BigDecimal(parameters.level - 1).multiply(new BigDecimal("0.1"))))
-        .multiply(tier.maxHPModifier).intValue();
-    this.attack = new BigDecimal(base.attack)
-        .multiply(new BigDecimal(1).add(new BigDecimal(parameters.level - 1).multiply(new BigDecimal("0.1"))))
-        .multiply(tier.attackModifier).intValue();
+    this.maxHP = new Double(base.maxHP * (1 + (parameters.level - 1) * 0.1) * tier.maxHPModifier).intValue();
+    this.attack = new Double(base.attack * (1 + (parameters.level - 1) * 0.1) * tier.attackModifier).intValue();
     this.speed = base.speed + speedModifierPerLevel.get(parameters.level) + tier.speedIncrease;
     this.defense = base.defense;
   }
 
   @Override
-  public BigDecimal getSkillDamage() {
+  public double getSkillDamage() {
     return skillDamage;
   }
 
   @Override
-  public LogItem increaseSkillDamage(BigDecimal amount) {
+  public LogItem increaseSkillDamage(double amount) {
     Log log = new Log();
-    this.skillDamage = this.skillDamage.add(amount);
+    this.skillDamage += amount;
     log.addItem(logMessage("Increasing SkillDamage by " + amount + "; now SkillDamage=" + this.skillDamage));
     return log;
   }
@@ -486,16 +481,16 @@ public abstract class AbstractHero implements Hero {
 
   @Override
   public Integer getMaxHP() {
-    return maxHPModifier.multiply(new BigDecimal(maxHP)).intValue();
+    return new Double(maxHPModifier * maxHP).intValue();
   }
 
   @Override
   public Integer getAttack() {
-    return attackModifier.multiply(new BigDecimal(attack)).intValue();
+    return new Double(attackModifier * attack).intValue();
   }
 
   @Override
-  public BigDecimal getCurrentEnergy() {
+  public double getCurrentEnergy() {
     return currentEnergy;
   }
 
@@ -516,20 +511,18 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public LogItem addAttackModifier(BigDecimal modifier) {
+  public LogItem addAttackModifier(double modifier) {
     Log log = new Log();
-    this.attackModifier = this.attackModifier.multiply(new BigDecimal(1).add(modifier));
-    log.addItem(logMessage(
-        "Increasing attack by " + modifier.multiply(new BigDecimal(100)) + "%; Now attack=" + this.getAttack()));
+    this.attackModifier *= 1 + modifier;
+    log.addItem(logMessage("Increasing attack by " + modifier * 100 + "%; Now attack=" + this.getAttack()));
     return log;
   }
 
   @Override
-  public LogItem addMaxHPModifier(BigDecimal modifier) {
+  public LogItem addMaxHPModifier(double modifier) {
     Log log = new Log();
-    this.maxHPModifier = this.maxHPModifier.multiply(new BigDecimal(1).add(modifier));
-    log.addItem(logMessage(
-        "Increasing maxHP by " + modifier.multiply(new BigDecimal(100)) + "%; Now maxHp=" + this.getMaxHP()));
+    this.maxHPModifier *= 1 + modifier;
+    log.addItem(logMessage("Increasing maxHP by " + modifier * 100 + "%; Now maxHp=" + this.getMaxHP()));
     return log;
   }
 
@@ -549,71 +542,68 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public BigDecimal getCritRate() {
+  public double getCritRate() {
     return critRate;
   }
 
   @Override
-  public LogItem increaseCritRate(BigDecimal amount) {
+  public LogItem increaseCritRate(double amount) {
     Log log = new Log();
-    this.critRate = this.critRate.add(amount);
-    log.addItem(logMessage(
-        "Increasing CritRate by " + amount.multiply(new BigDecimal(100)) + "%; Now critRate=" + this.getCritRate()));
+    this.critRate += amount;
+    log.addItem(logMessage("Increasing CritRate by " + amount * 100 + "%; Now critRate=" + this.getCritRate()));
     return log;
   }
 
   @Override
-  public BigDecimal getCritDamage() {
+  public double getCritDamage() {
     return critDamage;
   }
 
   @Override
-  public LogItem increaseCritDamage(BigDecimal amount) {
+  public LogItem increaseCritDamage(double amount) {
     Log log = new Log();
-    this.critDamage = this.critDamage.add(amount);
-    log.addItem(logMessage("Increasing CritDamage by " + amount.multiply(new BigDecimal(100)) + "%; Now critDamage="
-        + this.getCritDamage()));
+    this.critDamage += amount;
+    log.addItem(logMessage("Increasing CritDamage by " + amount * 100 + "%; Now critDamage=" + this.getCritDamage()));
     return log;
   }
 
   @Override
-  public BigDecimal getDodgeChance() {
+  public double getDodgeChance() {
     return dodge;
   }
 
   @Override
-  public LogItem increaseDodgeChance(BigDecimal amount) {
+  public LogItem increaseDodgeChance(double amount) {
     Log log = new Log();
-    this.dodge = this.dodge.add(amount);
-    log.addItem(logMessage("Increasing DodgeChance by " + amount.multiply(new BigDecimal(100)) + "%; Now DodgeChance="
-        + this.getDodgeChance()));
+    this.dodge += amount;
+    log.addItem(
+        logMessage("Increasing DodgeChance by " + amount * 100 + "%; Now DodgeChance=" + this.getDodgeChance()));
     return log;
   }
 
   @Override
-  public BigDecimal getDefenseBreak() {
+  public double getDefenseBreak() {
     return defenseBreak;
   }
 
   @Override
-  public LogItem increaseDefenseBreak(BigDecimal amount) {
+  public LogItem increaseDefenseBreak(double amount) {
     Log log = new Log();
-    this.defenseBreak = this.defenseBreak.add(amount);
+    this.defenseBreak += amount;
     log.addItem(logMessage("Increasing DefenseBreak by " + amount + "; Now DefenseBreak=" + this.getDefenseBreak()));
     return log;
   }
 
   @Override
-  public BigDecimal getHitRate() {
+  public double getHitRate() {
     return hitRate;
   }
 
   @Override
-  public LogItem increaseHitRate(BigDecimal amount) {
+  public LogItem increaseHitRate(double amount) {
     Log log = new Log();
-    this.hitRate = this.hitRate.add(amount);
-    log.addItem(logMessage(
-        "Increasing HitRate by " + amount.multiply(new BigDecimal(100)) + "%; Now HitRate=" + this.getHitRate()));
+    this.hitRate += amount;
+    log.addItem(logMessage("Increasing HitRate by " + amount * 100 + "%; Now HitRate=" + this.getHitRate()));
     return log;
   }
 
@@ -644,136 +634,135 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public BigDecimal getTrueDamage() {
+  public double getTrueDamage() {
     return trueDamage;
   }
 
   @Override
-  public LogItem increaseTrueDamage(BigDecimal amount) {
+  public LogItem increaseTrueDamage(double amount) {
     Log log = new Log();
-    this.trueDamage = this.trueDamage.add(amount);
-    log.addItem(logMessage("Increasing TrueDamage by " + amount.multiply(new BigDecimal(100)) + "%; Now TrueDamage="
-        + this.getTrueDamage()));
+    this.trueDamage += amount;
+    log.addItem(logMessage("Increasing TrueDamage by " + amount * 100 + "%; Now TrueDamage=" + this.getTrueDamage()));
     return log;
   }
 
   @Override
-  public BigDecimal getControlResist() {
+  public double getControlResist() {
     return controlResist;
   }
 
   @Override
-  public LogItem increaseControlResist(BigDecimal amount) {
+  public LogItem increaseControlResist(double amount) {
     Log log = new Log();
-    this.controlResist = this.controlResist.add(amount);
-    log.addItem(logMessage("Increasing ControlResist by " + amount.multiply(new BigDecimal(100))
-        + "%; Now ControlResist=" + this.getTrueDamage()));
+    this.controlResist += amount;
+    log.addItem(
+        logMessage("Increasing ControlResist by " + amount * 100 + "%; Now ControlResist=" + this.getTrueDamage()));
     return log;
   }
 
   @Override
-  public BigDecimal getSilenceResistance() {
+  public double getSilenceResistance() {
     return silenceResistance;
   }
 
   @Override
-  public LogItem increaseSilenceResistance(BigDecimal amount) {
+  public LogItem increaseSilenceResistance(double amount) {
     Log log = new Log();
-    this.silenceResistance = this.silenceResistance.add(amount);
-    log.addItem(logMessage("Increasing SilenceResist by " + amount.multiply(new BigDecimal(100))
-        + "%; Now SilenceResist=" + this.getSilenceResistance()));
+    this.silenceResistance += amount;
+    log.addItem(logMessage(
+        "Increasing SilenceResist by " + amount * 100 + "%; Now SilenceResist=" + this.getSilenceResistance()));
     return log;
   }
 
   @Override
-  public LogItem increaseCurrentEnergy(BigDecimal amount) {
+  public LogItem increaseCurrentEnergy(double amount) {
     Log log = new Log();
-    this.currentEnergy = currentEnergy.add(amount);
+    this.currentEnergy += amount;
     log.addItem(logMessage("Increasing Energy by " + amount + "; Now Energy=" + this.getCurrentEnergy()));
     return log;
   }
 
   @Override
-  public LogItem increaseAssassinDamageModifier(BigDecimal amount) {
+  public LogItem increaseAssassinDamageModifier(double amount) {
     Log log = new Log();
-    this.assassinDamageModifier = this.assassinDamageModifier.add(amount);
-    log.addItem(logMessage("Increasing ExDmgToAssassin by " + amount.multiply(new BigDecimal(100))
-        + "%; Now ExDmgToAssassin=" + this.getAssassinDamageModifier()));
+    this.assassinDamageModifier += amount;
+    log.addItem(logMessage("Increasing ExDmgToAssassin by " + amount * 100 + "%; Now ExDmgToAssassin="
+        + this.getAssassinDamageModifier()));
     return log;
   }
 
   @Override
-  public BigDecimal getAssassinDamageModifier() {
+  public double getAssassinDamageModifier() {
     return assassinDamageModifier;
   }
 
   @Override
-  public LogItem increaseWarriorDamageModifier(BigDecimal amount) {
+  public LogItem increaseWarriorDamageModifier(double amount) {
     Log log = new Log();
-    this.warriorDamageModifier = this.warriorDamageModifier.add(amount);
-    log.addItem(logMessage("Increasing ExDmgToWarrior by " + amount.multiply(new BigDecimal(100))
-        + "%; Now ExDmgToWarrior=" + this.getWarriorDamageModifier()));
+    this.warriorDamageModifier += amount;
+    log.addItem(logMessage(
+        "Increasing ExDmgToWarrior by " + amount * 100 + "%; Now ExDmgToWarrior=" + this.getWarriorDamageModifier()));
     return log;
   }
 
   @Override
-  public BigDecimal getWarriorDamageModifier() {
+  public double getWarriorDamageModifier() {
     return warriorDamageModifier;
   }
 
   @Override
-  public LogItem increaseWandererDamageModifier(BigDecimal amount) {
+  public LogItem increaseWandererDamageModifier(double amount) {
     Log log = new Log();
-    this.wandererDamageModifier = this.wandererDamageModifier.add(amount);
-    log.addItem(logMessage("Increasing ExDmgToWanderer by " + amount.multiply(new BigDecimal(100))
-        + "%; Now ExDmgToWanderer=" + this.getWandererDamageModifier()));
+    this.wandererDamageModifier += amount;
+    log.addItem(logMessage("Increasing ExDmgToWanderer by " + amount * 100 + "%; Now ExDmgToWanderer="
+        + this.getWandererDamageModifier()));
     return log;
   }
 
   @Override
-  public BigDecimal getWandererDamageModifier() {
+  public double getWandererDamageModifier() {
     return wandererDamageModifier;
   }
 
   @Override
-  public LogItem increaseMageDamageModifier(BigDecimal amount) {
+  public LogItem increaseMageDamageModifier(double amount) {
     Log log = new Log();
-    this.mageDamageModifier = this.mageDamageModifier.add(amount);
-    log.addItem(logMessage("Increasing ExDmgToMage by " + amount.multiply(new BigDecimal(100)) + "%; Now ExDmgToMage="
-        + this.getMageDamageModifier()));
+    this.mageDamageModifier += amount;
+    log.addItem(
+        logMessage("Increasing ExDmgToMage by " + amount * 100 + "%; Now ExDmgToMage=" + this.getMageDamageModifier()));
     return log;
   }
 
   @Override
-  public BigDecimal getMageDamageModifier() {
+  public double getMageDamageModifier() {
     return mageDamageModifier;
   }
 
   @Override
-  public LogItem increaseClericDamageModifier(BigDecimal amount) {
+  public LogItem increaseClericDamageModifier(double amount) {
     Log log = new Log();
-    this.clericDamageModifier = this.clericDamageModifier.add(amount);
-    log.addItem(logMessage("Increasing ExDmgToCleric by " + amount.multiply(new BigDecimal(100))
-        + "%; Now ExDmgToCleric=" + this.getClericDamageModifier()));
+    this.clericDamageModifier += amount;
+    log.addItem(logMessage(
+        "Increasing ExDmgToCleric by " + amount * 100 + "%; Now ExDmgToCleric=" + this.getClericDamageModifier()));
     return log;
   }
 
   @Override
-  public BigDecimal getClericDamageModifier() {
+  public double getClericDamageModifier() {
     return clericDamageModifier;
   }
 
   @Override
-  public BigDecimal getDamageReduce() {
+  public double getDamageReduce() {
     return damageReduce;
   }
 
   @Override
-  public LogItem increaseDamageReduce(BigDecimal amount) {
+  public LogItem increaseDamageReduce(double amount) {
     Log log = new Log();
-    this.damageReduce = this.damageReduce.add(amount);
-    log.addItem(logMessage("Increasing DamageReduce by " + amount.multiply(new BigDecimal(100)) + "%; Now DamageReduce="
-        + this.getDamageReduce()));
+    this.damageReduce += amount;
+    log.addItem(
+        logMessage("Increasing DamageReduce by " + amount * 100 + "%; Now DamageReduce=" + this.getDamageReduce()));
     return log;
   }
 
@@ -800,8 +789,8 @@ public abstract class AbstractHero implements Hero {
     Log log = new Log();
     Hero attackedHero = setting.getOpposingTeam(this).getHeroes().get(0);
     log.addItem(logMessage("Basic attack at " + attackedHero.getFullName()));
-    log.addItem(attackedHero.receiveAttack(setting, this, new BigDecimal(1), false, true, h -> null));
-    log.addItem(increaseCurrentEnergy(new BigDecimal("50")));
+    log.addItem(attackedHero.receiveAttack(setting, this, 1, false, true, h -> null));
+    log.addItem(increaseCurrentEnergy(50));
     return log;
   }
 
@@ -818,7 +807,7 @@ public abstract class AbstractHero implements Hero {
   @Override
   public LogItem doAttack(BattleSetting setting) {
     Log log = new Log();
-    if (getCurrentEnergy().compareTo(new BigDecimal(100)) < 0) {
+    if (getCurrentEnergy() < 100) {
       log.addItem(basicAttack(setting));
     } else {
       log.addItem(doSkillAttack(setting));
@@ -874,7 +863,7 @@ public abstract class AbstractHero implements Hero {
   @Override
   public LogItem zeroEnergy() {
     Log log = new Log();
-    currentEnergy = new BigDecimal("0");
+    currentEnergy = 0;
     log.addItem(logMessage("Setting currentEnergy to 0"));
     return log;
   }
@@ -906,27 +895,25 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public LogItem receiveAttack(BattleSetting setting, Hero source, BigDecimal skillStrength, boolean isActiveSkill,
+  public LogItem receiveAttack(BattleSetting setting, Hero source, double skillStrength, boolean isActiveSkill,
       boolean canBeDodged, Function<Hero, LogItem> onHitAction) {
     Log log = new Log();
 
     double factionHitRateBonus = source.getFaction().getAdvantageFaction().equals(this.getFaction()) ? 0.15 : 0;
-    if (!Utilities.getRandomThrow(this.getDodgeChance()
-        .subtract(source.getHitRate().add(new BigDecimal(factionHitRateBonus))).max(new BigDecimal("0")))) {
+    if (!Utilities.getRandomThrow(Math.max(0, this.getDodgeChance() - (source.getHitRate() + factionHitRateBonus)))) {
       // not dodged
       double mainDamage = source.getAttack();
-      double defenseReduce = 1
-          - Math.max(0, Math.min(0.8, (this.defense - source.getDefenseBreak().doubleValue() + 20) * 0.01));
-      double skillDamage = skillStrength.doubleValue() + (isActiveSkill ? source.getSkillDamage().doubleValue() : 0);
+      double defenseReduce = 1 - Math.max(0, Math.min(0.8, (this.defense - source.getDefenseBreak() + 20) * 0.01));
+      double skillDamage = skillStrength + (isActiveSkill ? source.getSkillDamage() : 0);
       boolean isCrit = Utilities.getRandomThrow(getCritRate());
-      double critDamage = 1.5 + source.getCritDamage().doubleValue();
-      double damageReduce = 1 - Math.min(0.8, getDamageReduce().doubleValue());
+      double critDamage = 1.5 + source.getCritDamage();
+      double damageReduce = 1 - Math.min(0.8, getDamageReduce());
       double factionMultiplier = source.getFaction().getAdvantageFaction().equals(this.getFaction()) ? 1.3 : 1;
       double classMultiplier = getClassMultiplier(source);
       double stateMultiplier = getStateMultiplier(source);
       // damage the hero
-      int damageValue = new BigDecimal(mainDamage * defenseReduce * skillDamage * (isCrit ? critDamage : 1)
-          * damageReduce * factionMultiplier * classMultiplier * stateMultiplier).intValue();
+      int damageValue = new Double(mainDamage * defenseReduce * skillDamage * (isCrit ? critDamage : 1) * damageReduce
+          * factionMultiplier * classMultiplier * stateMultiplier).intValue();
       log.addItem(logMessage("Being attacked for " + damageValue + (isCrit ? " (critical)" : "")));
       log.addItem(this.damage(damageValue));
       // execute hero's on hit actions
@@ -934,7 +921,7 @@ public abstract class AbstractHero implements Hero {
       // execute skill's on hit action
       log.addItem(onHitAction.apply(this));
 
-      this.increaseCurrentEnergy(new BigDecimal("12.5"));
+      this.increaseCurrentEnergy(12.5);
     } else {
       log.addItem(logMessage("Dodged attack from " + source.getFullName()));
     }
@@ -944,15 +931,15 @@ public abstract class AbstractHero implements Hero {
   private double getClassMultiplier(Hero source) {
     switch (this.getHeroClass()) {
     case ASSASSIN:
-      return 1 + source.getAssassinDamageModifier().doubleValue();
+      return 1 + source.getAssassinDamageModifier();
     case CLERIC:
-      return 1 + source.getClericDamageModifier().doubleValue();
+      return 1 + source.getClericDamageModifier();
     case MAGE:
-      return 1 + source.getMageDamageModifier().doubleValue();
+      return 1 + source.getMageDamageModifier();
     case WANDERER:
-      return 1 + source.getWandererDamageModifier().doubleValue();
+      return 1 + source.getWandererDamageModifier();
     case WARRIOR:
-      return 1 + source.getWarriorDamageModifier().doubleValue();
+      return 1 + source.getWarriorDamageModifier();
     default:
       throw new IllegalStateException("Hero Class not handled"); // shouldn't be
                                                                  // possible
@@ -962,25 +949,25 @@ public abstract class AbstractHero implements Hero {
   private double getStateMultiplier(Hero source) {
     double multiplier = 1;
     if (this.isBurning()) {
-      multiplier += source.getBurningDamageModifier().doubleValue();
+      multiplier += source.getBurningDamageModifier();
     }
     if (this.isPoisoned()) {
-      multiplier += source.getPoisonedDamageModifier().doubleValue();
+      multiplier += source.getPoisonedDamageModifier();
     }
     if (this.isPetrified()) {
-      multiplier += source.getPetrifiedDamageModifier().doubleValue();
+      multiplier += source.getPetrifiedDamageModifier();
     }
     if (this.isStunned()) {
-      multiplier += source.getStunnedDamageModifier().doubleValue();
+      multiplier += source.getStunnedDamageModifier();
     }
     if (this.isSilenced()) {
-      multiplier += source.getSilencedDamageModifier().doubleValue();
+      multiplier += source.getSilencedDamageModifier();
     }
     if (this.isBleeding()) {
-      multiplier += source.getBleedingDamageModifier().doubleValue();
+      multiplier += source.getBleedingDamageModifier();
     }
     if (this.isFrozen()) {
-      multiplier += source.getFrozenDamageModifier().doubleValue();
+      multiplier += source.getFrozenDamageModifier();
     }
     return multiplier;
   }
@@ -991,10 +978,10 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public LogItem heal(Integer baseStat, BigDecimal modifier) {
+  public LogItem heal(Integer baseStat, double modifier) {
     Log log = new Log();
     if (!isDead() && !isDying()) {
-      int amount = new BigDecimal(baseStat).multiply(modifier).intValue();
+      int amount = new Double(baseStat * modifier).intValue();
       this.currentHP = Math.min(getMaxHP(), this.currentHP + amount);
       log.addItem(logMessage("Heal by " + amount + "; Now currentHP=" + this.getCurrentHP()));
     }
@@ -1037,37 +1024,37 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public BigDecimal getBurningDamageModifier() {
+  public double getBurningDamageModifier() {
     return this.burningDamageModifier;
   }
 
   @Override
-  public BigDecimal getPoisonedDamageModifier() {
+  public double getPoisonedDamageModifier() {
     return this.poisonedDamageModifier;
   }
 
   @Override
-  public BigDecimal getPetrifiedDamageModifier() {
+  public double getPetrifiedDamageModifier() {
     return this.petrifiedDamageModifier;
   }
 
   @Override
-  public BigDecimal getBleedingDamageModifier() {
+  public double getBleedingDamageModifier() {
     return this.bleedingDamageModifier;
   }
 
   @Override
-  public BigDecimal getFrozenDamageModifier() {
+  public double getFrozenDamageModifier() {
     return this.frozenDamageModifier;
   }
 
   @Override
-  public BigDecimal getSilencedDamageModifier() {
+  public double getSilencedDamageModifier() {
     return this.silencedDamageModifier;
   }
 
   @Override
-  public BigDecimal getStunnedDamageModifier() {
+  public double getStunnedDamageModifier() {
     return this.stunnedDamageModifier;
   }
 

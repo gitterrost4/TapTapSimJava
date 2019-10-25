@@ -1,8 +1,6 @@
 // $Id $
 package loadout.runes;
 
-import java.math.BigDecimal;
-
 import heroes.Hero;
 
 /**
@@ -10,11 +8,11 @@ import heroes.Hero;
  */
 public class AccuracyRune extends AbstractRune {
   /** the hitRate bonus of this rune */
-  private final BigDecimal hitRate;
+  private final double hitRate;
   /** the flat attack bonus of this rune */
   private final Integer attackBonus;
   /** the attack modifier of this rune */
-  private final BigDecimal attackModifier;
+  private final double attackModifier;
 
   /**
    * create an accuracy rune of a given rarity
@@ -26,79 +24,79 @@ public class AccuracyRune extends AbstractRune {
     super(RuneType.ACCURACY, rarity);
     switch (rarity) {
     case GREEN1:
-      hitRate = new BigDecimal("0.02");
+      hitRate = 0.02;
       attackBonus = 13;
-      attackModifier = new BigDecimal("0");
+      attackModifier = 0;
       break;
     case GREEN2:
-      hitRate = new BigDecimal("0.031");
+      hitRate = 0.031;
       attackBonus = 18;
-      attackModifier = new BigDecimal("0");
+      attackModifier = 0;
       break;
     case GOLD1:
-      hitRate = new BigDecimal("0.051");
+      hitRate = 0.051;
       attackBonus = 32;
-      attackModifier = new BigDecimal("0");
+      attackModifier = 0;
       break;
     case GOLD2:
-      hitRate = new BigDecimal("0.062");
+      hitRate = 0.062;
       attackBonus = 40;
-      attackModifier = new BigDecimal("0");
+      attackModifier = 0;
       break;
     case GOLD3:
-      hitRate = new BigDecimal("0.072");
+      hitRate = 0.072;
       attackBonus = 48;
-      attackModifier = new BigDecimal("0");
+      attackModifier = 0;
       break;
     case PURPLE1:
-      hitRate = new BigDecimal("0.094");
+      hitRate = 0.094;
       attackBonus = 59;
-      attackModifier = new BigDecimal("0");
+      attackModifier = 0;
       break;
     case PURPLE2:
-      hitRate = new BigDecimal("0.105");
+      hitRate = 0.105;
       attackBonus = 69;
-      attackModifier = new BigDecimal("0");
+      attackModifier = 0;
       break;
     case PURPLE3:
-      hitRate = new BigDecimal("0.116");
+      hitRate = 0.116;
       attackBonus = 80;
-      attackModifier = new BigDecimal("0");
+      attackModifier = 0;
       break;
     case ORANGE1:
-      hitRate = new BigDecimal("0.137");
+      hitRate = 0.137;
       attackBonus = 95;
-      attackModifier = new BigDecimal("0");
+      attackModifier = 0;
       break;
     case ORANGE2:
-      hitRate = new BigDecimal("0.148");
+      hitRate = 0.148;
       attackBonus = 111;
-      attackModifier = new BigDecimal("0");
+      attackModifier = 0;
       break;
     case ORANGE3:
-      hitRate = new BigDecimal("0.16");
+      hitRate = 0.16;
       attackBonus = 128;
-      attackModifier = new BigDecimal("0.032");
+      attackModifier = 0.032;
       break;
     case ORANGE4:
-      hitRate = new BigDecimal("0.171");
+      hitRate = 0.171;
       attackBonus = 145;
-      attackModifier = new BigDecimal("0.054");
+      attackModifier = 0.054;
       break;
     case RED1:
-      hitRate = new BigDecimal("0.194");
+      hitRate = 0.194;
       attackBonus = 167;
-      attackModifier = new BigDecimal("0.075");
+      attackModifier = 0.075;
       break;
     case RED2:
-      hitRate = new BigDecimal("0.205");
+      hitRate = 0.205;
       attackBonus = 168;
-      attackModifier = new BigDecimal("0.097");
+      attackModifier = 0.097;
       break;
     default:
-      hitRate = new BigDecimal("0");
+      hitRate = 0;
       attackBonus = 0;
-      attackModifier = new BigDecimal("0");
+      attackModifier = 0;
       break;
 
     }

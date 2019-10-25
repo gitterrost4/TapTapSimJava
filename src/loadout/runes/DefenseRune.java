@@ -1,34 +1,31 @@
 package loadout.runes;
 
-import java.math.BigDecimal;
-
 import heroes.Hero;
 
 /**
  * Implementation of the defense rune
  * 
  * @author gitterrost4
- *
  */
 public class DefenseRune extends AbstractRune {
 
-  private BigDecimal maxHPModifier;
-  private BigDecimal damageReduceBonus;
+  private double maxHPModifier;
+  private double damageReduceBonus;
 
   public DefenseRune(RuneRarity rarity) {
     super(RuneType.DEFENSE, rarity);
     switch (rarity) {
     case RED1:
-      damageReduceBonus = new BigDecimal("0.108");
-      maxHPModifier = new BigDecimal("0.14");
+      damageReduceBonus = 0.108;
+      maxHPModifier = 0.14;
       break;
     case RED2:
-      damageReduceBonus = new BigDecimal("0.119");
-      maxHPModifier = new BigDecimal("0.157");
+      damageReduceBonus = 0.119;
+      maxHPModifier = 0.157;
       break;
     default:
-      damageReduceBonus = new BigDecimal("0");
-      maxHPModifier = new BigDecimal("0");
+      damageReduceBonus = 0;
+      maxHPModifier = 0;
       break;
     }
   }

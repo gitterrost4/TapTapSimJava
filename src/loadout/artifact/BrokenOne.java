@@ -1,7 +1,5 @@
 package loadout.artifact;
 
-import java.math.BigDecimal;
-
 import heroes.Hero;
 
 public class BrokenOne extends AbstractArtifact {
@@ -12,7 +10,7 @@ public class BrokenOne extends AbstractArtifact {
 
   @Override
   public void apply(Hero hero) {
-    hero.increaseWarriorDamageModifier(new BigDecimal("0.29"));
+    hero.increaseWarriorDamageModifier(0.29);
     hero.increaseAttack(218);
   }
 
