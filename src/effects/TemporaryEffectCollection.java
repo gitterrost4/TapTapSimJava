@@ -36,10 +36,11 @@ public class TemporaryEffectCollection {
   public LogItem trigger() {
     Log log = new Log();
     effects.stream().forEach(effect -> {
-      effect.trigger(hero).ifPresent(log::addItem);
       if (effect.isOver()) {
         log.addItem(hero.logMessage("Ending effect " + effect));
         effect.end(hero).ifPresent(log::addItem);
+      } else {
+        effect.trigger(hero).ifPresent(log::addItem);
       }
     });
     effects = effects.stream().filter(effect -> !effect.isOver()).collect(Collectors.toList());

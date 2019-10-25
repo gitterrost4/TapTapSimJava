@@ -47,13 +47,6 @@ public interface Hero {
   public Integer getAttack();
 
   /**
-   * get the armor stat of a hero
-   * 
-   * @return
-   */
-  public Integer getArmor();
-
-  /**
    * get the current Energy (0-100) of a hero
    * 
    * @return
@@ -402,6 +395,12 @@ public interface Hero {
   LogItem getInformation();
 
   public LogItem die(BattleSetting setting);
+
+  public LogItem heal(Integer baseStat,BigDecimal modifier);
+
+  void addOnHitAction(Function<BattleSetting,LogItem> action);
+  
+  public void setCurrentHPToMaxHP();
 }
 
 // end of file

@@ -11,6 +11,7 @@ import java.util.function.Function;
 
 public enum HeroType {
   REAPER("Reaper",params->new Reaper(params)),
+  RLYEH("Rlyeh",params->new Rlyeh(params)),
   MULAN("Mulan",params->new Mulan(params));
 
   private final Function<HeroParameters,AbstractHero> creator;

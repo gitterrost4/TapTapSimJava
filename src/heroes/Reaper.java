@@ -82,7 +82,7 @@ public class Reaper extends AbstractHero {
   private void applySkill4() {
     switch (star) {
     case 10:
-      onDeathAction.add(setting -> {
+      addOnDeathAction(setting -> {
         Log log = new Log();
         List<Hero> opposingHeroes = setting.getOpposingTeam(this).getHeroes(true, true);
         if (opposingHeroes.size() > 0) {

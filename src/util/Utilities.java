@@ -1,5 +1,6 @@
 package util;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -29,6 +30,10 @@ public class Utilities {
           .orElseGet(() -> knownStats.get(l)))
         .orElseGet(() -> higherLevel.map(knownStats::get).orElse(0));
     });
+  }
+  
+  public static boolean getRandomThrow(BigDecimal chance) {
+    return new BigDecimal(Math.random()).compareTo(chance)<=0;
   }
 
 }

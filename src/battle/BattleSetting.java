@@ -24,10 +24,12 @@ public class BattleSetting {
     attacker.getHeroes().stream().forEach(h -> {
       h.initTeam(this);
       h.setAttacker();
+      h.setCurrentHPToMaxHP();
     });
     defender.getHeroes().stream().forEach(h -> {
       h.initTeam(this);
       h.setDefender();
+      h.setCurrentHPToMaxHP();
     });
   }
 

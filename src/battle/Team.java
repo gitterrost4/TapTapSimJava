@@ -78,6 +78,11 @@ public class Team {
     });
     return log;
   }
+  
+  public Optional<Hero> getLowestHealthHero(){
+    return getHeroes(true,true).stream()
+    .sorted((h1,h2) -> h1.getCurrentHP().compareTo(h2.getCurrentHP())).findFirst();
+  }
 }
 
 // end of file
