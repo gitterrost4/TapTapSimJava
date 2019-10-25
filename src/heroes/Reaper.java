@@ -17,9 +17,15 @@ import effects.TemporaryEffect;
  */
 public class Reaper extends AbstractHero {
 
+  /** constant for the faction */
   private static final Faction FACTION = Faction.UNDEAD;
+  /** constant for the class */
   private static final HeroClass HERO_CLASS = HeroClass.MAGE;
+  /** constant for the name */
   private static final HeroType HERO_TYPE = HeroType.REAPER;
+  /**
+   * constant for the base stats (maxHP, attack, armor, speed) at each star level
+   */
   private static final Map<Integer, BaseStats> baseStats = new HashMap<>();
 
   static {
@@ -31,6 +37,12 @@ public class Reaper extends AbstractHero {
     baseStats.put(10, new BaseStats(1345, 110, 8, 262));
   }
 
+  /**
+   * create a Reaper according to it's parameters
+   * 
+   * @param parameters
+   *        basic hero parameters
+   */
   public Reaper(HeroParameters parameters) {
     super(parameters, baseStats, HERO_CLASS, FACTION, HERO_TYPE);
     applySkill3();
@@ -47,6 +59,13 @@ public class Reaper extends AbstractHero {
     return "Reaper [" + super.toString() + "]";
   }
 
+  /**
+   * apply the second skill of reaper increasing attack when a team member dies
+   * TODO: Add the rest of the star versions of this skill
+   * 
+   * @param setting
+   *        the complete battle setting
+   */
   private void applySkill2(BattleSetting setting) {
     switch (star) {
     case 10:
@@ -66,6 +85,10 @@ public class Reaper extends AbstractHero {
     }
   }
 
+  /**
+   * apply the third skill of Reaper, increasing its stats TODO: Add the rest of
+   * the star versions of the skill
+   */
   private void applySkill3() {
     switch (star) {
     case 10:
@@ -78,6 +101,10 @@ public class Reaper extends AbstractHero {
     }
   }
 
+  /**
+   * apply the fourth skill of reaper adding an onDeath action dealing damage to
+   * all enemies TODO: Add the rest of the star versions
+   */
   private void applySkill4() {
     switch (star) {
     case 10:

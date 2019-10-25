@@ -14,13 +14,18 @@ import util.Utilities;
 
 /**
  * Implementation of the Rlyeh Hero
- *
  */
 public class Rlyeh extends AbstractHero {
 
+  /** constant for the faction */
   private static final Faction FACTION = Faction.HORDE;
+  /** constant for the class */
   private static final HeroClass HERO_CLASS = HeroClass.CLERIC;
+  /** constant for the name */
   private static final HeroType HERO_TYPE = HeroType.RLYEH;
+  /**
+   * constant for the base stats (maxHP, attack, armor, speed) at each star level
+   */
   private static final Map<Integer, BaseStats> baseStats = new HashMap<>();
 
   static {
@@ -33,6 +38,12 @@ public class Rlyeh extends AbstractHero {
     baseStats.put(10, new BaseStats(1167, 105, 10, 225));
   }
 
+  /**
+   * create a Rlyeh according to it's parameters
+   * 
+   * @param parameters
+   *        basic hero parameters
+   */
   public Rlyeh(HeroParameters parameters) {
     super(parameters, baseStats, HERO_CLASS, FACTION, HERO_TYPE);
     applySkill3();
@@ -61,10 +72,18 @@ public class Rlyeh extends AbstractHero {
     return log;
   }
 
+  /**
+   * apply the third skill to add the onHit heal of Rlyeh. TODO: add the other
+   * star variants of the skill
+   */
   private void applySkill3() {
     this.addOnHitAction((hero, setting) -> this.addTemporaryEffect(new Heal(1, getAttack(), new BigDecimal("0.66"))));
   }
 
+  /**
+   * apply the fourth skill to add stats to Rlyeh. TODO: add the other star
+   * variants of the skill
+   */
   private void applySkill4() {
     this.addAttackModifier(new BigDecimal("0.25"));
     this.addMaxHPModifier(new BigDecimal("0.2"));
@@ -85,7 +104,7 @@ public class Rlyeh extends AbstractHero {
         log.addItem(logMessage("Healing " + healedHero.getFullName() + " for 151% of Attack for 1 round"));
         log.addItem(healedHero.addTemporaryEffect(new Heal(1, this.getAttack(), new BigDecimal("1.51"))));
       }
-      log.addItem(increaseEnergy(new BigDecimal("50")));
+      log.addItem(increaseCurrentEnergy(new BigDecimal("50")));
       break;
     default:
       break;

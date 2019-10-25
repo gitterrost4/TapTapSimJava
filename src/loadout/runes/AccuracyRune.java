@@ -7,13 +7,21 @@ import heroes.Hero;
 
 /**
  * implementation of the accuracy rune
- *
  */
 public class AccuracyRune extends AbstractRune {
+  /** the hitRate bonus of this rune */
   private final BigDecimal hitRate;
+  /** the flat attack bonus of this rune */
   private final Integer attackBonus;
+  /** the attack modifier of this rune */
   private final BigDecimal attackModifier;
 
+  /**
+   * create an accuracy rune of a given rarity
+   * 
+   * @param rarity
+   *        the rarity of the rune
+   */
   public AccuracyRune(RuneRarity rarity) {
     super(RuneType.ACCURACY, rarity);
     switch (rarity) {

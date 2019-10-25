@@ -533,31 +533,16 @@ public abstract class AbstractHero implements Hero {
     return log;
   }
 
-  /**
-   * get the level of the hero
-   * 
-   * @return
-   */
   @Override
   public Integer getLevel() {
     return level;
   }
 
-  /**
-   * get the class of the hero
-   * 
-   * @return
-   */
   @Override
   public HeroClass getHeroClass() {
     return heroClass;
   }
 
-  /**
-   * get the faction of the hero
-   * 
-   * @return
-   */
   @Override
   public Faction getFaction() {
     return faction;
@@ -701,7 +686,7 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public LogItem increaseEnergy(BigDecimal amount) {
+  public LogItem increaseCurrentEnergy(BigDecimal amount) {
     Log log = new Log();
     this.currentEnergy = currentEnergy.add(amount);
     log.addItem(logMessage("Increasing Energy by " + amount + "; Now Energy=" + this.getCurrentEnergy()));
@@ -816,7 +801,7 @@ public abstract class AbstractHero implements Hero {
     Hero attackedHero = setting.getOpposingTeam(this).getHeroes().get(0);
     log.addItem(logMessage("Basic attack at " + attackedHero.getFullName()));
     log.addItem(attackedHero.receiveAttack(setting, this, new BigDecimal(1), false, true, h -> null));
-    log.addItem(increaseEnergy(new BigDecimal("50")));
+    log.addItem(increaseCurrentEnergy(new BigDecimal("50")));
     return log;
   }
 
@@ -949,7 +934,7 @@ public abstract class AbstractHero implements Hero {
       // execute skill's on hit action
       log.addItem(onHitAction.apply(this));
 
-      this.increaseEnergy(new BigDecimal("12.5"));
+      this.increaseCurrentEnergy(new BigDecimal("12.5"));
     } else {
       log.addItem(logMessage("Dodged attack from " + source.getFullName()));
     }

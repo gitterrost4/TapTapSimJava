@@ -19,11 +19,32 @@ import player.Player;
  */
 public class Team {
   /**
-   * an (ordered) list of heroes.
+   * an (ordered) list of heroes. this list should always contain six values. If a
+   * spot in the team is empty, the entry will be an empty optional
    */
   private final List<Optional<Hero>> heroes;
+  /** the player belonging to this team */
   private final Player player;
 
+  /**
+   * create a team with six heroes (null if a spot is empty) and the player this
+   * team belongs to
+   * 
+   * @param first
+   *        the hero in the first (tank) spot or null if empty
+   * @param second
+   *        the hero in the second spot or null if empty
+   * @param third
+   *        the hero in the third spot or null if empty
+   * @param fourth
+   *        the hero in the fourth spot or null if empty
+   * @param fifth
+   *        the hero in the fifth spot or null if empty
+   * @param sixth
+   *        the hero in the sixth spot or null if empty
+   * @param player
+   *        the player this team belongs to
+   */
   public Team(Hero first, Hero second, Hero third, Hero fourth, Hero fifth, Hero sixth, Player player) {
     this.player = player;
     this.heroes = Stream.of(first, second, third, fourth, fifth, sixth).map(Optional::ofNullable)
@@ -44,6 +65,15 @@ public class Team {
     return getHeroes(false, false);
   }
 
+  /**
+   * return the heroes of the team in an ordered list (ignoring empty spots)
+   * 
+   * @param skipDead
+   *        don't return the heroes that are dead
+   * @param skipDying
+   *        don't return the heroes that are dying *or* dead
+   * @return the list of heroes
+   */
   public List<Hero> getHeroes(Boolean skipDead, Boolean skipDying) {
     return heroes.stream().filter(Optional::isPresent).map(Optional::get)
         .filter(h -> (!skipDead || !h.isDead()) && (!skipDying || !h.isDying())).collect(Collectors.toList());
@@ -53,7 +83,8 @@ public class Team {
    * Get the hero in the specified position. Empty if none is present
    * 
    * @param pos
-   * @return
+   *        positon (1-6) of the desired hero
+   * @return An Optional containing the hero or empty if the position is empty
    */
   public Optional<Hero> getHeroInPosition(int pos) {
     if (pos < 0 || pos >= heroes.size()) {
@@ -63,12 +94,15 @@ public class Team {
   }
 
   /**
-   * @return true if the whole team is dead
+   * @return true iff the whole team is dead
    */
   public boolean isDead() {
     return getHeroes().stream().allMatch(Hero::isDead);
   }
 
+  /**
+   * @return a log item containing textual information about the team
+   */
   public LogItem getInformation() {
     Log log = new Log();
     IntStream.range(0, 6).forEach(i -> {
@@ -78,6 +112,10 @@ public class Team {
     return log;
   }
 
+  /**
+   * @return the hero of the team with the lowest health that is not dying or dead
+   *         (or empty if all heroes are dead)
+   */
   public Optional<Hero> getLowestHealthHero() {
     return getHeroes(true, true).stream().sorted((h1, h2) -> h1.getCurrentHP().compareTo(h2.getCurrentHP()))
         .findFirst();

@@ -9,9 +9,7 @@ public enum Faction {
   ALLIANCE, HORDE, ELF, UNDEAD, HEAVEN, HELL;
 
   /**
-   * Returns the faction that this faction has an advantage over
-   * 
-   * @return
+   * @return the faction that this faction has an advantage over
    */
   public Faction getAdvantageFaction() {
     switch (this) {
