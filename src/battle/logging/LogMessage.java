@@ -11,6 +11,7 @@ public class LogMessage implements LogItem {
     this.message = message;
   }
 
+  @Override
   public String prettyPrint() {
     return prettyPrint(0);
   }

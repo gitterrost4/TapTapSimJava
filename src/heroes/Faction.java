@@ -1,5 +1,4 @@
 // $Id $
-// (C) cantamen/Paul Kramer 2019
 package heroes;
 
 /**
@@ -8,14 +7,14 @@ package heroes;
  */
 public enum Faction {
   ALLIANCE, HORDE, ELF, UNDEAD, HEAVEN, HELL;
-  
+
   /**
    * Returns the faction that this faction has an advantage over
    * 
    * @return
    */
   public Faction getAdvantageFaction() {
-    switch(this) {
+    switch (this) {
     case ALLIANCE:
       return HORDE;
     case ELF:
@@ -29,7 +28,7 @@ public enum Faction {
     case UNDEAD:
       return ALLIANCE;
     default:
-      throw new IllegalStateException("Faction not handled"); //not possible to get here
+      throw new IllegalStateException("Faction not handled"); // not possible to get here
     }
   }
 }

@@ -6,12 +6,12 @@ import battle.BattleSetting;
 import heroes.Hero;
 
 /**
- * Poison effect
+ * Burn effect
  *
  */
-public class Poison extends TemporaryEffect {
+public class Burn extends TemporaryEffect {
 
-  public Poison(BattleSetting setting, Integer remainingRounds, Hero source, BigDecimal skillStrength) {
+  public Burn(BattleSetting setting, Integer remainingRounds, Hero source, BigDecimal skillStrength) {
     super(h -> h.receiveAttack(setting, source, skillStrength, false, false, x -> null),
         h -> h.receiveAttack(setting, source, skillStrength, false, false, x -> null), h -> null, "Poison",
         remainingRounds);

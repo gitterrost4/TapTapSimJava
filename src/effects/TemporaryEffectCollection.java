@@ -1,5 +1,4 @@
 // $Id $
-// (C) cantamen/Paul Kramer 2019
 package effects;
 
 import java.util.ArrayList;
@@ -49,6 +48,30 @@ public class TemporaryEffectCollection {
 
   public boolean containsSilence() {
     return effects.stream().anyMatch(e -> e instanceof Silence);
+  }
+
+  public boolean containsPoison() {
+    return effects.stream().anyMatch(e -> e instanceof Poison);
+  }
+
+  public boolean containsBleed() {
+    return effects.stream().anyMatch(e -> e instanceof Bleed);
+  }
+
+  public boolean containsPetrify() {
+    return effects.stream().anyMatch(e -> e instanceof Petrify);
+  }
+
+  public boolean containsBurn() {
+    return effects.stream().anyMatch(e -> e instanceof Burn);
+  }
+
+  public boolean containsFreeze() {
+    return effects.stream().anyMatch(e -> e instanceof Freeze);
+  }
+
+  public boolean containsStun() {
+    return effects.stream().anyMatch(e -> e instanceof Stun);
   }
 
 }

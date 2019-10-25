@@ -9,9 +9,9 @@ import heroes.Hero;
  * Poison effect
  *
  */
-public class Poison extends TemporaryEffect {
+public class Bleed extends TemporaryEffect {
 
-  public Poison(BattleSetting setting, Integer remainingRounds, Hero source, BigDecimal skillStrength) {
+  public Bleed(BattleSetting setting, Integer remainingRounds, Hero source, BigDecimal skillStrength) {
     super(h -> h.receiveAttack(setting, source, skillStrength, false, false, x -> null),
         h -> h.receiveAttack(setting, source, skillStrength, false, false, x -> null), h -> null, "Poison",
         remainingRounds);

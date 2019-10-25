@@ -1,5 +1,4 @@
 // $Id $
-// (C) cantamen/Paul Kramer 2019
 package player;
 
 import java.math.BigDecimal;

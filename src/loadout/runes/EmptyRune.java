@@ -1,5 +1,4 @@
 // $Id $
-// (C) cantamen/Paul Kramer 2019
 package loadout.runes;
 
 import heroes.Hero;
@@ -15,6 +14,7 @@ public class EmptyRune extends AbstractRune {
 
   @Override
   public void apply(Hero hero) {
+    // intentionally empty
   }
 
 }

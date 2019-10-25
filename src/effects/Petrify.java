@@ -6,9 +6,9 @@ package effects;
  * is not able to skill attack
  *
  */
-public class Silence extends TemporaryEffect {
+public class Petrify extends TemporaryEffect {
 
-  public Silence(int length) {
+  public Petrify(int length) {
     super(h -> null, h -> null, h -> null, "Silence", length);
   }
 

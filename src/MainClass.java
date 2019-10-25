@@ -24,14 +24,9 @@ import player.GuildTech.WandererTech;
 import player.GuildTech.WarriorTech;
 import player.Player;
 
-// $Id $
-// (C) cantamen/Paul Kramer 2019
-
 /**
  * Just a dummy main class for now
  *
- * @author (C) cantamen/Paul Kramer 2019
- * @version $Id $
  */
 public class MainClass {
 

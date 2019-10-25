@@ -1,5 +1,4 @@
 // $Id $
-// (C) cantamen/Paul Kramer 2019
 package battle;
 
 import java.util.List;

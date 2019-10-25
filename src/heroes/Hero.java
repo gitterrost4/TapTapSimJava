@@ -1,5 +1,4 @@
 // $Id $
-// (C) cantamen/Paul Kramer 2019
 package heroes;
 
 import java.math.BigDecimal;
@@ -399,15 +398,43 @@ public interface Hero {
 
   public LogItem die(BattleSetting setting);
 
-  public LogItem heal(Integer baseStat,BigDecimal modifier);
+  public LogItem heal(Integer baseStat, BigDecimal modifier);
 
-  public void addOnHitAction(BiFunction<BattleSetting,Hero,LogItem> action);
-  
+  public void addOnHitAction(BiFunction<BattleSetting, Hero, LogItem> action);
+
   public void setCurrentHPToMaxHP();
 
-  LogItem receiveAttack(BattleSetting setting,Hero source,BigDecimal skillStrength,boolean isActiveSkill,
-    boolean canBeDodged,Function<Hero,LogItem> onHitAction);
-  
+  public boolean isBurning();
+
+  public boolean isPoisoned();
+
+  public boolean isPetrified();
+
+  public boolean isStunned();
+
+  public boolean isBleeding();
+
+  public boolean isFrozen();
+
+  public boolean isSilenced();
+
+  public BigDecimal getBurningDamageModifier();
+
+  public BigDecimal getPoisonedDamageModifier();
+
+  public BigDecimal getPetrifiedDamageModifier();
+
+  public BigDecimal getBleedingDamageModifier();
+
+  public BigDecimal getFrozenDamageModifier();
+
+  public BigDecimal getSilencedDamageModifier();
+
+  public BigDecimal getStunnedDamageModifier();
+
+  LogItem receiveAttack(BattleSetting setting, Hero source, BigDecimal skillStrength, boolean isActiveSkill,
+      boolean canBeDodged, Function<Hero, LogItem> onHitAction);
+
 }
 
 // end of file
