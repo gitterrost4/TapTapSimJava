@@ -2,6 +2,7 @@ package battle.logging;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Log implements LogItem {
@@ -9,7 +10,7 @@ public class Log implements LogItem {
   private List<LogItem> items = new ArrayList<>();
 
   public Log addItem(LogItem item) {
-    items.add(item);
+    Optional.ofNullable(item).ifPresent(items::add);
     return this;
   }
 

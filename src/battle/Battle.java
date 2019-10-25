@@ -41,6 +41,8 @@ public class Battle {
     setting.getSpeedSortedHeroList().forEach(hero -> {
       if (!hero.isDead() && !setting.getAttacker().isDead() && !setting.getDefender().isDead()) {
         log.addItem(hero.doAttack(setting));
+        hero.triggerTemporaryEffects();
+        //TODO: Process Temporary effects each round
       }
     });
     log.addItem(new LogMessage("Ending round " + roundCounter));

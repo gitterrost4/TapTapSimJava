@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import battle.BattleSetting;
@@ -15,6 +16,7 @@ import battle.logging.LogMessage;
 import effects.TemporaryEffect;
 import effects.TemporaryEffectCollection;
 import loadout.Loadout;
+import util.Utilities;
 
 /**
  * Abstract implementation of a hero that contains basic stuff such as stats,
@@ -318,7 +320,7 @@ public abstract class AbstractHero implements Hero {
   /**
    * currentEnergy a hero has
    */
-  private Integer currentEnergy;
+  private BigDecimal currentEnergy;
 
   /**
    * attack stat of the hero
@@ -380,8 +382,8 @@ public abstract class AbstractHero implements Hero {
 
   private TemporaryEffectCollection activeEffects=new TemporaryEffectCollection(this);
 
-  protected final List<Function<BattleSetting,LogItem>> onDeathAction=new ArrayList<>();
-  protected final List<Function<BattleSetting,LogItem>> onHitAction=new ArrayList<>();
+  protected final List<Function<BattleSetting,LogItem>> onDeathActions=new ArrayList<>();
+  protected final List<BiFunction<BattleSetting,Hero,LogItem>> onHitActions=new ArrayList<>();
 
   protected Integer star;
 
@@ -397,7 +399,7 @@ public abstract class AbstractHero implements Hero {
     this.star=parameters.star;
     this.loadout=parameters.loadout;
     computeStats(parameters,baseStats);
-    this.currentEnergy=50;
+    this.currentEnergy=new BigDecimal("50");
     this.hitRate=new BigDecimal(0);
     this.dodge=new BigDecimal(0);
     this.critRate=new BigDecimal(0);
@@ -445,9 +447,8 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public LogItem damage(BattleSetting setting,Hero source,BigDecimal modifier) {
+  public LogItem damage(Integer damage) {
     Log log=new Log();
-    int damage=modifier.multiply(new BigDecimal(source.getAttack())).intValue();
     this.currentHP=Math.max(0,this.currentHP - damage);
     log.addItem(logMessage("Taking " + damage + " Damage; Now currentHP=" + this.currentHP));
     return log;
@@ -458,7 +459,7 @@ public abstract class AbstractHero implements Hero {
     Log log=new Log();
     log.addItem(logMessage("Hero died. Triggering possible onDeath effects."));
     isDead=true;
-    onDeathAction.stream().map(action -> Optional.ofNullable(action.apply(setting))).filter(Optional::isPresent)
+    onDeathActions.stream().map(action -> Optional.ofNullable(action.apply(setting))).filter(Optional::isPresent)
       .map(Optional::get).forEach(log::addItem);
     return log;
   }
@@ -479,7 +480,7 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public Integer getCurrentEnergy() {
+  public BigDecimal getCurrentEnergy() {
     return currentEnergy;
   }
 
@@ -685,9 +686,9 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public LogItem increaseEnergy(Integer amount) {
+  public LogItem increaseEnergy(BigDecimal amount) {
     Log log=new Log();
-    this.currentEnergy+=amount;
+    this.currentEnergy=currentEnergy.add(amount);
     log.addItem(logMessage("Increasing Energy by " + amount + "; Now Energy=" + this.getCurrentEnergy()));
     return log;
   }
@@ -778,12 +779,12 @@ public abstract class AbstractHero implements Hero {
 
   @Override
   public void addOnDeathAction(Function<BattleSetting,LogItem> action) {
-    onDeathAction.add(action);
+    onDeathActions.add(action);
   }
 
   @Override
-  public void addOnHitAction(Function<BattleSetting,LogItem> action) {
-    onHitAction.add(action);
+  public void addOnHitAction(BiFunction<BattleSetting,Hero,LogItem> action) {
+    onHitActions.add(action);
   }
 
   @Override
@@ -799,8 +800,8 @@ public abstract class AbstractHero implements Hero {
     Log log=new Log();
     Hero attackedHero=setting.getOpposingTeam(this).getHeroes().get(0);
     log.addItem(logMessage("Basic attack at " + attackedHero.getFullName()));
-    log.addItem(attackedHero.damage(setting,this,new BigDecimal("1")));
-    log.addItem(increaseEnergy(50));
+    log.addItem(attackedHero.receiveAttack(setting,this,new BigDecimal(1),false,true,h->null));
+    log.addItem(increaseEnergy(new BigDecimal("50")));
     return log;
   }
 
@@ -817,7 +818,7 @@ public abstract class AbstractHero implements Hero {
   @Override
   public LogItem doAttack(BattleSetting setting) {
     Log log=new Log();
-    if (getCurrentEnergy() < 100) {
+    if (getCurrentEnergy().compareTo(new BigDecimal(100)) < 0) {
       log.addItem(basicAttack(setting));
     } else {
       log.addItem(doSkillAttack(setting));
@@ -827,9 +828,9 @@ public abstract class AbstractHero implements Hero {
   }
 
   public void setCurrentHPToMaxHP() {
-    this.currentHP = getMaxHP();
+    this.currentHP=getMaxHP();
   }
-  
+
   private LogItem doSkillAttack(BattleSetting setting) {
     Log log=new Log();
     log.addItem(logMessage("initiating active skill"));
@@ -872,7 +873,7 @@ public abstract class AbstractHero implements Hero {
   @Override
   public LogItem zeroEnergy() {
     Log log=new Log();
-    currentEnergy=0;
+    currentEnergy=new BigDecimal("0");
     log.addItem(logMessage("Setting currentEnergy to 0"));
     return log;
   }
@@ -884,11 +885,11 @@ public abstract class AbstractHero implements Hero {
     log.addMessage("Loadout:");
     log.addItem(loadout.getInformation());
     log.addMessage("Stats:");
-    Log statLog = new Log();
-    statLog.addMessage("MaxHP: "+getMaxHP());
-    statLog.addMessage("Attack: "+getAttack());
-    statLog.addMessage("Defense: "+getDefense());
-    statLog.addMessage("Speed: "+getSpeed());
+    Log statLog=new Log();
+    statLog.addMessage("MaxHP: " + getMaxHP());
+    statLog.addMessage("Attack: " + getAttack());
+    statLog.addMessage("Defense: " + getDefense());
+    statLog.addMessage("Speed: " + getSpeed());
     log.addItem(statLog);
     return log;
   }
@@ -897,7 +898,7 @@ public abstract class AbstractHero implements Hero {
   public String toString() {
     return "AbstractHero [level=" + level + ", heroClass=" + heroClass + ", faction=" + faction + ", maxHP=" + maxHP
       + ", maxHPModifier=" + maxHPModifier + ", currentHP=" + currentHP + ", currentEnergy=" + currentEnergy
-      + ", attack=" + attack + ", attackModifier=" + attackModifier + ", dodge=" + dodge 
+      + ", attack=" + attack + ", attackModifier=" + attackModifier + ", dodge=" + dodge
       + ", hitRate=" + hitRate + ", critRate=" + critRate + ", skillDamage=" + skillDamage + ", speed=" + speed
       + ", defense=" + defense + ", defenseBreak=" + defenseBreak + ", trueDamage=" + trueDamage + ", critDamage="
       + critDamage + ", controlResist=" + controlResist + ", getMaxHP()=" + getMaxHP() + ", getAttack()="
@@ -905,11 +906,78 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
+  public LogItem receiveAttack(BattleSetting setting,Hero source,BigDecimal skillStrength,boolean isActiveSkill,
+    boolean canBeDodged,Function<Hero,LogItem> onHitAction) {
+    Log log=new Log();
+
+    double factionHitRateBonus=source.getFaction().getAdvantageFaction().equals(this.getFaction())?0.15:0;
+    if (!Utilities.getRandomThrow(this.getDodgeChance()
+      .subtract(source.getHitRate().add(new BigDecimal(factionHitRateBonus))).max(new BigDecimal("0")))) {
+      // not dodged
+      double mainDamage=source.getAttack();
+      double defenseReduce=1
+        - Math.max(0,Math.min(0.8,(this.defense - source.getDefenseBreak().doubleValue() + 20) * 0.01));
+      double skillDamage=skillStrength.doubleValue() + (isActiveSkill?source.getSkillDamage().doubleValue():0);
+      boolean isCrit = false; //TODO
+      double critDamage=1.5 + source.getCritDamage().doubleValue();
+      double damageReduce=1 - Math.min(0.8,getDamageReduce().doubleValue());
+      double factionMultiplier=source.getFaction().getAdvantageFaction().equals(this.getFaction())?1.3:1;
+      double classMultiplier=getClassMultiplier(source);
+      double stateMultiplier=getStateMultiplier(source);
+      //damage the hero
+      log.addItem(this.damage(new BigDecimal(mainDamage * defenseReduce * skillDamage * (isCrit?critDamage:1) * damageReduce
+        * factionMultiplier * classMultiplier * stateMultiplier).intValue()));
+      //execute hero's on hit actions
+      this.onHitActions.stream().map(action -> action.apply(setting,source)).forEach(log::addItem);
+      //execute skill's on hit action
+      log.addItem(onHitAction.apply(this));
+      
+      this.increaseEnergy(new BigDecimal("12.5"));
+    } else {
+      log.addItem(logMessage("Dodged attack from "+source.getFullName()));
+    }
+    return log;
+  }
+
+  private double getClassMultiplier(Hero source) {
+    switch (this.getHeroClass()) {
+    case ASSASSIN:
+      return 1 + source.getAssassinDamageModifier().doubleValue();
+    case CLERIC:
+      return 1 + source.getClericDamageModifier().doubleValue();
+    case MAGE:
+      return 1 + source.getMageDamageModifier().doubleValue();
+    case WANDERER:
+      return 1 + source.getWandererDamageModifier().doubleValue();
+    case WARRIOR:
+      return 1 + source.getWarriorDamageModifier().doubleValue();
+    default:
+      throw new IllegalStateException("Hero Class not handled"); // shouldn't be
+                                                                 // possible
+    }
+  }
+  
+  private double getStateMultiplier(Hero source) {
+    double multiplier=1;
+    // TODO:
+    // if(this.isBurning()){ multiplier += source.getBurningAttackMultiplier() }
+    // if(this.isPoisoned()){ multiplier += source.getPoisonedAttackMultiplier()
+    // }
+    // ....
+    return multiplier;
+  }
+
+  @Override
+  public LogItem triggerTemporaryEffects() {
+    return activeEffects.trigger();
+  }
+
+  @Override
   public LogItem heal(Integer baseStat,BigDecimal modifier) {
     Log log=new Log();
     if (!isDead() && !isDying()) {
       int amount=new BigDecimal(baseStat).multiply(modifier).intValue();
-      this.currentHP=Math.min(getMaxHP(),this.currentHP+amount);
+      this.currentHP=Math.min(getMaxHP(),this.currentHP + amount);
       log.addItem(logMessage("Heal by " + amount + "; Now currentHP=" + this.getCurrentHP()));
     }
     return log;

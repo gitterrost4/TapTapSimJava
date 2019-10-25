@@ -11,8 +11,9 @@ import heroes.Hero;
  */
 public class Poison extends TemporaryEffect {
 
-  public Poison(BattleSetting setting, Integer remainingRounds, Hero source, BigDecimal strength) {
-    super(h -> h.damage(setting, source, strength), h -> h.damage(setting, source, strength), h -> null, "Poison",
+  public Poison(BattleSetting setting, Integer remainingRounds, Hero source, BigDecimal skillStrength) {
+    //TODO: implement this
+    super(h -> h.receiveAttack(setting,source,skillStrength,false,false,x->null),h -> h.receiveAttack(setting,source,skillStrength,false,false,x->null), h -> null, "Poison",
         remainingRounds);
   }
 

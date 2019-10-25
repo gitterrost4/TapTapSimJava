@@ -88,7 +88,7 @@ public class Reaper extends AbstractHero {
         if (opposingHeroes.size() > 0) {
           log.addItem(logMessage("Dealing Damage (107% of Attack) to all enemies"));
         }
-        opposingHeroes.stream().forEach(h -> log.addItem(h.damage(setting, this, new BigDecimal("1.07"))));
+        opposingHeroes.stream().forEach(h -> log.addItem(h.receiveAttack(setting, this, new BigDecimal("1.07"),false, true, x->null)));
         return log;
       });
       break;
@@ -104,7 +104,7 @@ public class Reaper extends AbstractHero {
     case 10:
       log.addItem(logMessage("attacking all opposing heroes for 180% of attack"));
       setting.getOpposingTeam(this).getHeroes(true, true).forEach(h -> {
-        log.addItem(h.damage(setting, this, new BigDecimal("1.8")));
+        log.addItem(h.receiveAttack(setting,this,new BigDecimal("1.8"),true,false,x->null));
         if (h.getHeroClass().equals(HeroClass.WARRIOR)) {
           log.addItem(h.addTemporaryEffect(new Silence(2)));
         }

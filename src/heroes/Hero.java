@@ -3,6 +3,7 @@
 package heroes;
 
 import java.math.BigDecimal;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import battle.BattleSetting;
@@ -23,7 +24,7 @@ public interface Hero {
    * @param modifier the amount of damage that the hero should take
    * @return
    */
-  public LogItem damage(BattleSetting setting, Hero source, BigDecimal modifier);
+  public LogItem damage(Integer amount);
 
   /**
    * get the current hp of a hero
@@ -51,7 +52,7 @@ public interface Hero {
    * 
    * @return
    */
-  public Integer getCurrentEnergy();
+  public BigDecimal getCurrentEnergy();
 
   /**
    * Increase the attack of a hero.
@@ -265,7 +266,7 @@ public interface Hero {
    * 
    * @param amount
    */
-  public LogItem increaseEnergy(Integer amount);
+  public LogItem increaseEnergy(BigDecimal amount);
 
   /**
    * add ExDMGToAssassin to the hero
@@ -362,6 +363,8 @@ public interface Hero {
 
   public LogItem addTemporaryEffect(TemporaryEffect effect);
 
+  public LogItem triggerTemporaryEffects();
+
   public LogItem basicAttack(BattleSetting setting);
 
   public LogItem skillAttack(BattleSetting setting);
@@ -398,9 +401,13 @@ public interface Hero {
 
   public LogItem heal(Integer baseStat,BigDecimal modifier);
 
-  void addOnHitAction(Function<BattleSetting,LogItem> action);
+  public void addOnHitAction(BiFunction<BattleSetting,Hero,LogItem> action);
   
   public void setCurrentHPToMaxHP();
+
+  LogItem receiveAttack(BattleSetting setting,Hero source,BigDecimal skillStrength,boolean isActiveSkill,
+    boolean canBeDodged,Function<Hero,LogItem> onHitAction);
+  
 }
 
 // end of file

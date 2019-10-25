@@ -52,7 +52,7 @@ public class Rlyeh extends AbstractHero {
     Log log = new Log();
     Hero attackedHero=setting.getOpposingTeam(this).getLowestHealthHero().orElseThrow(()->new IllegalStateException("No hero is alive anymore"));
     log.addItem(logMessage("Dealing Damage (170% of Attack) to "+attackedHero.getFullName()));
-    log.addItem(attackedHero.damage(setting,this,new BigDecimal("1.7")));
+    log.addItem(attackedHero.receiveAttack(setting,this,new BigDecimal("1.7"),true,true,h->null));
     Hero healedHero=setting.getOwnTeam(this).getLowestHealthHero().orElseThrow(()->new IllegalStateException("No hero is alive anymore"));
     log.addItem(logMessage("Healing (400% of Attack) to "+healedHero.getFullName()));
     log.addItem(healedHero.heal(this.getAttack(),new BigDecimal("4")));
@@ -62,7 +62,7 @@ public class Rlyeh extends AbstractHero {
   }
 
   private void applySkill3() {
-    this.addOnHitAction(setting->this.addTemporaryEffect(new Heal(1, getAttack(),new BigDecimal("0.66"))));
+    this.addOnHitAction((hero,setting)->this.addTemporaryEffect(new Heal(1, getAttack(),new BigDecimal("0.66"))));
   }
   
   private void applySkill4() {
@@ -78,14 +78,14 @@ public class Rlyeh extends AbstractHero {
     case 10:
       Hero attackedHero=setting.getOpposingTeam(this).getHeroes().get(0);
       log.addItem(logMessage("Basic attack at " + attackedHero.getFullName()));
-      log.addItem(attackedHero.damage(setting,this,new BigDecimal("1")));
+      log.addItem(attackedHero.receiveAttack(setting,this,new BigDecimal(1),false,true,h->null));
       if (Utilities.getRandomThrow(new BigDecimal("0.51"))) {
         Hero healedHero=setting.getOwnTeam(this).getLowestHealthHero()
           .orElseThrow(() -> new IllegalStateException("No hero is alive anymore"));
         log.addItem(logMessage("Healing "+healedHero.getFullName()+" for 151% of Attack for 1 round"));
         log.addItem(healedHero.addTemporaryEffect(new Heal(1,this.getAttack(), new BigDecimal("1.51"))));
       }
-      log.addItem(increaseEnergy(50));
+      log.addItem(increaseEnergy(new BigDecimal("50")));
       break;
     default:
       break;

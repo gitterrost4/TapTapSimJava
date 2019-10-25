@@ -14,7 +14,7 @@ public class TearsOfTheGoddess extends AbstractArtifact {
   public void apply(Hero hero) {
     hero.addAttackModifier(new BigDecimal("0.105"));
     hero.addMaxHPModifier(new BigDecimal("0.084"));
-    hero.increaseEnergy(50);
+    hero.increaseEnergy(new BigDecimal("50"));
   }
 
 }
