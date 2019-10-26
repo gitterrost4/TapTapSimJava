@@ -4,12 +4,20 @@ import heroes.Hero;
 
 /**
  * Class representing the accessory slot (amulets and rings) of the equipment
- *
  */
 public class Accessory extends AbstractEquipment {
 
+  /**
+   * the flat attack bonus of the accessory
+   */
   private final Integer atkIncrease;
 
+  /**
+   * constructor creating an Accessory from rarity
+   * 
+   * @param rarity
+   *        the rarity of the Accessory
+   */
   public Accessory(EquipmentRarity rarity) {
     super(rarity);
     switch (rarity) {

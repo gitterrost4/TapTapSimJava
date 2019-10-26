@@ -4,12 +4,20 @@ import heroes.Hero;
 
 /**
  * class representing the armor slot (chestpiece) of the equipment
- *
  */
 public class Armor extends AbstractEquipment {
 
+  /**
+   * the flat maxHP bonus of the Armor
+   */
   private final Integer hpIncrease;
 
+  /**
+   * constructor creating an Armor from its rarity
+   * 
+   * @param rarity
+   *        the rarity of the armor
+   */
   public Armor(EquipmentRarity rarity) {
     super(rarity);
     switch (rarity) {

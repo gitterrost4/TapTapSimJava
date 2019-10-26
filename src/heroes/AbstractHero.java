@@ -23,6 +23,9 @@ import util.Utilities;
  */
 public abstract class AbstractHero implements Hero {
 
+  /**
+   * contains the speed value that's added to a hero's base speed for each level.
+   */
   private final static Map<Integer, Integer> speedModifierPerLevel = new HashMap<>();
   static {
     speedModifierPerLevel.put(1, 0);
@@ -287,6 +290,9 @@ public abstract class AbstractHero implements Hero {
    */
   private final HeroClass heroClass;
 
+  /**
+   * the type (name) of the hero
+   */
   private final HeroType heroType;
 
   /**
@@ -294,10 +300,22 @@ public abstract class AbstractHero implements Hero {
    */
   private final Faction faction;
 
+  /**
+   * the complete loadout (armor, helmet, weapon, accessory, rune, artifact) of
+   * the hero
+   */
   private final Loadout loadout;
 
+  /**
+   * the position of the hero in its team (if the hero has been assigned to a
+   * team)
+   */
   private Optional<Integer> position = Optional.empty();
 
+  /**
+   * Whether the hero is on the attacking team (true) or the opposing team (false)
+   * or no team yet (empty)
+   */
   private Optional<Boolean> isAttacker = Optional.empty();
 
   /**
@@ -361,41 +379,138 @@ public abstract class AbstractHero implements Hero {
    */
   private Integer defense;
 
+  /**
+   * defenseBreak of the hero
+   */
   private double defenseBreak;
 
+  /**
+   * trueDamage of the hero
+   */
   private double trueDamage;
 
+  /**
+   * critDamage of the hero
+   */
   private double critDamage;
 
+  /**
+   * controlResist of the hero
+   */
   private double controlResist;
 
+  /**
+   * silenceResistance of the hero
+   */
   private double silenceResistance;
 
+  /**
+   * ExDMGToAssassin of the hero
+   */
   private double assassinDamageModifier;
+
+  /**
+   * ExDMGToCleric of the hero
+   */
   private double clericDamageModifier;
+
+  /**
+   * ExDMGToWarrior of the hero
+   */
   private double warriorDamageModifier;
+
+  /**
+   * ExDMGToWanderer of the hero
+   */
   private double wandererDamageModifier;
+
+  /**
+   * ExDMGToMage of the hero
+   */
   private double mageDamageModifier;
 
+  /**
+   * damageReduce of the hero
+   */
   private double damageReduce;
 
+  /**
+   * Collection of all effects currently affecting this hero
+   */
   private TemporaryEffectCollection activeEffects = new TemporaryEffectCollection(this);
 
+  /**
+   * List of all actions that are executed on this hero's death. They can come
+   * from its own skills or from other heroes' skills
+   */
   protected final List<Function<BattleSetting, LogItem>> onDeathActions = new ArrayList<>();
+
+  /**
+   * List of all actions that are executed when this hero gets hit.
+   */
   protected final List<BiFunction<BattleSetting, Hero, LogItem>> onHitActions = new ArrayList<>();
 
+  /**
+   * the star level of the hero
+   */
   protected Integer star;
 
+  /**
+   * true if the hero is dead (currentHP==0 and all death actions have been
+   * handled)
+   */
   private boolean isDead = false;
 
+  /**
+   * Extra damage to burning foes of the hero
+   */
   private double burningDamageModifier;
+
+  /**
+   * Extra damage to frozen foes of the hero
+   */
   private double frozenDamageModifier;
+
+  /**
+   * Extra damage to silenced foes of the hero
+   */
   private double silencedDamageModifier;
+
+  /**
+   * Extra damage to stunned foes of the hero
+   */
   private double stunnedDamageModifier;
+
+  /**
+   * Extra damage to poisoned foes of the hero
+   */
   private double poisonedDamageModifier;
+
+  /**
+   * Extra damage to petrified foes of the hero
+   */
   private double petrifiedDamageModifier;
+
+  /**
+   * Extra damage to bleeding foes of the hero
+   */
   private double bleedingDamageModifier;
 
+  /**
+   * main constructor, creating a hero with all its parameters (excluding the team
+   * it should be on)
+   * 
+   * @param parameters
+   *        basic parameters of the hero
+   * @param baseStats
+   *        map of the base stats of the hero (this is fixed for each hero)
+   * @param heroClass
+   *        the class of the hero
+   * @param faction
+   *        the faction of the hero
+   * @param heroType
+   *        the type (name) of the hero
+   */
   public AbstractHero(HeroParameters parameters, Map<Integer, BaseStats> baseStats, HeroClass heroClass,
       Faction faction, HeroType heroType) {
     super();
@@ -430,10 +545,20 @@ public abstract class AbstractHero implements Hero {
     this.burningDamageModifier = 0;
     this.petrifiedDamageModifier = 0;
     this.damageReduce = 0;
+    // this needs to be done right before the end of this method
     parameters.loadout.apply(this);
     this.currentHP = getMaxHP();
   }
 
+  /**
+   * compute the four main stats (maxHP, attack, speed and armor) from the base
+   * stats and the base parameters of the hero
+   * 
+   * @param parameters
+   *        hero's base parameters
+   * @param baseStats
+   *        hero's base stats (fixed for each hero)
+   */
   private void computeStats(HeroParameters parameters, Map<Integer, BaseStats> baseStats) {
     BaseStats base = baseStats.get(parameters.star);
     HeroTier tier = HeroTier.getTierForLevel(parameters.level);
@@ -821,6 +946,13 @@ public abstract class AbstractHero implements Hero {
     this.currentHP = getMaxHP();
   }
 
+  /**
+   * execute a skill attack and zero out the energy afterwards
+   * 
+   * @param setting
+   *        complete battle setting
+   * @return A log item containing the logged information of this operation
+   */
   private LogItem doSkillAttack(BattleSetting setting) {
     Log log = new Log();
     log.addItem(logMessage("initiating active skill"));
@@ -928,6 +1060,13 @@ public abstract class AbstractHero implements Hero {
     return log;
   }
 
+  /**
+   * return the damage multiplier coming from the ExDMGTo___ of the source hero
+   * 
+   * @param source
+   *        Hero that initiated the attack
+   * @return the multiplier for the ExDMGTo___ stat
+   */
   private double getClassMultiplier(Hero source) {
     switch (this.getHeroClass()) {
     case ASSASSIN:
@@ -946,6 +1085,14 @@ public abstract class AbstractHero implements Hero {
     }
   }
 
+  /**
+   * return the damage multiplier coming from the ExDMGTo[someCondition] of the
+   * source hero
+   * 
+   * @param source
+   *        Hero that initiated the attack
+   * @return the multiplier for the ExDMGTo___ stat
+   */
   private double getStateMultiplier(Hero source) {
     double multiplier = 1;
     if (this.isBurning()) {

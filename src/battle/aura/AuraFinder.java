@@ -6,7 +6,11 @@ import java.util.Optional;
 
 import heroes.Hero;
 
+/**
+ * utility class for checking if an aura is present in a team
+ */
 public class AuraFinder {
+  /** static list of all auras */
   private static final List<Aura> allAuras = new ArrayList<>();
   static {
     allAuras.add(new Alliance());
@@ -26,7 +30,15 @@ public class AuraFinder {
     allAuras.add(new Undead());
     allAuras.add(new Unity());
   }
+
+  /**
+   * get the aura for a team
+   * 
+   * @param team
+   *        list of heroes in a team
+   * @return the aura or empty if no aura is found
+   */
   public static Optional<Aura> getAura(List<Hero> team) {
-    return allAuras.stream().filter(aura->aura.isApplicable(team)).findFirst();
+    return allAuras.stream().filter(aura -> aura.isApplicable(team)).findFirst();
   }
 }

@@ -7,16 +7,31 @@ import java.util.stream.Stream;
 import heroes.Hero;
 
 /**
- * class representing the three familiars
- * 
- * @author gitterrost4
+ * class representing the three familiars that a player has
  */
 public class Familiars {
+  /** the edison familiar */
   private final Edison edison;
+  /** the vinci familiar */
   private final Vinci vinci;
+  /** the raphael familiar */
   private final Raphael raphael;
+  /** reference to the familiar that's active in the team */
   private final AbstractFamiliar activeFamiliar;
 
+  /**
+   * create the familiar container by providing the three familiars and which of them
+   * is active
+   * 
+   * @param edison
+   *        the edison familiar
+   * @param vinci
+   *        the vinci familiar
+   * @param raphael
+   *        the raphael familiar
+   * @param activeFamiliar
+   *        which of the familiars is the active one
+   */
   public Familiars(Edison edison, Vinci vinci, Raphael raphael, FamiliarType activeFamiliar) {
     super();
     this.edison = edison;
@@ -39,21 +54,54 @@ public class Familiars {
     }
   }
 
+  /**
+   * apply the passive bonuses of all heroes and the passive skill bonuses of the
+   * active familiar to a hero
+   * 
+   * @param hero
+   *        hero the bonuses will be applied to
+   */
   public void apply(Hero hero) {
-    Stream.of(vinci, edison, raphael).forEach(familiar -> familiar.applyPassive(hero));
-    activeFamiliar.applyActive(hero);
+    Stream.of(vinci, edison, raphael).forEach(familiar -> familiar.applyPassiveBonus(hero));
+    activeFamiliar.applyPassiveSkills(hero);
   }
 
+  /**
+   * enum with a value for each familiar
+   */
   public enum FamiliarType {
-    VINCI, EDISON, RAPHAEL;
+    /** Vinci */
+    VINCI,
+    /** Edison */
+    EDISON,
+    /** Raphael */
+    RAPHAEL;
   }
 
+  /**
+   * create a set of maxed familiars by providing which of them should be active
+   * 
+   * @param activeFamiliar
+   *        which familiar will be the active one
+   * @return a maxed set of familiars
+   */
   public static Familiars max(FamiliarType activeFamiliar) {
     return new Familiars(Edison.max(), Vinci.max(), Raphael.max(), activeFamiliar);
   }
 
+  /**
+   * the base class for the familiars
+   */
   public static abstract class AbstractFamiliar {
+    /**
+     * a map specifying the maxHP bonus that's added to the base value for each
+     * familiar's level
+     */
     private final static Map<Integer, Integer> maxHPIncreasePerLevel = new HashMap<>();
+    /**
+     * a map specifying the attack bonus that's added to the base value for each
+     * familiar's level
+     */
     private final static Map<Integer, Integer> attackIncreasePerLevel = new HashMap<>();
 
     static {
@@ -459,12 +507,31 @@ public class Familiars {
       attackIncreasePerLevel.put(199, 594);
       attackIncreasePerLevel.put(200, 606);
     }
+    /** the level of the familiar */
     protected final Integer level;
+    /** the level of the first skill of the familiar */
     protected final Integer levelSkill1;
+    /** the level of the second skill of the familiar */
     protected final Integer levelSkill2;
+    /** the level of the third skill of the familiar */
     protected final Integer levelSkill3;
+    /** the level of the fourth skill of the familiar */
     protected final Integer levelSkill4;
 
+    /**
+     * base constructor setting all the levels
+     * 
+     * @param level
+     *        level of the familiar
+     * @param levelSkill1
+     *        level of the first skill of the familiar
+     * @param levelSkill2
+     *        level of the second skill of the familiar
+     * @param levelSkill3
+     *        level of the third skill of the familiar
+     * @param levelSkill4
+     *        level of the fourth skill of the familiar
+     */
     private AbstractFamiliar(Integer level, Integer levelSkill1, Integer levelSkill2, Integer levelSkill3,
         Integer levelSkill4) {
       super();
@@ -475,21 +542,48 @@ public class Familiars {
       this.levelSkill4 = levelSkill4;
     }
 
-    protected void applyPassive(Hero hero) {
+    /**
+     * apply the passive hp and attack bonuses that just come from the level of the
+     * familiar
+     * 
+     * @param hero
+     *        the hero that the bonuses will be applied to
+     */
+    protected void applyPassiveBonus(Hero hero) {
       hero.increaseMaxHP(getHPBonus());
       hero.increaseAttack(getAttackBonus());
     }
 
-    protected abstract void applyActive(Hero hero);
+    /**
+     * apply the passive skills of the familiar to a hero
+     * 
+     * @param hero
+     *        the hero that the skill bonuses will be applied to
+     */
+    protected abstract void applyPassiveSkills(Hero hero);
 
+    /**
+     * @return the maxHP multiplier for the Familiar (fixed for each familiar)
+     */
     protected abstract double getMaxHPMultiplier();
 
+    /**
+     * @return the attack multiplier for the Familiar (fixed for each familiar)
+     */
     protected abstract double getAttackMultiplier();
 
+    /**
+     * @return the maxHP bonus this familiar gives the hero in the end
+     */
     protected Integer getHPBonus() {
       return new Double(getMaxHPMultiplier() * (getTierHPBonus() + getLevelHPBonus())).intValue();
     }
 
+    /**
+     * @return the hp bonus based on the tier. I assume that a familiar is instantly
+     *         tiered up. The simulator can't handle a familiar at level 80 that's not
+     *         tiered up for example
+     */
     private Integer getTierHPBonus() {
       if (level < 80) {
         return 0;
@@ -503,14 +597,23 @@ public class Familiars {
       return 1600;
     }
 
+    /**
+     * @return the hp bonus provided by just the level of the familiar
+     */
     private Integer getLevelHPBonus() {
       return maxHPIncreasePerLevel.get(level);
     }
 
+    /**
+     * @return the attack bonus this familiar gives the hero in the end
+     */
     protected Integer getAttackBonus() {
       return new Double(getAttackMultiplier() * (getTierAttackBonus() + getLevelAttackBonus())).intValue();
     }
 
+    /**
+     * @return the attack bonus provided by the tier of the familiar
+     */
     private Integer getTierAttackBonus() {
       if (level < 80) {
         return 0;
@@ -524,26 +627,58 @@ public class Familiars {
       return 81;
     }
 
+    /**
+     * @return the attack bonus provided by just the level of the familiar
+     */
     private Integer getLevelAttackBonus() {
       return attackIncreasePerLevel.get(level);
     }
 
   }
 
+  /**
+   * implementation of the vinci pet
+   */
   public static class Vinci extends AbstractFamiliar {
+    /**
+     * the (fixed) maxHP multiplier for vinci
+     */
     private final static double maxHPMultiplier = 1.0;
+
+    /**
+     * the (fixed) attack multiplier for vinci
+     */
     private final static double attackMultiplier = 1.0;
 
+    /**
+     * create a vinci by providing its levels
+     * 
+     * @param level
+     *        level of vinci
+     * @param levelSkill1
+     *        level of the first skill of vinci
+     * @param levelSkill2
+     *        level of the second skill of vinci
+     * @param levelSkill3
+     *        level of the third skill of vinci
+     * @param levelSkill4
+     *        level of the fourth skill of vinci
+     */
     public Vinci(Integer level, Integer levelSkill1, Integer levelSkill2, Integer levelSkill3, Integer levelSkill4) {
       super(level, levelSkill1, levelSkill2, levelSkill3, levelSkill4);
     }
 
+    /**
+     * create a maxed out vinci
+     * 
+     * @return a maxed vinci
+     */
     public static Vinci max() {
       return new Vinci(200, 120, 20, 20, 20);
     }
 
     @Override
-    protected void applyActive(Hero hero) {
+    protected void applyPassiveSkills(Hero hero) {
       hero.increaseSkillDamage(0.01 * levelSkill2);
       hero.increaseHitRate(0.005 * levelSkill3);
       hero.increaseSpeed(2 * levelSkill4);
@@ -561,20 +696,49 @@ public class Familiars {
 
   }
 
+  /**
+   * implementation of the edison pet
+   */
   public static class Edison extends AbstractFamiliar {
+    /**
+     * the (fixed) maxHP multiplier for edison
+     */
     private final static double maxHPMultiplier = 1.1;
+
+    /**
+     * the (fixed) attack multiplier for edison
+     */
     private final static double attackMultiplier = 0.6;
 
+    /**
+     * create a edison by providing its levels
+     * 
+     * @param level
+     *        level of edison
+     * @param levelSkill1
+     *        level of the first skill of edison
+     * @param levelSkill2
+     *        level of the second skill of edison
+     * @param levelSkill3
+     *        level of the third skill of edison
+     * @param levelSkill4
+     *        level of the fourth skill of edison
+     */
     public Edison(Integer level, Integer levelSkill1, Integer levelSkill2, Integer levelSkill3, Integer levelSkill4) {
       super(level, levelSkill1, levelSkill2, levelSkill3, levelSkill4);
     }
 
+    /**
+     * create a maxed out edison
+     * 
+     * @return a maxed edison
+     */
     public static Edison max() {
       return new Edison(200, 120, 20, 20, 20);
     }
 
     @Override
-    protected void applyActive(Hero hero) {
+    protected void applyPassiveSkills(Hero hero) {
       hero.increaseCritRate(0.005 * levelSkill2);
       hero.increaseCritDamage(0.01 * levelSkill3);
       hero.increaseSpeed(2 * levelSkill4);
@@ -592,20 +756,48 @@ public class Familiars {
 
   }
 
+  /**
+   * implementation of the raphael pet
+   */
   public static class Raphael extends AbstractFamiliar {
+    /**
+     * the (fixed) maxHP multiplier for raphael
+     */
     private final static double maxHPMultiplier = 0.9;
+    /**
+     * the (fixed) attack multiplier for raphael
+     */
     private final static double attackMultiplier = 1.4;
 
+    /**
+     * create a raphael by providing its levels
+     * 
+     * @param level
+     *        level of raphael
+     * @param levelSkill1
+     *        level of the first skill of raphael
+     * @param levelSkill2
+     *        level of the second skill of raphael
+     * @param levelSkill3
+     *        level of the third skill of raphael
+     * @param levelSkill4
+     *        level of the fourth skill of raphael
+     */
     public Raphael(Integer level, Integer levelSkill1, Integer levelSkill2, Integer levelSkill3, Integer levelSkill4) {
       super(level, levelSkill1, levelSkill2, levelSkill3, levelSkill4);
     }
 
+    /**
+     * create a maxed out raphael
+     * 
+     * @return a maxed raphael
+     */
     public static Raphael max() {
       return new Raphael(200, 120, 20, 20, 20);
     }
 
     @Override
-    protected void applyActive(Hero hero) {
+    protected void applyPassiveSkills(Hero hero) {
       hero.increaseTrueDamage(0.01 * levelSkill2);
       hero.increaseDodgeChance(0.005 * levelSkill3);
       hero.increaseSpeed(2 * levelSkill4);
