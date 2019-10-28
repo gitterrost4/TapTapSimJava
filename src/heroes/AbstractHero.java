@@ -1032,7 +1032,7 @@ public abstract class AbstractHero implements Hero {
     Log log = new Log();
 
     double factionHitRateBonus = source.getFaction().getAdvantageFaction().equals(this.getFaction()) ? 0.15 : 0;
-    if (!Utilities.getRandomThrow(Math.max(0, this.getDodgeChance() - (source.getHitRate() + factionHitRateBonus)))) {
+    if (!canBeDodged || !Utilities.getRandomThrow(Math.max(0, this.getDodgeChance() - (source.getHitRate() + factionHitRateBonus)))) {
       // not dodged
       double mainDamage = source.getAttack();
       double defenseReduce = 1 - Math.max(0, Math.min(0.8, (this.defense - source.getDefenseBreak() + 20) * 0.01));

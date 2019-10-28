@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import battle.logging.Log;
 import battle.logging.LogItem;
 import heroes.Hero;
+import player.Familiars.AbstractFamiliar;
 
 /**
  * The setting for the battle; basically only consisting of the two teams
@@ -30,6 +31,8 @@ public class BattleSetting {
       h.setDefender();
       h.setCurrentHPToMaxHP();
     });
+    attacker.getActiveFamiliar().setAttacker();
+    attacker.getActiveFamiliar().setDefender();
   }
 
   public Team getAttacker() {
@@ -59,6 +62,28 @@ public class BattleSetting {
     } else {
       return attacker;
     }
+  }
+
+  /**
+   * return the opposing team for a familiar
+   * 
+   * @param f the familiar in question
+   * @return the team object of the attacker or defender, depending on which side the familiar is on
+   */
+  public Team getOpposingTeam(AbstractFamiliar f) {
+    if (attacker.getPlayer().getFamiliars().getActiveFamiliar()==f) {
+      return defender;
+    } else {
+      return attacker;
+    }
+  }
+
+  /**
+   * @param f the familiar in question
+   * @return true, iff the familiar is on the active team
+   */
+  public boolean isAttacker(AbstractFamiliar f) {
+    return attacker.getPlayer().getFamiliars().getActiveFamiliar()==f;
   }
 
   public LogItem getInformation() {
