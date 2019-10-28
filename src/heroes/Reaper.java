@@ -10,6 +10,7 @@ import battle.logging.Log;
 import battle.logging.LogItem;
 import effects.Silence;
 import effects.TemporaryEffect;
+import util.Tuple;
 
 /**
  * Reaper
@@ -59,8 +60,8 @@ public class Reaper extends AbstractHero {
   }
 
   /**
-   * apply the second skill of reaper increasing attack when a team member dies
-   * TODO: Add the rest of the star versions of this skill
+   * apply the second skill of reaper increasing attack when a team member dies TODO:
+   * Add the rest of the star versions of this skill
    * 
    * @param setting
    *        the complete battle setting
@@ -85,8 +86,8 @@ public class Reaper extends AbstractHero {
   }
 
   /**
-   * apply the third skill of Reaper, increasing its stats TODO: Add the rest of
-   * the star versions of the skill
+   * apply the third skill of Reaper, increasing its stats TODO: Add the rest of the
+   * star versions of the skill
    */
   private void applySkill3() {
     switch (star) {
@@ -101,8 +102,8 @@ public class Reaper extends AbstractHero {
   }
 
   /**
-   * apply the fourth skill of reaper adding an onDeath action dealing damage to
-   * all enemies TODO: Add the rest of the star versions
+   * apply the fourth skill of reaper adding an onDeath action dealing damage to all
+   * enemies TODO: Add the rest of the star versions
    */
   private void applySkill4() {
     switch (star) {
@@ -113,7 +114,8 @@ public class Reaper extends AbstractHero {
         if (opposingHeroes.size() > 0) {
           log.addItem(logMessage("Dealing Damage (107% of Attack) to all enemies"));
         }
-        opposingHeroes.stream().forEach(h -> log.addItem(h.receiveAttack(setting, this, 1.07, false, true, x -> null)));
+        opposingHeroes.stream()
+            .forEach(h -> log.addItem(h.receiveAttack(setting, this, 1.07, false, true, x -> null)._1));
         return log;
       });
       break;
@@ -129,8 +131,9 @@ public class Reaper extends AbstractHero {
     case 10:
       log.addItem(logMessage("attacking all opposing heroes for 180% of attack"));
       setting.getOpposingTeam(this).getHeroes(true, true).forEach(h -> {
-        log.addItem(h.receiveAttack(setting, this, 1.8, true, false, x -> null));
-        if (h.getHeroClass().equals(HeroClass.WARRIOR)) {
+        Tuple<Boolean, LogItem> attackResult = h.receiveAttack(setting, this, 1.8, true, false, x -> null);
+        log.addItem(attackResult._1);
+        if (attackResult._0 && h.getHeroClass().equals(HeroClass.WARRIOR)) {
           log.addItem(h.addTemporaryEffect(new Silence(2)));
         }
       });

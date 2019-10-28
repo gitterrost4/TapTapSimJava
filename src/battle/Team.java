@@ -14,8 +14,8 @@ import battle.logging.Log;
 import battle.logging.LogItem;
 import battle.logging.LogMessage;
 import heroes.Hero;
-import player.Player;
 import player.Familiars.AbstractFamiliar;
+import player.Player;
 
 /**
  * describes a full team of heroes
@@ -30,8 +30,8 @@ public class Team {
   private final Player player;
 
   /**
-   * create a team with six heroes (null if a spot is empty) and the player this
-   * team belongs to
+   * create a team with six heroes (null if a spot is empty) and the player this team
+   * belongs to
    * 
    * @param first
    *        the hero in the first (tank) spot or null if empty
@@ -123,17 +123,19 @@ public class Team {
     return getHeroes(true, true).stream().sorted((h1, h2) -> h1.getCurrentHP().compareTo(h2.getCurrentHP()))
         .findFirst();
   }
-  
+
   /**
-   * get a list of random alive heroes containing `count` elements (or fewer if only fewer are alive)
+   * get a list of random alive heroes containing `count` elements (or fewer if only
+   * fewer are alive)
    * 
-   * @param count the number of heroes needed
+   * @param count
+   *        the number of heroes needed
    * @return list of random heroes
    */
-  public List<Hero> getRandomHeroes(int count){
-    List<Hero> shuffled= new ArrayList<>(getHeroes(true,true)); //copy the list before shuffling
+  public List<Hero> getRandomHeroes(int count) {
+    List<Hero> shuffled = new ArrayList<>(getHeroes(true, true)); // copy the list before shuffling
     Collections.shuffle(shuffled);
-    return shuffled.subList(0,Math.min(count,shuffled.size()));
+    return shuffled.subList(0, Math.min(count, shuffled.size()));
   }
 
   /**
@@ -142,16 +144,14 @@ public class Team {
   public Player getPlayer() {
     return player;
   }
-  
+
   /**
-   * get the active familiar of the team
-   * 
-   * @return
+   * @return the active familiar of the team
    */
   public AbstractFamiliar getActiveFamiliar() {
     return player.getFamiliars().getActiveFamiliar();
   }
-  
+
 }
 
 // end of file

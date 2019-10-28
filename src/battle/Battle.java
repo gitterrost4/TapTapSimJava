@@ -3,6 +3,7 @@ package battle;
 import battle.logging.Log;
 import battle.logging.LogItem;
 import battle.logging.LogMessage;
+import player.Familiars.AbstractFamiliar;
 
 public class Battle {
   private BattleSetting setting;
@@ -44,6 +45,18 @@ public class Battle {
         hero.triggerTemporaryEffects();
       }
     });
+    log.addMessage("Processing familiars");
+    AbstractFamiliar attackingFamiliar = setting.getAttacker().getActiveFamiliar();
+    AbstractFamiliar defendingFamiliar = setting.getDefender().getActiveFamiliar();
+    if (attackingFamiliar.getEnergy() >= 100) {
+      log.addItem(attackingFamiliar.activeAttack(setting));
+    }
+    if (defendingFamiliar.getEnergy() >= 100) {
+      log.addItem(defendingFamiliar.activeAttack(setting));
+    }
+    log.addItem(attackingFamiliar.addEnergy(25));
+    log.addItem(defendingFamiliar.addEnergy(25));
+
     log.addItem(new LogMessage("Ending round " + roundCounter));
     return log;
   }

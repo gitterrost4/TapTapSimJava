@@ -8,6 +8,7 @@ import battle.BattleSetting;
 import battle.logging.LogItem;
 import battle.logging.LogMessage;
 import effects.TemporaryEffect;
+import util.Tuple;
 
 /**
  * Interface for the basic hero functions
@@ -346,17 +347,17 @@ public interface Hero {
    * add an onDeath Effect to the hero
    * 
    * @param action
-   *        Function to be executed when a hero dies that takes the complete
-   *        battle setting and outputs a log item containing the logged
-   *        information of that action
+   *        Function to be executed when a hero dies that takes the complete battle
+   *        setting and outputs a log item containing the logged information of that
+   *        action
    */
   public void addOnDeathAction(Function<BattleSetting, LogItem> action);
 
   /**
-   * initialize the team(s) in regard to this hero. This should be overridden by
-   * each hero and contains stuff like Phoenix's passive skill increasing all
-   * allies' Attack to burning enemies. Basically anything that the hero does to
-   * its own team (or even the enemy team) goes in here
+   * initialize the team(s) in regard to this hero. This should be overridden by each
+   * hero and contains stuff like Phoenix's passive skill increasing all allies'
+   * Attack to burning enemies. Basically anything that the hero does to its own team
+   * (or even the enemy team) goes in here
    * 
    * @param setting
    *        the complete battle setup
@@ -364,8 +365,8 @@ public interface Hero {
   public void initTeam(BattleSetting setting);
 
   /**
-   * add a temporary effect (poison, silence, etc...; also heal, or buffs that
-   * last a number of rounds) to the hero.
+   * add a temporary effect (poison, silence, etc...; also heal, or buffs that last a
+   * number of rounds) to the hero.
    * 
    * @param effect
    *        the effect to be added
@@ -381,8 +382,8 @@ public interface Hero {
   public LogItem triggerTemporaryEffects();
 
   /**
-   * Execute a basic attack. This can be overridden by each hero if they do
-   * something special on a basic attack.
+   * Execute a basic attack. This can be overridden by each hero if they do something
+   * special on a basic attack.
    * 
    * @param setting
    *        the complete battle setting
@@ -391,8 +392,7 @@ public interface Hero {
   public LogItem basicAttack(BattleSetting setting);
 
   /**
-   * Execute a skill attack (active skill #1). This must be overridden by each
-   * hero.
+   * Execute a skill attack (active skill #1). This must be overridden by each hero.
    * 
    * @param setting
    *        the complete battle setting
@@ -419,16 +419,16 @@ public interface Hero {
   public String getName();
 
   /**
-   * @return the full identifier of the hero, including its name, team (A(ttacker)
-   *         or D(efender) and position (1-6))
+   * @return the full identifier of the hero, including its name, team (A(ttacker) or
+   *         D(efender) and position (1-6))
    */
   public String getFullName();
 
   /**
-   * set the position of the hero in the team. This is numbered from 1 to 6 where
-   * 1 is the "tank" position and the following numbers are the heroes that would
-   * be attacked by a normal basic attack when all other heroes with a smaller
-   * index are dead
+   * set the position of the hero in the team. This is numbered from 1 to 6 where 1
+   * is the "tank" position and the following numbers are the heroes that would be
+   * attacked by a normal basic attack when all other heroes with a smaller index are
+   * dead
    * 
    * @param pos
    *        position (1-6) the hero should be put in
@@ -436,8 +436,8 @@ public interface Hero {
   public void setPosition(Integer pos);
 
   /**
-   * execute an attack. The implementing class decides for itself what type of
-   * attack it is (basic or skill)
+   * execute an attack. The implementing class decides for itself what type of attack
+   * it is (basic or skill)
    * 
    * @param setting
    *        the current battle setting to act upon
@@ -463,9 +463,9 @@ public interface Hero {
   public LogItem zeroEnergy();
 
   /**
-   * Create a log message that includes information about the hero where this
-   * message originates. You usually should use this method when logging anything
-   * from within a hero
+   * Create a log message that includes information about the hero where this message
+   * originates. You usually should use this method when logging anything from within
+   * a hero
    * 
    * @param message
    *        the message to be formatted
@@ -474,15 +474,15 @@ public interface Hero {
   public LogMessage logMessage(String message);
 
   /**
-   * @return a log item containing textual information about the hero like the
-   *         name, the level, the equipment, etc.
+   * @return a log item containing textual information about the hero like the name,
+   *         the level, the equipment, etc.
    */
   public LogItem getInformation();
 
   /**
-   * Let this hero die and trigger everything that's necessary when this hero
-   * dies. The contract is that after calling this method, the method
-   * Hero::isDead() returns a true value
+   * Let this hero die and trigger everything that's necessary when this hero dies.
+   * The contract is that after calling this method, the method Hero::isDead()
+   * returns a true value
    * 
    * @param setting
    *        the complete battle setting
@@ -494,11 +494,11 @@ public interface Hero {
    * Heal the hero by an amount
    * 
    * @param baseStat
-   *        the numerical value of the base stat used for calculating the restored
-   *        HP (usually Attack of the healer)
+   *        the numerical value of the base stat used for calculating the restored HP
+   *        (usually Attack of the healer)
    * @param modifier
-   *        the modifier of the base stat (usually in the skill description like
-   *        in "(130% of Attack)". (this would lead to a modifier of 1.3)
+   *        the modifier of the base stat (usually in the skill description like in
+   *        "(130% of Attack)". (this would lead to a modifier of 1.3)
    * @return A log item containing the logged information of this operation
    */
   public LogItem heal(Integer baseStat, double modifier);
@@ -508,15 +508,15 @@ public interface Hero {
    * 
    * @param action
    *        BiFunction to be executed when a hero is hit that takes the complete
-   *        battle setting and a reference to the source hero of the hit and
-   *        outputs a log item containing the logged information of that action
+   *        battle setting and a reference to the source hero of the hit and outputs
+   *        a log item containing the logged information of that action
    */
   public void addOnHitAction(BiFunction<BattleSetting, Hero, LogItem> action);
 
   /**
-   * set the current HP of the hero to the maximum HP of the hero. This is
-   * intended to be called after all modifiers to maxHP are calculated and before
-   * the battle starts
+   * set the current HP of the hero to the maximum HP of the hero. This is intended
+   * to be called after all modifiers to maxHP are calculated and before the battle
+   * starts
    */
   public void setCurrentHPToMaxHP();
 
@@ -591,27 +591,28 @@ public interface Hero {
   public double getStunnedDamageModifier();
 
   /**
-   * Process being attacked (by any attack), calculate received damage, trigger
-   * onHit actions, trigger potential additional effects of the skill, and so on
+   * Process being attacked (by any attack), calculate received damage, trigger onHit
+   * actions, trigger potential additional effects of the skill, and so on
    * 
    * @param setting
    *        the complete battle setting
    * @param source
    *        a reference to the hero that initiated the attack
    * @param skillStrength
-   *        The modifier used for damage calculation (displayed in skill
-   *        descriptions as "(x% of Attack)")
+   *        The modifier used for damage calculation (displayed in skill descriptions
+   *        as "(x% of Attack)")
    * @param isActiveSkill
    *        is this attack caused by an active skill?
    * @param canBeDodged
    *        can this attack be dodged?
    * @param onHitAction
-   *        any additional action that this attack does to the receiving hero
-   *        (like apply poison or reduce attack)
-   * @return A log item containing the logged information of this operation
+   *        any additional action that this attack does to the receiving hero (like
+   *        apply poison or reduce attack)
+   * @return A Tuple containing a Boolean that's true, iff the attack hit, and a log
+   *         item containing the logged information of this operation
    */
-  LogItem receiveAttack(BattleSetting setting, Hero source, double skillStrength, boolean isActiveSkill,
-      boolean canBeDodged, Function<Hero, LogItem> onHitAction);
+  public Tuple<Boolean, LogItem> receiveAttack(BattleSetting setting, Hero source, double skillStrength,
+      boolean isActiveSkill, boolean canBeDodged, Function<Hero, LogItem> onHitAction);
 
 }
 

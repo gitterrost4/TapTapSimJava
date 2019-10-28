@@ -15,6 +15,7 @@ import battle.logging.LogMessage;
 import effects.TemporaryEffect;
 import effects.TemporaryEffectCollection;
 import loadout.Loadout;
+import util.Tuple;
 import util.Utilities;
 
 /**
@@ -301,20 +302,19 @@ public abstract class AbstractHero implements Hero {
   private final Faction faction;
 
   /**
-   * the complete loadout (armor, helmet, weapon, accessory, rune, artifact) of
-   * the hero
+   * the complete loadout (armor, helmet, weapon, accessory, rune, artifact) of the
+   * hero
    */
   private final Loadout loadout;
 
   /**
-   * the position of the hero in its team (if the hero has been assigned to a
-   * team)
+   * the position of the hero in its team (if the hero has been assigned to a team)
    */
   private Optional<Integer> position = Optional.empty();
 
   /**
-   * Whether the hero is on the attacking team (true) or the opposing team (false)
-   * or no team yet (empty)
+   * Whether the hero is on the attacking team (true) or the opposing team (false) or
+   * no team yet (empty)
    */
   private Optional<Boolean> isAttacker = Optional.empty();
 
@@ -440,8 +440,8 @@ public abstract class AbstractHero implements Hero {
   private TemporaryEffectCollection activeEffects = new TemporaryEffectCollection(this);
 
   /**
-   * List of all actions that are executed on this hero's death. They can come
-   * from its own skills or from other heroes' skills
+   * List of all actions that are executed on this hero's death. They can come from
+   * its own skills or from other heroes' skills
    */
   protected final List<Function<BattleSetting, LogItem>> onDeathActions = new ArrayList<>();
 
@@ -456,8 +456,7 @@ public abstract class AbstractHero implements Hero {
   protected Integer star;
 
   /**
-   * true if the hero is dead (currentHP==0 and all death actions have been
-   * handled)
+   * true if the hero is dead (currentHP==0 and all death actions have been handled)
    */
   private boolean isDead = false;
 
@@ -497,8 +496,8 @@ public abstract class AbstractHero implements Hero {
   private double bleedingDamageModifier;
 
   /**
-   * main constructor, creating a hero with all its parameters (excluding the team
-   * it should be on)
+   * main constructor, creating a hero with all its parameters (excluding the team it
+   * should be on)
    * 
    * @param parameters
    *        basic parameters of the hero
@@ -551,8 +550,8 @@ public abstract class AbstractHero implements Hero {
   }
 
   /**
-   * compute the four main stats (maxHP, attack, speed and armor) from the base
-   * stats and the base parameters of the hero
+   * compute the four main stats (maxHP, attack, speed and armor) from the base stats
+   * and the base parameters of the hero
    * 
    * @param parameters
    *        hero's base parameters
@@ -914,7 +913,7 @@ public abstract class AbstractHero implements Hero {
     Log log = new Log();
     Hero attackedHero = setting.getOpposingTeam(this).getHeroes().get(0);
     log.addItem(logMessage("Basic attack at " + attackedHero.getFullName()));
-    log.addItem(attackedHero.receiveAttack(setting, this, 1, false, true, h -> null));
+    log.addItem(attackedHero.receiveAttack(setting, this, 1, false, true, h -> null)._1);
     log.addItem(increaseCurrentEnergy(50));
     return log;
   }
@@ -958,6 +957,7 @@ public abstract class AbstractHero implements Hero {
     log.addItem(logMessage("initiating active skill"));
     log.addItem(skillAttack(setting));
     log.addItem(zeroEnergy());
+    log.addItem(setting.getOwnTeam(this).getActiveFamiliar().addEnergy(12.5));
     return log;
   }
 
@@ -1027,12 +1027,13 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public LogItem receiveAttack(BattleSetting setting, Hero source, double skillStrength, boolean isActiveSkill,
-      boolean canBeDodged, Function<Hero, LogItem> onHitAction) {
+  public Tuple<Boolean, LogItem> receiveAttack(BattleSetting setting, Hero source, double skillStrength,
+      boolean isActiveSkill, boolean canBeDodged, Function<Hero, LogItem> onHitAction) {
     Log log = new Log();
-
+    boolean wasHit;
     double factionHitRateBonus = source.getFaction().getAdvantageFaction().equals(this.getFaction()) ? 0.15 : 0;
-    if (!canBeDodged || !Utilities.getRandomThrow(Math.max(0, this.getDodgeChance() - (source.getHitRate() + factionHitRateBonus)))) {
+    if (!canBeDodged || !Utilities
+        .getRandomThrow(Math.max(0, this.getDodgeChance() - (source.getHitRate() + factionHitRateBonus)))) {
       // not dodged
       double mainDamage = source.getAttack();
       double defenseReduce = 1 - Math.max(0, Math.min(0.8, (this.defense - source.getDefenseBreak() + 20) * 0.01));
@@ -1054,10 +1055,12 @@ public abstract class AbstractHero implements Hero {
       log.addItem(onHitAction.apply(this));
 
       this.increaseCurrentEnergy(12.5);
+      wasHit = true;
     } else {
       log.addItem(logMessage("Dodged attack from " + source.getFullName()));
+      wasHit = false;
     }
-    return log;
+    return new Tuple<>(wasHit, log);
   }
 
   /**

@@ -9,6 +9,7 @@ import battle.logging.Log;
 import battle.logging.LogItem;
 import effects.Heal;
 import effects.TemporaryEffect;
+import util.Tuple;
 import util.Utilities;
 
 /**
@@ -60,28 +61,31 @@ public class Rlyeh extends AbstractHero {
     Hero attackedHero = setting.getOpposingTeam(this).getLowestHealthHero()
         .orElseThrow(() -> new IllegalStateException("No hero is alive anymore"));
     log.addItem(logMessage("Dealing Damage (170% of Attack) to " + attackedHero.getFullName()));
-    log.addItem(attackedHero.receiveAttack(setting, this, 1.7, true, true, h -> null));
-    Hero healedHero = setting.getOwnTeam(this).getLowestHealthHero()
-        .orElseThrow(() -> new IllegalStateException("No hero is alive anymore"));
-    log.addItem(logMessage("Healing (400% of Attack) to " + healedHero.getFullName()));
-    log.addItem(healedHero.heal(this.getAttack(), 4));
-    log.addItem(logMessage("Increase DamageReduce by 20% for 3 rounds"));
-    log.addItem(this.addTemporaryEffect(new TemporaryEffect(h -> h.increaseDamageReduce(0.2), h -> null,
-        h -> h.increaseDamageReduce(-0.2), "Increase DamageReduce by 20%", 3)));
+    Tuple<Boolean, LogItem> attackResult = attackedHero.receiveAttack(setting, this, 1.7, true, true, h -> null);
+    log.addItem(attackResult._1);
+    if (attackResult._0) {
+      Hero healedHero = setting.getOwnTeam(this).getLowestHealthHero()
+          .orElseThrow(() -> new IllegalStateException("No hero is alive anymore"));
+      log.addItem(logMessage("Healing (400% of Attack) to " + healedHero.getFullName()));
+      log.addItem(healedHero.heal(this.getAttack(), 4));
+      log.addItem(logMessage("Increase DamageReduce by 20% for 3 rounds"));
+      log.addItem(this.addTemporaryEffect(new TemporaryEffect(h -> h.increaseDamageReduce(0.2), h -> null,
+          h -> h.increaseDamageReduce(-0.2), "Increase DamageReduce by 20%", 3)));
+    }
     return log;
   }
 
   /**
-   * apply the third skill to add the onHit heal of Rlyeh. TODO: add the other
-   * star variants of the skill
+   * apply the third skill to add the onHit heal of Rlyeh. TODO: add the other star
+   * variants of the skill
    */
   private void applySkill3() {
     this.addOnHitAction((hero, setting) -> this.addTemporaryEffect(new Heal(1, getAttack(), 0.66)));
   }
 
   /**
-   * apply the fourth skill to add stats to Rlyeh. TODO: add the other star
-   * variants of the skill
+   * apply the fourth skill to add stats to Rlyeh. TODO: add the other star variants
+   * of the skill
    */
   private void applySkill4() {
     this.addAttackModifier(0.25);
@@ -96,14 +100,17 @@ public class Rlyeh extends AbstractHero {
     case 10:
       Hero attackedHero = setting.getOpposingTeam(this).getHeroes(true, true).get(0);
       log.addItem(logMessage("Basic attack at " + attackedHero.getFullName()));
-      log.addItem(attackedHero.receiveAttack(setting, this, 1, false, true, h -> null));
-      if (Utilities.getRandomThrow(0.51)) {
-        Hero healedHero = setting.getOwnTeam(this).getLowestHealthHero()
-            .orElseThrow(() -> new IllegalStateException("No hero is alive anymore"));
-        log.addItem(logMessage("Healing " + healedHero.getFullName() + " for 151% of Attack for 1 round"));
-        log.addItem(healedHero.addTemporaryEffect(new Heal(1, this.getAttack(), 1.51)));
+      Tuple<Boolean, LogItem> attackResult = attackedHero.receiveAttack(setting, this, 1, false, true, h -> null);
+      log.addItem(attackResult._1);
+      if (attackResult._0) {
+        if (Utilities.getRandomThrow(0.51)) {
+          Hero healedHero = setting.getOwnTeam(this).getLowestHealthHero()
+              .orElseThrow(() -> new IllegalStateException("No hero is alive anymore"));
+          log.addItem(logMessage("Healing " + healedHero.getFullName() + " for 151% of Attack for 1 round"));
+          log.addItem(healedHero.addTemporaryEffect(new Heal(1, this.getAttack(), 1.51)));
+        }
+        log.addItem(increaseCurrentEnergy(50));
       }
-      log.addItem(increaseCurrentEnergy(50));
       break;
     default:
       break;

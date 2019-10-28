@@ -32,7 +32,7 @@ public class BattleSetting {
       h.setCurrentHPToMaxHP();
     });
     attacker.getActiveFamiliar().setAttacker();
-    attacker.getActiveFamiliar().setDefender();
+    defender.getActiveFamiliar().setDefender();
   }
 
   public Team getAttacker() {
@@ -67,11 +67,13 @@ public class BattleSetting {
   /**
    * return the opposing team for a familiar
    * 
-   * @param f the familiar in question
-   * @return the team object of the attacker or defender, depending on which side the familiar is on
+   * @param f
+   *        the familiar in question
+   * @return the team object of the attacker or defender, depending on which side the
+   *         familiar is on
    */
   public Team getOpposingTeam(AbstractFamiliar f) {
-    if (attacker.getPlayer().getFamiliars().getActiveFamiliar()==f) {
+    if (attacker.getPlayer().getFamiliars().getActiveFamiliar() == f) {
       return defender;
     } else {
       return attacker;
@@ -79,11 +81,12 @@ public class BattleSetting {
   }
 
   /**
-   * @param f the familiar in question
+   * @param f
+   *        the familiar in question
    * @return true, iff the familiar is on the active team
    */
   public boolean isAttacker(AbstractFamiliar f) {
-    return attacker.getPlayer().getFamiliars().getActiveFamiliar()==f;
+    return attacker.getPlayer().getFamiliars().getActiveFamiliar() == f;
   }
 
   public LogItem getInformation() {
