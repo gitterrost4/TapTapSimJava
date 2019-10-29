@@ -139,8 +139,8 @@ public class Reaper extends AbstractHero {
       });
 
       // increase own attack by 20% for 2 rounds
-      log.addItem(this.addTemporaryEffect(new TemporaryEffect(h -> h.addAttackModifier(1.2), h -> null,
-          h -> h.addAttackModifier(1 / 1.2), "increase own attack by 20%", 2)));
+      log.addItem(this.addTemporaryEffect(new TemporaryEffect(h -> h.addAttackModifier(0.2), h -> null,
+          h -> h.removeAttackModifier(0.2), "increase own attack by 20%", 2)));
       break;
     default:
       log.addItem(logMessage("not doing anything. Probably something went wrong"));

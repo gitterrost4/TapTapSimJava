@@ -120,8 +120,10 @@ public class Team {
    *         (or empty if all heroes are dead)
    */
   public Optional<Hero> getLowestHealthHero() {
-    return getHeroes(true, true).stream().sorted((h1, h2) -> h1.getCurrentHP().compareTo(h2.getCurrentHP()))
-        .findFirst();
+    return getHeroes(true,true).stream()
+      .sorted((h1,h2) -> new Integer(h1.getCurrentHP() - h1.getMaxHP())
+        .compareTo(new Integer(h2.getCurrentHP() - h2.getMaxHP())))
+      .findFirst();
   }
 
   /**

@@ -498,7 +498,7 @@ public abstract class AbstractHero implements Hero {
   /**
    * main constructor, creating a hero with all its parameters (excluding the team it
    * should be on)
-   * 
+   *
    * @param parameters
    *        basic parameters of the hero
    * @param baseStats
@@ -552,7 +552,7 @@ public abstract class AbstractHero implements Hero {
   /**
    * compute the four main stats (maxHP, attack, speed and armor) from the base stats
    * and the base parameters of the hero
-   * 
+   *
    * @param parameters
    *        hero's base parameters
    * @param baseStats
@@ -639,6 +639,14 @@ public abstract class AbstractHero implements Hero {
     Log log = new Log();
     this.attackModifier *= 1 + modifier;
     log.addItem(logMessage("Increasing attack by " + modifier * 100 + "%; Now attack=" + this.getAttack()));
+    return log;
+  }
+
+  @Override
+  public LogItem removeAttackModifier(double modifier) {
+    Log log = new Log();
+    this.attackModifier *= 1/(1 + modifier);
+    log.addItem(logMessage("Removing previous increase of attack by " + modifier * 100 + "%; Now attack=" + this.getAttack()));
     return log;
   }
 
@@ -947,7 +955,7 @@ public abstract class AbstractHero implements Hero {
 
   /**
    * execute a skill attack and zero out the energy afterwards
-   * 
+   *
    * @param setting
    *        complete battle setting
    * @return A log item containing the logged information of this operation
@@ -1054,7 +1062,8 @@ public abstract class AbstractHero implements Hero {
       // execute skill's on hit action
       log.addItem(onHitAction.apply(this));
 
-      this.increaseCurrentEnergy(12.5);
+      log.addItem(logMessage("Adding energy after being hit"));
+      log.addItem(this.increaseCurrentEnergy(12.5));
       wasHit = true;
     } else {
       log.addItem(logMessage("Dodged attack from " + source.getFullName()));
@@ -1065,7 +1074,7 @@ public abstract class AbstractHero implements Hero {
 
   /**
    * return the damage multiplier coming from the ExDMGTo___ of the source hero
-   * 
+   *
    * @param source
    *        Hero that initiated the attack
    * @return the multiplier for the ExDMGTo___ stat
@@ -1091,7 +1100,7 @@ public abstract class AbstractHero implements Hero {
   /**
    * return the damage multiplier coming from the ExDMGTo[someCondition] of the
    * source hero
-   * 
+   *
    * @param source
    *        Hero that initiated the attack
    * @return the multiplier for the ExDMGTo___ stat

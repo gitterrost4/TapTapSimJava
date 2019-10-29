@@ -73,6 +73,15 @@ public interface Hero {
   public LogItem addAttackModifier(double modifier);
 
   /**
+   * Remove a previously added multiplicator for the attack. After this operation, the attack should be atk/(1+modifier)
+   * 
+   * @param modifier
+   *        the modifier to be removed from the attack stat
+   * @return A log item containing the logged information of this operation
+   */
+  public LogItem removeAttackModifier(double modifier);
+
+  /**
    * Add a multiplicator for the hp
    * 
    * @param modifier
