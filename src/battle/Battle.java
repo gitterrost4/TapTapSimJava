@@ -43,6 +43,7 @@ public class Battle {
       if (!hero.isDead() && !setting.getAttacker().isDead() && !setting.getDefender().isDead()) {
         log.addItem(hero.doAttack(setting));
         hero.triggerTemporaryEffects();
+        log.addItem(setting.checkHeroesDied());
       }
     });
     log.addMessage("Processing familiars");
@@ -57,6 +58,7 @@ public class Battle {
     log.addItem(attackingFamiliar.addEnergy(25));
     log.addItem(defendingFamiliar.addEnergy(25));
 
+    log.addItem(setting.checkHeroesDied());
     log.addItem(new LogMessage("Ending round " + roundCounter));
     return log;
   }

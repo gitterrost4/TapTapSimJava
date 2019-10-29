@@ -944,7 +944,6 @@ public abstract class AbstractHero implements Hero {
     } else {
       log.addItem(doSkillAttack(setting));
     }
-    log.addItem(setting.checkHeroesDied());
     return log;
   }
 
