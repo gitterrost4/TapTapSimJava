@@ -12,6 +12,8 @@ public enum HeroType {
   REAPER("Reaper", params -> new Reaper(params)),
   /** Rlyeh */
   RLYEH("Rlyeh", params -> new Rlyeh(params)),
+  /** Phoenix */
+  PHOENIX("Phoenix", params -> new Phoenix(params)),
   /** Mulan */
   MULAN("Mulan", params -> new Mulan(params));
 

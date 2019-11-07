@@ -3,6 +3,7 @@ package effects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import battle.logging.Log;
@@ -11,8 +12,8 @@ import heroes.Hero;
 
 /**
  * This class represents all the effects one hero can have. Basically it's a
- * collection of effects that remembers the hero the effects are applied to and
- * has some convenient methods
+ * collection of effects that remembers the hero the effects are applied to and has
+ * some convenient methods
  */
 public class TemporaryEffectCollection {
 
@@ -48,9 +49,9 @@ public class TemporaryEffectCollection {
   }
 
   /**
-   * Trigger all effects (executing their trigger action) and count down their
-   * round counter. if the effect is over, trigger their ending action. This also
-   * removes any ended effect from the collection
+   * Trigger all effects (executing their trigger action) and count down their round
+   * counter. if the effect is over, trigger their ending action. This also removes
+   * any ended effect from the collection
    * 
    * @return A log item containing the logged information of this operation
    */
@@ -115,6 +116,15 @@ public class TemporaryEffectCollection {
    */
   public boolean containsStun() {
     return effects.stream().anyMatch(e -> e instanceof Stun);
+  }
+
+  /**
+   * @param filter
+   *        predicate to filter the effects by
+   * @return true if there is at least one effect satisfying the filter
+   */
+  public boolean hasEffect(Predicate<TemporaryEffect> filter) {
+    return effects.stream().anyMatch(filter);
   }
 
 }

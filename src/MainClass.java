@@ -4,8 +4,8 @@ import battle.Team;
 import battle.logging.LogItem;
 import heroes.AbstractHero;
 import heroes.HeroParameters;
+import heroes.Phoenix;
 import heroes.Reaper;
-import heroes.Rlyeh;
 import loadout.Loadout;
 import loadout.artifact.ArtifactType;
 import loadout.equipment.EquipmentRarity;
@@ -26,22 +26,21 @@ import player.Player;
 
 /**
  * Just a dummy main class for now
- *
  */
 public class MainClass {
 
   public static void main(String[] args) {
-    AbstractHero heroA1 = new Rlyeh(new HeroParameters(250, 10,
+    AbstractHero heroA1 = new Phoenix(new HeroParameters(250, 10,
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.ORANGE2, RuneType.VITALITY, ArtifactType.STARSHARDS)));
-    AbstractHero heroA2 = new Rlyeh(new HeroParameters(250, 10,
+    AbstractHero heroA2 = new Phoenix(new HeroParameters(250, 10,
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.ORANGE2, RuneType.VITALITY, ArtifactType.EYEOFHEAVEN)));
-    AbstractHero heroA3 = new Rlyeh(new HeroParameters(250, 10,
+    AbstractHero heroA3 = new Phoenix(new HeroParameters(250, 10,
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.ORANGE2, RuneType.VITALITY, ArtifactType.EYEOFHEAVEN)));
-    AbstractHero heroA4 = new Rlyeh(new HeroParameters(250, 10,
+    AbstractHero heroA4 = new Phoenix(new HeroParameters(250, 10,
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.RED2, RuneType.SPEED, ArtifactType.EYEOFHEAVEN)));
-    AbstractHero heroA5 = new Rlyeh(new HeroParameters(250, 10,
+    AbstractHero heroA5 = new Phoenix(new HeroParameters(250, 10,
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.ORANGE2, RuneType.VITALITY, ArtifactType.EYEOFHEAVEN)));
-    AbstractHero heroA6 = new Rlyeh(new HeroParameters(250, 10,
+    AbstractHero heroA6 = new Phoenix(new HeroParameters(250, 10,
         new Loadout(EquipmentRarity.ORANGE2, RuneRarity.ORANGE2, RuneType.VITALITY, ArtifactType.EYEOFHEAVEN)));
     Player playerA = new Player(new GuildTech(new WarriorTech(80, 60, 59, 50, 40), new AssassinTech(42, 24, 10, 11, 3),
         new WandererTech(80, 60, 60, 50, 35), new ClericTech(81, 60, 60, 50, 40), new MageTech(100, 60, 60, 50, 40)),

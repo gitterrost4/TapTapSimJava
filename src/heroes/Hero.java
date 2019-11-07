@@ -3,6 +3,7 @@ package heroes;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import battle.BattleSetting;
 import battle.logging.LogItem;
@@ -73,7 +74,8 @@ public interface Hero {
   public LogItem addAttackModifier(double modifier);
 
   /**
-   * Remove a previously added multiplicator for the attack. After this operation, the attack should be atk/(1+modifier)
+   * Remove a previously added multiplicator for the attack. After this operation,
+   * the attack should be atk/(1+modifier)
    * 
    * @param modifier
    *        the modifier to be removed from the attack stat
@@ -384,6 +386,13 @@ public interface Hero {
   public LogItem addTemporaryEffect(TemporaryEffect effect);
 
   /**
+   * @param filter
+   *        predicate to test each temporary effect for
+   * @return true if an effect matching the filter is present
+   */
+  public boolean hasTemporaryEffect(Predicate<TemporaryEffect> filter);
+
+  /**
    * trigger all temporary effects (at the end of a round for example)
    * 
    * @return A log item containing the logged information of this operation
@@ -508,9 +517,10 @@ public interface Hero {
    * @param modifier
    *        the modifier of the base stat (usually in the skill description like in
    *        "(130% of Attack)". (this would lead to a modifier of 1.3)
+   * @param actOnDying TODO
    * @return A log item containing the logged information of this operation
    */
-  public LogItem heal(Integer baseStat, double modifier);
+  public LogItem heal(Integer baseStat, double modifier, boolean actOnDying);
 
   /**
    * add an onHit Effect to the hero
@@ -570,9 +580,27 @@ public interface Hero {
   public double getBurningDamageModifier();
 
   /**
+   * increase the ExDMGToBurning stat of the hero
+   * 
+   * @param amount
+   *        to increase the stat by
+   * @return a LogItem containing information about the operation
+   */
+  public LogItem increaseBurningDamageModifier(double amount);
+
+  /**
    * @return the ExDMGToPoisoned stat of the hero
    */
   public double getPoisonedDamageModifier();
+
+  /**
+   * increase the ExDMGToPoisoned stat of the hero
+   * 
+   * @param amount
+   *        to increase the stat by
+   * @return a LogItem containing information about the operation
+   */
+  public LogItem increasePoisonedDamageModifier(double amount);
 
   /**
    * @return the ExDMGToPetrified stat of the hero
@@ -580,9 +608,27 @@ public interface Hero {
   public double getPetrifiedDamageModifier();
 
   /**
+   * increase the ExDMGToPetrified stat of the hero
+   * 
+   * @param amount
+   *        to increase the stat by
+   * @return a LogItem containing information about the operation
+   */
+  public LogItem increasePetrifiedDamageModifier(double amount);
+
+  /**
    * @return the ExDMGToBleeding stat of the hero
    */
   public double getBleedingDamageModifier();
+
+  /**
+   * increase the ExDMGToBleeding stat of the hero
+   * 
+   * @param amount
+   *        to increase the stat by
+   * @return a LogItem containing information about the operation
+   */
+  public LogItem increaseBleedingDamageModifier(double amount);
 
   /**
    * @return the ExDMGToFrozen stat of the hero
@@ -590,14 +636,41 @@ public interface Hero {
   public double getFrozenDamageModifier();
 
   /**
+   * increase the ExDMGToFrozen stat of the hero
+   * 
+   * @param amount
+   *        to increase the stat by
+   * @return a LogItem containing information about the operation
+   */
+  public LogItem increaseFrozenDamageModifier(double amount);
+
+  /**
    * @return the ExDMGToSilenced stat of the hero
    */
   public double getSilencedDamageModifier();
 
   /**
+   * increase the ExDMGToSilenced stat of the hero
+   * 
+   * @param amount
+   *        to increase the stat by
+   * @return a LogItem containing information about the operation
+   */
+  public LogItem increaseSilencedDamageModifier(double amount);
+
+  /**
    * @return the ExDMGToStunned stat of the hero
    */
   public double getStunnedDamageModifier();
+
+  /**
+   * increase the ExDMGToStunned stat of the hero
+   * 
+   * @param amount
+   *        to increase the stat by
+   * @return a LogItem containing information about the operation
+   */
+  public LogItem increaseStunnedDamageModifier(double amount);
 
   /**
    * Process being attacked (by any attack), calculate received damage, trigger onHit

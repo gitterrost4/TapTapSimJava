@@ -10,7 +10,7 @@ public class Burn extends TemporaryEffect {
 
   public Burn(BattleSetting setting, Integer remainingRounds, Hero source, double skillStrength) {
     super(h -> h.receiveAttack(setting, source, skillStrength, false, false, x -> null)._1,
-        h -> h.receiveAttack(setting, source, skillStrength, false, false, x -> null)._1, h -> null, "Poison",
+        h -> h.receiveAttack(setting, source, skillStrength, false, false, x -> null)._1, h -> null, "Burn",
         remainingRounds);
   }
 

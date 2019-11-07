@@ -131,11 +131,14 @@ public class Reaper extends AbstractHero {
     case 10:
       log.addItem(logMessage("attacking all opposing heroes for 180% of attack"));
       setting.getOpposingTeam(this).getHeroes(true, true).forEach(h -> {
-        Tuple<Boolean, LogItem> attackResult = h.receiveAttack(setting, this, 1.8, true, false, x -> null);
+        Tuple<Boolean, LogItem> attackResult = h.receiveAttack(setting, this, 1.8, true, false, hitHero -> {
+          Log hitLog = new Log();
+          if (hitHero.getHeroClass().equals(HeroClass.WARRIOR)) {
+            hitLog.addItem(h.addTemporaryEffect(new Silence(2)));
+          }
+          return hitLog;
+        });
         log.addItem(attackResult._1);
-        if (attackResult._0 && h.getHeroClass().equals(HeroClass.WARRIOR)) {
-          log.addItem(h.addTemporaryEffect(new Silence(2)));
-        }
       });
 
       // increase own attack by 20% for 2 rounds

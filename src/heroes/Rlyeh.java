@@ -67,7 +67,7 @@ public class Rlyeh extends AbstractHero {
       Hero healedHero = setting.getOwnTeam(this).getLowestHealthHero()
           .orElseThrow(() -> new IllegalStateException("No hero is alive anymore"));
       log.addItem(logMessage("Healing (400% of Attack) to " + healedHero.getFullName()));
-      log.addItem(healedHero.heal(this.getAttack(), 4));
+      log.addItem(healedHero.heal(this.getAttack(), 4, false));
       log.addItem(logMessage("Increase DamageReduce by 20% for 3 rounds"));
       log.addItem(this.addTemporaryEffect(new TemporaryEffect(h -> h.increaseDamageReduce(0.2), h -> null,
           h -> h.increaseDamageReduce(-0.2), "Increase DamageReduce by 20%", 3)));

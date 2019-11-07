@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import battle.BattleSetting;
 import battle.logging.Log;
@@ -645,8 +646,9 @@ public abstract class AbstractHero implements Hero {
   @Override
   public LogItem removeAttackModifier(double modifier) {
     Log log = new Log();
-    this.attackModifier *= 1/(1 + modifier);
-    log.addItem(logMessage("Removing previous increase of attack by " + modifier * 100 + "%; Now attack=" + this.getAttack()));
+    this.attackModifier *= 1 / (1 + modifier);
+    log.addItem(
+        logMessage("Removing previous increase of attack by " + modifier * 100 + "%; Now attack=" + this.getAttack()));
     return log;
   }
 
@@ -1136,9 +1138,9 @@ public abstract class AbstractHero implements Hero {
   }
 
   @Override
-  public LogItem heal(Integer baseStat, double modifier) {
+  public LogItem heal(Integer baseStat, double modifier, boolean actOnDying) {
     Log log = new Log();
-    if (!isDead() && !isDying()) {
+    if (!isDead() && (actOnDying || !isDying())) {
       int amount = new Double(baseStat * modifier).intValue();
       this.currentHP = Math.min(getMaxHP(), this.currentHP + amount);
       log.addItem(logMessage("Heal by " + amount + "; Now currentHP=" + this.getCurrentHP()));
@@ -1214,6 +1216,74 @@ public abstract class AbstractHero implements Hero {
   @Override
   public double getStunnedDamageModifier() {
     return this.stunnedDamageModifier;
+  }
+
+  @Override
+  public LogItem increaseBurningDamageModifier(double amount) {
+    Log log = new Log();
+    this.burningDamageModifier += amount;
+    log.addItem(logMessage(
+        "Increasing ExDmgToBurning by " + amount * 100 + "%; Now ExDmgToBurning=" + this.getBurningDamageModifier()));
+    return log;
+  }
+
+  @Override
+  public LogItem increasePoisonedDamageModifier(double amount) {
+    Log log = new Log();
+    this.poisonedDamageModifier += amount;
+    log.addItem(logMessage("Increasing ExDmgToPoisoned by " + amount * 100 + "%; Now ExDmgToPoisoned="
+        + this.getPoisonedDamageModifier()));
+    return log;
+  }
+
+  @Override
+  public LogItem increasePetrifiedDamageModifier(double amount) {
+    Log log = new Log();
+    this.petrifiedDamageModifier += amount;
+    log.addItem(logMessage("Increasing ExDmgToPetrified by " + amount * 100 + "%; Now ExDmgToPetrified="
+        + this.getPetrifiedDamageModifier()));
+    return log;
+  }
+
+  @Override
+  public LogItem increaseBleedingDamageModifier(double amount) {
+    Log log = new Log();
+    this.bleedingDamageModifier += amount;
+    log.addItem(logMessage("Increasing ExDmgToBleeding by " + amount * 100 + "%; Now ExDmgToBleeding="
+        + this.getBleedingDamageModifier()));
+    return log;
+  }
+
+  @Override
+  public LogItem increaseFrozenDamageModifier(double amount) {
+    Log log = new Log();
+    this.frozenDamageModifier += amount;
+    log.addItem(logMessage(
+        "Increasing ExDmgToFrozen by " + amount * 100 + "%; Now ExDmgToFrozen=" + this.getFrozenDamageModifier()));
+    return log;
+  }
+
+  @Override
+  public LogItem increaseSilencedDamageModifier(double amount) {
+    Log log = new Log();
+    this.silencedDamageModifier += amount;
+    log.addItem(logMessage("Increasing ExDmgToSilenced by " + amount * 100 + "%; Now ExDmgToSilenced="
+        + this.getSilencedDamageModifier()));
+    return log;
+  }
+
+  @Override
+  public LogItem increaseStunnedDamageModifier(double amount) {
+    Log log = new Log();
+    this.stunnedDamageModifier += amount;
+    log.addItem(logMessage(
+        "Increasing ExDmgToStunned by " + amount * 100 + "%; Now ExDmgToStunned=" + this.getStunnedDamageModifier()));
+    return log;
+  }
+
+  @Override
+  public boolean hasTemporaryEffect(Predicate<TemporaryEffect> filter) {
+    return activeEffects.hasEffect(filter);
   }
 
 }
